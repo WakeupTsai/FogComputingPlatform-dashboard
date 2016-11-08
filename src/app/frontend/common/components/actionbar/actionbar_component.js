@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {actionbarViewName} from 'chrome/chrome_state';
-import {deployAppStateName} from 'deploy/deploy_state';
+import {deployAppStateName,deployServiceStateName} from 'deploy/deploy_state';
 
 /**
  * @final
@@ -42,6 +42,14 @@ export class ActionbarComponent {
   create() {
     this.state_.go(deployAppStateName);
   }
+
+  /**
+   * @export
+   */
+  createService() {
+    this.state_.go(deployServiceStateName);
+  }
+
 }
 
 /**

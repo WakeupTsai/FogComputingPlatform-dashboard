@@ -16,7 +16,7 @@ import {stateName as chromeStateName} from 'chrome/chrome_state';
 import {breadcrumbsConfig} from 'common/components/breadcrumbs/breadcrumbs_service';
 
 import DeployController from './deploy_controller';
-import {baseStateName, deployAppStateName, deployFileStateName} from './deploy_state';
+import {baseStateName, deployAppStateName, deployFileStateName, deployServiceStateName} from './deploy_state';
 import DeployFromFileController from './deployfromfile_controller';
 import DeployFromSettingsController from './deployfromsettings_controller';
 
@@ -64,6 +64,23 @@ export default function stateConfig($stateProvider) {
       },
     },
     templateUrl: 'deploy/deployfromfile.html',
+  });
+  $stateProvider.state(deployServiceStateName, {
+    controller: DeployFromSettingsController,
+    controllerAs: 'ctrl',
+    url: '/service',
+    parent: chromeStateName,
+    resolve: {
+      'namespaces': resolveNamespaces,
+      'protocolsResource': getProtocolsResource,
+      'protocols': getDefaultProtocols,
+    },
+    data: {
+      [breadcrumbsConfig]: {
+        'label': i18n.MSG_BREADCRUMBS_DEPLOY_APP_LABEL,
+      },
+    },
+    templateUrl: 'deploy/deployservice.html',
   });
 }
 
