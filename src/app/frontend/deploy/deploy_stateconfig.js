@@ -19,7 +19,7 @@ import DeployController from './deploy_controller';
 import {baseStateName, deployAppStateName, deployFileStateName, deployServiceStateName} from './deploy_state';
 import DeployFromFileController from './deployfromfile_controller';
 import DeployFromSettingsController from './deployfromsettings_controller';
-
+import DeployServiceFromFileController from './deployservice_controller';
 
 /**
  * Configures states for the deploy view.
@@ -66,7 +66,7 @@ export default function stateConfig($stateProvider) {
     templateUrl: 'deploy/deployfromfile.html',
   });
   $stateProvider.state(deployServiceStateName, {
-    controller: DeployFromSettingsController,
+    controller: DeployServiceFromFileController,
     controllerAs: 'ctrl',
     url: '/service',
     parent: chromeStateName,

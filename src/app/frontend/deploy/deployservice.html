@@ -17,11 +17,32 @@ limitations under the License.
 <kd-content-card>
   <kd-title>Deploy a Service</kd-title>
   <kd-content class="kd-content-padded">
-    <kd-help-section>
-      <kd-user-help>
-        <span ng-bind-html="::ctrl.i18n.MSG_DEPLOY_DASHBOARD_TOUR_USER_HELP"></span>
-      </kd-user-help>
-    </kd-help-section>
-    <div ui-view></div>
+
+    <div ui-view>
+      <md-button class="md-raised md-primary kd-deploy-submit-button" type="submit"
+                 ng-disabled="ctrl.isDeployDisabled()">
+        Head count
+      </md-button>
+
+
+
+    </div>
+
+    <form name="ctrl.form" ng-submit="ctrl.deploypir()" novalidate>
+      <div></div>
+      <md-button class="md-raised md-primary kd-deploy-submit-button" type="submit"
+                 ng-disabled="ctrl.isDeployDisabled()">
+        [[PIR motion|The text is put on the button at the end of the YAML upload page.]]
+      </md-button>
+    </form>
+
+    <form name="ctrl.form" ng-submit="ctrl.deploytemperature()" novalidate>
+      <div></div>
+      <md-button class="md-raised md-primary kd-deploy-submit-button" type="submit"
+                 ng-disabled="ctrl.isDeployDisabled()">
+        [[Temperature|The text is put on the button at the end of the YAML upload page.]]
+      </md-button>
+    </form>
+
   </kd-content>
 </kd-content-card>
