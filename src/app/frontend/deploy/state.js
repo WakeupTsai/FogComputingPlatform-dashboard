@@ -18,3 +18,6 @@ export const baseStateName = 'deploy';
 export const deployAppStateName = 'deployApp';
 
 export const deployFileStateName = 'deployFile';
+
+/** phstsai **/
+export const deployMyServiceStateName = 'deployMyService';

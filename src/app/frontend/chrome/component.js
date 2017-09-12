@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {deployAppStateName} from '../deploy/state';
+import {deployAppStateName, deployMyServiceStateName} from '../deploy/state';
 
 import {actionbarViewName, fillContentConfig} from './state';
 
@@ -102,6 +102,14 @@ export class ChromeController {
   create() {
     this.state_.go(deployAppStateName);
   }
+
+  /**
+    phstsai
+  **/
+  createMyService() {
+    this.state_.go(deployMyServiceStateName);
+  }
+
 }
 
 /**

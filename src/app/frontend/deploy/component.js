@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {deployAppStateName, deployFileStateName} from './state';
+import {deployAppStateName, deployFileStateName, deployMyServiceStateName} from './state';
 
 /**
  * Controller for the deploy view.
@@ -33,6 +33,9 @@ class DeployController {
 
     /** @export {string} */
     this.fileOption = deployFileStateName;
+
+    /** phstsai **/
+    this.myServiceOption = deployMyServiceStateName;
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;

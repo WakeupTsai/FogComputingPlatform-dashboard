@@ -15,7 +15,7 @@
 import {stateName as chromeStateName} from '../chrome/state';
 import {breadcrumbsConfig} from '../common/components/breadcrumbs/service';
 
-import {baseStateName, deployAppStateName, deployFileStateName} from './state';
+import {baseStateName, deployAppStateName, deployFileStateName, deployMyServiceStateName} from './state';
 
 /**
  * Configures states for the deploy view.
@@ -55,6 +55,24 @@ export default function stateConfig($stateProvider) {
       },
     },
   });
+
+  /** phstsai **/ 
+  $stateProvider.state(deployMyServiceStateName, {
+    parent: chromeStateName,
+    component: 'kdDeployMyService',
+    url: '/myservice',
+    resolve: {
+      'namespaces': resolveNamespaces,
+      'protocolsResource': getProtocolsResource,
+      'protocols': getDefaultProtocols,
+    },
+    data: {
+      [breadcrumbsConfig]: {
+        'label': i18n.MSG_BREADCRUMBS_DEPLOY_APP_LABEL,
+      },
+    },
+  });
+  
 }
 
 /**
