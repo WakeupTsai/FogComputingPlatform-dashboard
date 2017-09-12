@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,8 +18,11 @@
  * @final
  */
 export class UploadController {
-  /** @ngInject */
-  constructor() {
+  /**
+   * @param {!../common/namespace/service.NamespaceService} kdNamespaceService
+   * @ngInject
+   */
+  constructor(kdNamespaceService) {
     /** @private {boolean} */
     this.isBrowseFileFuncRegistered_ = false;
 
@@ -27,7 +30,8 @@ export class UploadController {
      * Browse file function which is defined by the clients.
      *
      * Initialized from the registerBrowseFileFunction method.
-     * @private {(function())|undefined} */
+     * @private {(function())|undefined}
+     */
     this.browseFileFunc_;
 
     /**
@@ -35,6 +39,9 @@ export class UploadController {
      * @export {!angular.FormController}
      */
     this.form;
+
+    /** @private {!../common/namespace/service.NamespaceService} */
+    this.kdNamespaceService_ = kdNamespaceService;
   }
 
   /**
@@ -63,12 +70,20 @@ export class UploadController {
   /**
    * Used to deactivate the invalid file name report if the form is not submitted yet.
    *
-   * @returns {boolean}
+   * @return {boolean}
    * @export
    */
   isFileNameError() {
     /** @type {!angular.NgModelController} */
     let fileName = this.form['fileName'];
     return this.form.$submitted && fileName.$invalid;
+  }
+
+  /**
+   * @return {boolean}
+   * @export
+   */
+  areMultipleNamespacesSelected() {
+    return this.kdNamespaceService_.areMultipleNamespacesSelected();
   }
 }

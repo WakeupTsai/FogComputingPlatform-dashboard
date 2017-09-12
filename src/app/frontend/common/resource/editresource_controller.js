@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,34 +20,34 @@
 export class EditResourceController {
   /**
    * @param {!md.$dialog} $mdDialog
-   * @param {!angular.$resource} $resource
    * @param {!angular.$http} $http
+   * @param {!kdClipboard.Clipboard} clipboard
+   * @param {!md.$toast} $mdToast
    * @param {string} resourceKindName
-   * @param {!backendApi.TypeMeta} typeMeta
-   * @param {!backendApi.ObjectMeta} objectMeta
+   * @param {string} resourceUrl
    * @ngInject
    */
-  constructor($mdDialog, $resource, $http, resourceKindName, typeMeta, objectMeta) {
+  constructor($mdDialog, $http, clipboard, $mdToast, resourceKindName, resourceUrl) {
     /** @export {string} */
     this.resourceKindName = resourceKindName;
 
     /** @export {Object} JSON representation of the edited resource. */
     this.data = null;
 
-    /** @private {!backendApi.TypeMeta} */
-    this.typeMeta_ = typeMeta;
-
-    /** @export {!backendApi.ObjectMeta} */
-    this.objectMeta = objectMeta;
+    /** @private {string} */
+    this.resourceUrl = resourceUrl;
 
     /** @private {!md.$dialog} */
     this.mdDialog_ = $mdDialog;
 
-    /** @private {!angular.$resource} */
-    this.resource_ = $resource;
-
     /** @private {!angular.$http} */
     this.http_ = $http;
+
+    /** @private {!kdClipboard.Clipboard} */
+    this.clipboard_ = clipboard;
+
+    /** @private {!md.$toast} */
+    this.toast_ = $mdToast;
 
     this.init_();
   }
@@ -56,9 +56,7 @@ export class EditResourceController {
    * @private
    */
   init_() {
-    let promise = this.http_.get(
-        `api/v1/${this.typeMeta_.kind}/namespace/` +
-        `${this.objectMeta.namespace}/name/${this.objectMeta.name}`);
+    let promise = this.http_.get(this.resourceUrl);
     promise.then((/** !angular.$http.Response<Object>*/ response) => {
       this.data = response.data;
     });
@@ -68,12 +66,29 @@ export class EditResourceController {
    * @export
    */
   update() {
-    return this.http_
-        .put(
-            `api/v1/${this.typeMeta_.kind}/namespace` +
-                `/${this.objectMeta.namespace}/name/${this.objectMeta.name}`,
-            this.data)
+    return this.http_.put(this.resourceUrl, this.data)
         .then(this.mdDialog_.hide, this.mdDialog_.cancel);
+  }
+
+  /**
+   * @export
+   */
+  copy() {
+    /**
+     * @type {string} @desc Toast message appears when browser does not support clipboard
+     */
+    let MSG_UNSUPPORTED_TOAST = goog.getMsg('Unsupported browser');
+    /**
+     * @type {string} @desc Toast message appears when copied to clipboard.
+     */
+    let MSG_COPIED_TOAST = goog.getMsg('Copied to clipboard');
+    /* if the clipboard functionality is not supported */
+    if (!this.clipboard_.supported) {
+      this.showMessage_(MSG_UNSUPPORTED_TOAST);
+    } else {
+      this.clipboard_.copyText(JSON.stringify(this.data, null, 2));
+      this.showMessage_(MSG_COPIED_TOAST);
+    }
   }
 
   /**
@@ -83,5 +98,19 @@ export class EditResourceController {
    */
   cancel() {
     this.mdDialog_.cancel();
+  }
+
+  /**
+   * show an error message
+   *
+   * @private
+   * @param {string} message
+   */
+  showMessage_(message) {
+    this.toast_.show(this.toast_.simple()
+                         .textContent(message)
+                         .position('top right')
+                         .parent(document.getElementsByTagName('md-dialog')[0])
+                         .hideDelay(3000));
   }
 }

@@ -1,5 +1,5 @@
 <!--
-Copyright 2015 Google Inc. All Rights Reserved.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+<kd-warnings warnings="::$ctrl.workloads.errors"></kd-warnings>
+
 <div layout="row">
-  <kd-graph-card graph-title="[[CPU usage history|Title for graph card displaying CPU metric of one all resources.]]"
+  <kd-graph-card graph-title="[[CPU usage|Title for graph card displaying CPU metric of one all resources.]]"
                  metrics="::$ctrl.workloads.podList.cumulativeMetrics"
                  selected-metric-names="'cpu/usage_rate'">
   </kd-graph-card>
-  <kd-graph-card graph-title="[[Title for graph card displaying CPU metric of one all resources.|Title for graph card displaying memory metric of one all resources.]]"
+  <kd-graph-card graph-title="[[Memory usage|Title for graph card displaying memory metric of one all resources.]]"
+                 graph-info="[[The memory usage includes the caches in the pods managed by these resources. (Does not count pods double because it is mentioned both in the pod list and its controller is mentioned in e.g. a replica set.)|Help message detailing what is included in the memory usage]]"
+
                  metrics="::$ctrl.workloads.podList.cumulativeMetrics"
                  selected-metric-names="'memory/usage'">
   </kd-graph-card>
@@ -27,24 +31,15 @@ limitations under the License.
 
 <div ng-if="!$ctrl.shouldShowZeroState()">
   <kd-content-card ng-if="$ctrl.workloads.daemonSetList.daemonSets.length">
-    <kd-title>
-      <a ui-sref="daemonset">
-        [[Daemon sets|Label "Daemon sets", which appears above the daemon sets list on the workloads page.]]
-      </a>
-    </kd-title>
     <kd-content>
-      <kd-daemon-set-card-list daemon-set-list="$ctrl.workloads.daemonSetList" with-statuses="true"
+      <kd-daemon-set-card-list daemon-set-list="$ctrl.workloads.daemonSetList"
+                               with-statuses="true"
                                daemon-set-list-resource="$ctrl.daemonSetListResource">
       </kd-daemon-set-card-list>
     </kd-content>
   </kd-content-card>
 
   <kd-content-card ng-if=$ctrl.workloads.deploymentList.deployments.length>
-    <kd-title>
-      <a ui-sref="deployment">
-        [[Deployments|Label "Deployments", which appears above the deployments list on the workloads page.]]
-      </a>
-    </kd-title>
     <kd-content>
       <kd-deployment-card-list deployment-list="$ctrl.workloads.deploymentList"
                                deployment-list-resource="$ctrl.deploymentListResource">
@@ -52,38 +47,7 @@ limitations under the License.
     </kd-content>
   </kd-content-card>
 
-  <kd-content-card ng-if="$ctrl.workloads.petSetList.petSets.length">
-    <kd-title>
-      <a ui-sref="petset">
-        [[Pet Sets|Label "Pet Sets", which appears above the replica set list on the workloads page.]]
-      </a>
-    </kd-title>
-    <kd-content>
-      <kd-pet-set-card-list pet-set-list="$ctrl.workloads.petSetList"
-                            pet-set-list-resource="$ctrl.petSetListResource">
-      </kd-pet-set-card-list>
-    </kd-content>
-  </kd-content-card>
-
-  <kd-content-card ng-if="$ctrl.workloads.replicaSetList.replicaSets.length">
-    <kd-title>
-      <a ui-sref="replicaset">
-        [[Replica sets|Label "Replica sets", which appears above the replica sets list on the workloads page.]]
-      </a>
-    </kd-title>
-    <kd-content>
-      <kd-replica-set-card-list replica-set-list="$ctrl.workloads.replicaSetList"
-                                replica-set-list-resource="$ctrl.replicaSetListResource">
-      </kd-replica-set-card-list>
-    </kd-content>
-  </kd-content-card>
-
   <kd-content-card ng-if="$ctrl.workloads.jobList.jobs.length">
-    <kd-title>
-      <a ui-sref="job">
-        [[Jobs|Label "Job", which appears above the replica sets list on the workloads page.]]
-      </a>
-    </kd-title>
     <kd-content>
       <kd-job-card-list job-list="$ctrl.workloads.jobList"
                         job-list-resource="$ctrl.jobListResource">
@@ -91,31 +55,42 @@ limitations under the License.
     </kd-content>
   </kd-content-card>
 
-  <kd-content-card ng-if="$ctrl.workloads.replicationControllerList.replicationControllers.length">
-    <kd-title>
-      <a ui-sref="replicationcontroller">
-        [[Replication controllers|Label "Replication controllers", which appears above the replication controllers list on the workloads page.]]
-      </a>
-    </kd-title>
-    <kd-content>
-      <kd-replication-controller-card-list
-              replication-controller-list="$ctrl.workloads.replicationControllerList"
-              replication-controller-list-resource="$ctrl.rcListResource">
-      </kd-replication-controller-card-list>
-    </kd-content>
-  </kd-content-card>
-
   <kd-content-card ng-if="$ctrl.workloads.podList.pods.length">
-    <kd-title>
-      <a ui-sref="pod">
-        [[Pods|Label "Pods", which appears above the pods list on the workloads page.]]
-      </a>
-    </kd-title>
     <kd-content>
-      <kd-pod-card-list pod-list="$ctrl.workloads.podList" pod-list-resource="$ctrl.podListResource"
+      <kd-pod-card-list pod-list="$ctrl.workloads.podList"
+                        pod-list-resource="$ctrl.podListResource"
                         with-statuses="true">
       </kd-pod-card-list>
     </kd-content>
   </kd-content-card>
+
+  <kd-content-card ng-if="$ctrl.workloads.replicaSetList.replicaSets.length">
+    <kd-content>
+      <kd-replica-set-card-list replica-set-list="$ctrl.workloads.replicaSetList"
+                                replica-set-list-resource="$ctrl.replicaSetListResource">
+      </kd-replica-set-card-list>
+    </kd-content>
+  </kd-content-card>
+
+  <kd-content-card ng-if="$ctrl.workloads.replicationControllerList.replicationControllers.length">
+    <kd-content>
+      <kd-replication-controller-card-list replication-controller-list="$ctrl.workloads.replicationControllerList"
+                                           replication-controller-list-resource="$ctrl.rcListResource">
+      </kd-replication-controller-card-list>
+    </kd-content>
+  </kd-content-card>
+
+  <kd-content-card ng-if="$ctrl.workloads.statefulSetList.statefulSets.length">
+    <kd-content>
+      <kd-stateful-set-card-list stateful-set-list="$ctrl.workloads.statefulSetList"
+                                 stateful-set-list-resource="$ctrl.statefulSetListResource">
+      </kd-stateful-set-card-list>
+    </kd-content>
+  </kd-content-card>
 </div>
-<kd-zero-state ng-if="$ctrl.shouldShowZeroState()"></kd-zero-state>
+
+<kd-content-card ng-if="$ctrl.shouldShowZeroState()">
+  <kd-content>
+    <kd-zero-state></kd-zero-state>
+  </kd-content>
+</kd-content-card>

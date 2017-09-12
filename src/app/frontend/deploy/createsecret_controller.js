@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,12 @@ export default class CreateSecretController {
    * TODO (cheld) Set correct type after fixing issue #159
    * @param {!Object} errorDialog
    * @param {string} namespace
+   * @param {!./../common/csrftoken/service.CsrfTokenService} kdCsrfTokenService
+   * @param {string} kdCsrfTokenHeader
    * @ngInject
    */
-  constructor($mdDialog, $log, $resource, errorDialog, namespace) {
+  constructor(
+      $mdDialog, $log, $resource, errorDialog, namespace, kdCsrfTokenService, kdCsrfTokenHeader) {
     /** @private {!md.$dialog} */
     this.mdDialog_ = $mdDialog;
 
@@ -75,11 +78,17 @@ export default class CreateSecretController {
         new RegExp('^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$');
 
     /**
-     * Pattern validating if the secret's data is Base64 encoded.
+     * Pattern validating if the secret data is Base64 encoded.
      * @export {!RegExp}
      */
     this.dataPattern =
         new RegExp('^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$');
+
+    /** @private {!angular.$q.Promise} */
+    this.tokenPromise = kdCsrfTokenService.getTokenForAction('secret');
+
+    /** @private {string} */
+    this.csrfHeaderName_ = kdCsrfTokenHeader;
   }
 
   /**
@@ -103,14 +112,24 @@ export default class CreateSecretController {
       namespace: this.namespace,
       data: this.data,
     };
-    /** @type {!angular.Resource<!backendApi.SecretSpec>} */
-    let resource = this.resource_(`api/v1/secret/`);
+    this.tokenPromise.then(
+        (token) => {
+          /** @type {!angular.Resource} */
+          let resource = this.resource_(
+              `api/v1/secret/`, {},
+              {save: {method: 'POST', headers: {[this.csrfHeaderName_]: token}}});
 
-    resource.save(
-        secretSpec,
-        (savedConfig) => {
-          this.log_.info('Successfully created secret:', savedConfig);
-          this.mdDialog_.hide(this.secretName);
+          resource.save(
+              secretSpec,
+              (savedConfig) => {
+                this.log_.info('Successfully created secret:', savedConfig);
+                this.mdDialog_.hide(this.secretName);
+              },
+              (err) => {
+                this.mdDialog_.hide();
+                this.errorDialog_.open('Error creating secret', err.data);
+                this.log_.info('Error creating secret:', err);
+              });
         },
         (err) => {
           this.mdDialog_.hide();

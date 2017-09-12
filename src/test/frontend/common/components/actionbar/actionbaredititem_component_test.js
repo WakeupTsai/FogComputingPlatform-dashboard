@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import componentsModule from 'common/components/components_module';
+import componentsModule from 'common/components/module';
 
 describe('Actionbar edit item component', () => {
   /** @type {BreadcrumbsController} */
   let ctrl;
   /** @type {ui.router.$state} */
   let state;
-  /** @type !{!common/resource/verber_service.VerberService} */
+  /** @type !{!common/resource/service.VerberService} */
   let kdResourceVerberService;
   /** @type {!angular.$q} **/
   let q;

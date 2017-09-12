@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,8 @@ export class VerberService {
   showDeleteDialog(resourceKindName, typeMeta, objectMeta) {
     let deferred = this.q_.defer();
 
-    showDeleteDialog(this.mdDialog_, resourceKindName, typeMeta, objectMeta)
+    showDeleteDialog(
+        this.mdDialog_, resourceKindName, getRawResourceUrl(typeMeta, objectMeta), objectMeta)
         .then(() => {
           deferred.resolve();
         })
@@ -68,7 +69,7 @@ export class VerberService {
   showEditDialog(resourceKindName, typeMeta, objectMeta) {
     let deferred = this.q_.defer();
 
-    showEditDialog(this.mdDialog_, resourceKindName, typeMeta, objectMeta)
+    showEditDialog(this.mdDialog_, resourceKindName, getRawResourceUrl(typeMeta, objectMeta))
         .then(() => {
           deferred.resolve();
         })
@@ -109,4 +110,19 @@ export class VerberService {
                               .textContent(err.data || 'Could not edit the resource'));
     }
   }
+}
+
+/**
+ * Create a string with the resource url for the given resource
+ * @param {!backendApi.TypeMeta} typeMeta
+ * @param {!backendApi.ObjectMeta} objectMeta
+ * @return {string}
+ */
+function getRawResourceUrl(typeMeta, objectMeta) {
+  let resourceUrl = `api/v1/_raw/${typeMeta.kind}`;
+  if (objectMeta.namespace !== undefined) {
+    resourceUrl += `/namespace/${objectMeta.namespace}`;
+  }
+  resourceUrl += `/name/${objectMeta.name}`;
+  return resourceUrl;
 }

@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,10 @@ export class Controller {
 const i18n = {
   /** @export {string} @desc Action "Close" on a dialog. */
   MSG_CONFIG_DIALOG_CLOSE_ACTION: goog.getMsg('Close'),
-  /** @export {string} @desc Label for the
-    kubectl.kubernetes.io/last-applied-configuration annotation. */
+  /**
+    @export {string} @desc Label for the
+    kubectl.kubernetes.io/last-applied-configuration annotation.
+  */
   MSG_CONFIG_DIALOG_TITLE: goog.getMsg('Last applied configuration'),
 };
 

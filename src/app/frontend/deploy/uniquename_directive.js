@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ export default function uniqueNameDirective($resource, $q) {
 function validate(name, namespace, resource, q) {
   let deferred = q.defer();
 
-  /** @type {!angular.Resource<!backendApi.AppNameValiditySpec>} */
+  /** @type {!angular.Resource} */
   let resourceClass = resource('api/v1/appdeployment/validate/name');
   /** @type {!backendApi.AppNameValiditySpec} */
   let spec = {name: name, namespace: namespace};

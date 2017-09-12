@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,17 @@ import {EditResourceController} from './editresource_controller';
 /**
  * @param {!md.$dialog} mdDialog
  * @param {string} resourceKindName
- * @param {!backendApi.TypeMeta} typeMeta
- * @param {!backendApi.ObjectMeta} objectMeta
+ * @param {string} resourceUrl
  * @return {!angular.$q.Promise}
  */
-export default function showEditDialog(mdDialog, resourceKindName, typeMeta, objectMeta) {
+export default function showEditDialog(mdDialog, resourceKindName, resourceUrl) {
   return mdDialog.show({
     controller: EditResourceController,
     controllerAs: '$ctrl',
     clickOutsideToClose: true,
     templateUrl: 'common/resource/editresource.html',
     locals: {
-      'typeMeta': typeMeta,
-      'objectMeta': objectMeta,
+      'resourceUrl': resourceUrl,
       'resourceKindName': resourceKindName,
     },
   });

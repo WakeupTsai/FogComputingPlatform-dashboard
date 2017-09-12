@@ -19,39 +19,14 @@ import browserSync from 'browser-sync';
 import browserSyncSpa from 'browser-sync-spa';
 import child from 'child_process';
 import gulp from 'gulp';
+import proxyMiddleware from 'http-proxy-middleware';
 import path from 'path';
-import proxyMiddleware from 'proxy-middleware';
-import url from 'url';
-
 import conf from './conf';
-
 
 /**
  * Browser sync instance that serves the application.
  */
 export const browserSyncInstance = browserSync.create();
-
-/**
- * Dashboard backend arguments used for development mode.
- *
- * @type {!Array<string>}
- */
-const backendDevArgs = [
-  `--apiserver-host=${conf.backend.apiServerHost}`,
-  `--port=${conf.backend.devServerPort}`,
-  `--heapster-host=${conf.backend.heapsterServerHost}`,
-];
-
-/**
- * Dashboard backend arguments used for production mode.
- *
- * @type {!Array<string>}
- */
-const backendArgs = [
-  `--apiserver-host=${conf.backend.apiServerHost}`,
-  `--port=${conf.frontend.serverPort}`,
-  `--heapster-host=${conf.backend.heapsterServerHost}`,
-];
 
 /**
  * Currently running backend process object. Null if the backend is not running.
@@ -61,9 +36,41 @@ const backendArgs = [
 let runningBackendProcess = null;
 
 /**
+ * Builds array of arguments for backend process based on env variables and prod/dev mode.
+ *
+ * @param {string} mode
+ * @return {!Array<string>}
+ */
+function getBackendArgs(mode) {
+  let args = [
+    `--heapster-host=${conf.backend.heapsterServerHost}`,
+    `--tls-cert-file=${conf.backend.tlsCert}`,
+    `--tls-key-file=${conf.backend.tlsKey}`,
+  ];
+
+  if (mode === conf.build.production) {
+    args.push(`--insecure-port=${conf.frontend.serverPort}`);
+  }
+
+  if (mode === conf.build.development) {
+    args.push(`--insecure-port=${conf.backend.devServerPort}`);
+  }
+
+  if (conf.backend.envKubeconfig) {
+    args.push(`--kubeconfig=${conf.backend.envKubeconfig}`);
+  } else {
+    args.push(`--apiserver-host=${conf.backend.envApiServerHost || conf.backend.apiServerHost}`);
+  }
+
+  return args;
+}
+
+/**
  * Initializes BrowserSync tool. Files are served from baseDir directory list and all API calls
  * are proxied to a running backend instance. When includeBowerComponents is true, requests for
  * paths starting with '/bower_components' are routed to bower components directory.
+ *
+ * HTTP/HTTPS is served on 9090 when using `gulp serve`.
  *
  * @param {!Array<string>|string} baseDir
  * @param {boolean} includeBowerComponents
@@ -75,19 +82,23 @@ function browserSyncInit(baseDir, includeBowerComponents) {
   }));
 
   let apiRoute = '/api';
-  let proxyMiddlewareOptions =
-      url.parse(`http://localhost:${conf.backend.devServerPort}${apiRoute}`);
-  proxyMiddlewareOptions.route = apiRoute;
+  let proxyMiddlewareOptions = {
+    target: conf.frontend.serveHttps ? `https://localhost:${conf.backend.secureDevServerPort}` :
+                                       `http://localhost:${conf.backend.devServerPort}`,
+    changeOrigin: true,
+    ws: true,  // Proxy websockets.
+    secure: false,
+  };
 
   let config = {
     browser: [],       // Needed so that the browser does not auto-launch.
     directory: false,  // Disable directory listings.
-    // TODO(bryk): Add proxy to the backend here.
     server: {
       baseDir: baseDir,
-      middleware: proxyMiddleware(proxyMiddlewareOptions),
+      middleware: proxyMiddleware(apiRoute, proxyMiddlewareOptions),
     },
     port: conf.frontend.serverPort,
+    https: conf.frontend.serveHttps,  // Will serve only on HTTPS if flag is set.
     startPath: '/',
     notify: false,
   };
@@ -135,7 +146,7 @@ gulp.task('serve:prod', ['spawn-backend:prod']);
  */
 gulp.task('spawn-backend', ['backend', 'kill-backend', 'locales-for-backend:dev'], function() {
   runningBackendProcess = child.spawn(
-      path.join(conf.paths.serve, conf.backend.binaryName), backendDevArgs,
+      path.join(conf.paths.serve, conf.backend.binaryName), getBackendArgs(conf.build.development),
       {stdio: 'inherit', cwd: conf.paths.serve});
 
   runningBackendProcess.on('exit', function() {
@@ -149,9 +160,9 @@ gulp.task('spawn-backend', ['backend', 'kill-backend', 'locales-for-backend:dev'
  * backend process is killed beforehand, if any. In production the backend does serve the frontend
  * pages as well.
  */
-gulp.task('spawn-backend:prod', ['build-frontend', 'backend', 'kill-backend'], function() {
+gulp.task('spawn-backend:prod', ['build-frontend', 'backend:prod', 'kill-backend'], function() {
   runningBackendProcess = child.spawn(
-      path.join(conf.paths.serve, conf.backend.binaryName), backendArgs,
+      path.join(conf.paths.dist, conf.backend.binaryName), getBackendArgs(conf.build.production),
       {stdio: 'inherit', cwd: conf.paths.dist});
 
   runningBackendProcess.on('exit', function() {

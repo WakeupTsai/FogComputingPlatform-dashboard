@@ -9,12 +9,14 @@ the backend. The frontend is a single page web application that runs in a browse
 its business data from the backend using standard HTTP methods. The backend implements UI-business
 logic and fetches raw data from the various Kubernetes APIs.
 
+[More information on the structure of the dashboard code](code-structure.md)
+
 ## Preparation
 
 Make sure the following software is installed and added to the `$PATH` variable:
 
 * Docker (1.10+)
-* go (1.6.1+)
+* go (1.7+)
 * nodejs (5.1.1+)
 * npm (3+)
 * java (7+)
@@ -25,8 +27,14 @@ You can follow [detailed steps on how to install these requirements](requirement
 Clone the repository and install the dependencies:
 
 ```shell
-$ npm install
+$ npm i
 ```
+
+If you are running commands with root privileges set `--unsafe-perm` flag:
+
+ ```shell
+ # npm i --unsafe-perm
+ ```
 
 ## Run a Kubernetes Cluster
 
@@ -35,7 +43,7 @@ task is provided that checks out the latest stable version, and runs it inside a
 Run the following command:
 
 ```shell
-$ gulp local-up-cluster
+$ gulp local-up-cluster --heapsterServerHost 'http://localhost:8082'
 ```
 
 This will build and start a lightweight local cluster, consisting of a master and a single node.
@@ -57,6 +65,19 @@ $ kubectl proxy --port=8080
 
 kubectl will handle authentication with Kubernetes and create an API proxy with the address
 `localhost:8080`. Therefore, no changes in the configuration are required.
+
+Another way to connect to real cluster while developing dashboard is to override default values used
+by our build pipeline. In order to do that we have introduced two environment variables
+`KUBE_DASHBOARD_APISERVER_HOST` and `KUBE_DASHBOARD_KUBECONFIG` that will be used over default ones when
+defined. Before running our gulp tasks just do:
+
+```shell
+$ export KUBE_DASHBOARD_APISERVER_HOST="http://<APISERVER_IP>:<APISERVER_PORT>"
+# or
+$ export KUBE_DASHBOARD_KUBECONFIG="<KUBECONFIG_FILE_PATH>"
+```
+
+**NOTE: Environment variable `KUBE_DASHBOARD_KUBECONFIG` has higher priority than `KUBE_DASHBOARD_APISERVER_HOST`.**
 
 ## Serving Dashboard for Development
 
@@ -120,7 +141,7 @@ Dashboard backend (9090)  ---> Kubernetes API server (8080)
 In order to package everything into a ready-to-run Docker image, use the following task:
 
 ```shell
-$ gulp docker-image:canary
+$ gulp docker-image:head
 ```
 
 You might notice that the Docker image is very small and requires only a few MB. Only
@@ -151,18 +172,18 @@ $ gulp check-javascript-format
 ```
 
 ## Committing changes to your fork
-   
+
 Before committing any changes, please link/copy the pre-commit hook into your .git directory. This will keep you from accidentally committing non formatted code.
-   
-The hook requires gofmt to be in your PATH.
-   
+
+The hook requires goimports to be in your PATH.
+
 ```shell
 cd <dashboard_home>/.git/hooks/
 ln -s ../../hooks/pre-commit .
 ```
-   
+
 Then you can commit your changes and push them to your fork:
-   
+
 ```shell
 git commit
 git push -f origin my-feature
@@ -171,7 +192,7 @@ git push -f origin my-feature
 ## Building Dashboard Inside a Container
 
 It's possible to run `gulp` and all the dependencies inside a development container. To do this,
-just replace `gulp [some arg]` commands with `build/run-gulp-in-docker.sh [some arg]`. If you
+just replace `gulp [some arg]` commands with `build/run-gulp-in-docker.sh [some arg]` (e.g. `build/run-gulp-in-docker.sh serve`). If you
 do this, the only dependency is `docker`, and required commands such as `npm install`
 will be run automatically.
 

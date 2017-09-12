@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,7 @@
 
 package common
 
-import (
-	"k8s.io/kubernetes/pkg/api"
-)
+import api "k8s.io/client-go/pkg/api/v1"
 
 // ServicePort is a pair of port and protocol, e.g. a service endpoint.
 type ServicePort struct {

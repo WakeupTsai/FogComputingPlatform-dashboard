@@ -41,7 +41,7 @@ Codename:       precise
 
 ## Install Helpful Programs
 
-Install some programs that we'll need later on, and verify that they're there. 
+Install some programs that we'll need later on, and verify that they're there.
 
 ```shell
 $ sudo apt-get install curl
@@ -147,11 +147,11 @@ For an additional check you can run these commands:
 
 ## Install Go
 
-The instructions below are for install a specific version of Go (1.6.2 for linux amd64). If you want the latest Go version or have a different system, then you can get the latest download URL from https://golang.org/dl/
+The instructions below are for install a specific version of Go (1.8 for linux amd64). If you want the latest Go version or have a different system, then you can get the latest download URL from https://golang.org/dl/
 
 ```shell
-$ wget https://storage.googleapis.com/golang/go1.6.2.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.6.2.linux-amd64.tar.gz
+$ wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.8.linux-amd64.tar.gz
 $ export PATH=$PATH:/usr/local/go/bin
 $ echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
 ```
@@ -163,7 +163,7 @@ $ go version
 $ echo $PATH
 ```
 
-The Go version should return something like `go version go1.6.2 linux/amd64`. Note that if you already had Go installed, ensure that `GO15VENDOREXPERIMENT` is unset.
+The Go version should return something like `go version go1.8 linux/amd64`. Note that if you already had Go installed, ensure that `GO15VENDOREXPERIMENT` is unset.
 
 ## Install Node and NPM
 
@@ -203,7 +203,7 @@ $ java -version
 
 Should return `java version "1.7.0_101"`.
 
-## Install Gulp using npm 
+## Install Gulp using npm
 
 ```shell
 $ sudo npm install --global gulp-cli
@@ -224,7 +224,9 @@ Should return `CLI version 3.9.1` and `Local version 3.9.1`.
 Download the command line tool _kubectl_.
 
 ```shell
-$ curl -O https://storage.googleapis.com/kubernetes-release/release/v1.2.4/bin/linux/amd64/kubectl
+$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl   
+$ chmod +x ./kubectl   
+$ sudo mv ./kubectl /usr/local/bin/kubectl   
 ```
 
 Clone the Dashboard and Kubernetes code from the GitHub repos. *This could take a while.*
@@ -248,22 +250,25 @@ This will install all the dependencies that are in the `package.json` file in th
 Run the script included with the dashboard that checks out the latest Kubernetes and runs it in a Docker container.
 
 ```shell
-$ cd ~/dashboard
-$ sudo build/run-gulp-in-docker.sh
-$ gulp local-up-cluster
+$ cd ~/dashboard   
+   
+# Start cluster at first, because the dashboard need apiserver-host for requesting.
+$ gulp local-up-cluster   
+  
+# Run script to build docker image with name "kubernetes-dashboard-build-image ", and then start a container.
+# The parameter "serve" is necessary, otherwise, there will be a gulp task error.
+$ sudo build/run-gulp-in-docker.sh serve
 ```
-If you need append ENV variables to container.
+If you need append ENV variables to container, you should edit the Dockerfile.
 
 ```Dockerfile
 ENV http_proxy="http://username:passowrd@10.0.58.88:8080/"
 ENV https_proxy="http://username:password@10.0.58.88:8080/"
 ```
 
-If you need to stop the cluster you can run `$ docker kill $(docker ps -aq)`
+If you need to stop the cluster you can run `$ docker kill $(docker ps -aq)`, 
+and the dashboard container is stopped also.
 
-```shell
-$ gulp serve
-```
 
 ### Check
 
@@ -288,7 +293,7 @@ If you're having trouble with the `gulp local-up-cluster` step, you may want to 
 * `docker ps -a` lists all docker containers
 * `docker inspect name_of_container | grep "Error"` will look through the details of a docker container and display any errors.
 
-If you have a error like "linux mounts: Path /var/lib/kubelet is mounted on / but it is not a shared mount." you should try `sudo mount --bind /var/lib/kubelet /var/lib/kubelet` followed by `sudo mount --make-shared /var/lib/kubelet`. ([source](https://github.com/kubernetes/kubernetes/issues/4869#issuecomment-193640483))
+If you have an error like "linux mounts: Path /var/lib/kubelet is mounted on / but it is not a shared mount." you should try `sudo mount --bind /var/lib/kubelet /var/lib/kubelet` followed by `sudo mount --make-shared /var/lib/kubelet`. ([source](https://github.com/kubernetes/kubernetes/issues/4869#issuecomment-193640483))
 
 ## Go
 
@@ -298,10 +303,10 @@ If you run into an error like "Go is not on the path.", you may need to re-run `
 
 * `env` will show your environment variables. One common error is not having every directory needed in your PATH.
 
-Using *vim* to edit files may be helpful for beginners. 
+Using *vim* to edit files may be helpful for beginners.
 
 * `sudo apt-get install vim` will get *vim*
-* `sudo vim /path/to/folder/filename` will open the file you want to edit. 
+* `sudo vim /path/to/folder/filename` will open the file you want to edit.
 * <kbd>i</kbd> = insert
 * <kbd>Esc</kbd> = stops inserting
 * `:x` = exits and saves

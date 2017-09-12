@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {WorkloadsController} from 'workloads/workloads_controller';
-import workloadListModule from 'workloads/workloads_module';
+import {WorkloadsController} from 'workloads/controller';
+import workloadListModule from 'workloads/module';
 
 describe('Workload list controller', () => {
-  /** @type {!workloads/workloads_controller.WorkloadsController} */
+  /** @type {!workloads/controller.WorkloadsController} */
   let ctrl;
 
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('Workload list controller', () => {
       replicationControllerList: {listMeta: {totalItems: 0}, replicationControllers: []},
       podList: {listMeta: {totalItems: 0}, pods: []},
       daemonSetList: {listMeta: {totalItems: 0}, daemonSets: []},
-      petSetList: {listMeta: {totalItems: 0}, petSets: []},
+      statefulSetList: {listMeta: {totalItems: 0}, statefulSets: []},
     };
 
     expect(ctrl.shouldShowZeroState()).toBeTruthy();
@@ -59,7 +59,7 @@ describe('Workload list controller', () => {
       replicationControllerList: {listMeta: {totalItems: 0}, replicationControllers: []},
       podList: {listMeta: {totalItems: 0}, pods: []},
       daemonSetList: {listMeta: {totalItems: 0}, daemonSets: []},
-      petSetList: {listMeta: {totalItems: 0}, petSets: []},
+      statefulSetList: {listMeta: {totalItems: 0}, statefulSets: []},
     };
 
     // then

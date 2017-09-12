@@ -1,5 +1,5 @@
 <!--
-Copyright 2015 Google Inc. All Rights Reserved.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,22 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<div class="kd-center-fixed">
-  <div layout="column"  layout-align="center center">
-    <i flex="auto" class="material-icons kd-error-view-icon">error_outline</i>
-    <div flex="auto" >
-      <h2 class="md-headline">
-        <span ng-if="::ctrl.error.statusText">
-          {{ctrl.error.statusText}}
-        </span>
-        <span ng-if="::!ctrl.error.statusText">
-          [[Unknown Server Error.|This message appears in an error dialog when the returned error code is not recognized.]]
-        </span>
-        <span ng-if="::ctrl.showStatus()">
-         ({{ctrl.error.status}})
-        </span>
+<div class="kd-error-center-fixed">
+  <div layout="column"
+       layout-align="center center">
+    <div flex="auto"
+         class="kd-error-block">
+      <h2 class="md-headline kd-error-view-header">
+        <i class="material-icons kd-error-view-icon">error_outline</i>
+        <span>{{ctrl.getErrorStatus()}}</span>
       </h2>
-      <pre ng-if="::ctrl.error.data">{{ctrl.error.data}}</pre>
+      <pre ng-class="{'kd-error-spacer': ctrl.isKnownError()}">{{ctrl.getErrorData()}}</pre>
+      <div ng-if="!ctrl.isKnownError()"
+           layout="row"
+           layout-align="end center">
+        <a ng-href="{{ctrl.getLinkToFeedbackPage()}}">
+          <md-button class="kd-error-feedback-button">
+            [[Send feedback|This is a label for button displayed on error page used to send feedback to GitHub new issue.]]
+          </md-button>
+        </a>
+      </div>
     </div>
   </div>
 </div>

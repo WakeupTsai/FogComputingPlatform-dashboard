@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import module from 'common/components/components_module';
+import module from 'common/components/module';
 
 describe('annotations component', () => {
   /** @type {!angular.Scope} */
@@ -44,8 +44,8 @@ describe('annotations component', () => {
     let labels = element.find('kd-middle-ellipsis');
     expect(labels.length).toEqual(3);
     let index = 0;
-    angular.forEach(scope.annotations, (value, key) => {
-      expect(labels.eq(index).text().trim()).toBe(`${key}: ${value}`);
+    angular.forEach(scope.annotations, (value) => {
+      expect(labels.eq(index).text().trim()).toBe(`${value}`);
       index++;
     });
   });
@@ -69,7 +69,7 @@ describe('annotations component', () => {
     let index = 0;
     angular.forEach(scope.annotations, (value, key) => {
       if (key !== 'kubernetes.io/created-by') {
-        expect(labels.eq(index).text().trim()).toBe(`${key}: ${value}`);
+        expect(labels.eq(index).text().trim()).toBe(`${value}`);
         index++;
       }
     });

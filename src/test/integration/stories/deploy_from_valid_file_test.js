@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ describe('Deploy from valid file user story test', () => {
     deployFromFilePage = new DeployFromFilePageObject();
     replicationControllersPage = new ReplicationControllersPageObject();
     deleteDialog = new DeleteReplicationControllerDialogObject();
-    browser.get('#/deploy/file');
+    browser.get('#!/deploy/file');
   });
 
   it('should upload the file', () => {
@@ -54,7 +54,7 @@ describe('Deploy from valid file user story test', () => {
     deployFromFilePage.deployButton.click();
 
     // then
-    expect(browser.getCurrentUrl()).toContain('workload');
+    expect(browser.getCurrentUrl()).toContain('overview');
 
     let cardNameLink = replicationControllersPage.getElementByAppName(
         replicationControllersPage.cardDetailsPageLinkQuery, appName);
@@ -65,7 +65,7 @@ describe('Deploy from valid file user story test', () => {
     // clean up
     let cardMenuButton = replicationControllersPage.getElementByAppName(
         replicationControllersPage.cardMenuButtonQuery, appName);
-    browser.get('#/replicationcontroller');
+    browser.get('#!/replicationcontroller');
     cardMenuButton.click();
     replicationControllersPage.deleteAppButton.click().then(() => {
       deleteDialog.deleteAppButton.click();

@@ -38,14 +38,8 @@ function getFileList() {
   return wiredep(wiredepOptions).js.concat([
     path.join(conf.paths.frontendTest, '**/*.json'),
     path.join(conf.paths.frontendTest, '**/*.js'),
-    path.join(conf.paths.frontendSrc, '**/*.js'),
+    {pattern: path.join(conf.paths.frontendSrc, '**/*.js'), included: false},
     path.join(conf.paths.frontendSrc, '**/*.html'),
-    path.join(conf.paths.bowerComponents, 'google-closure-library/closure/goog/base.js'),
-    {
-      pattern: path.join(conf.paths.bowerComponents, 'google-closure-library/closure/goog/deps.js'),
-      included: false,
-      served: false,
-    },
   ]);
 }
 
@@ -61,6 +55,8 @@ module.exports = function(config) {
     files: getFileList(),
 
     logLevel: 'WARN',
+
+    browserConsoleLogOptions: {terminal: true, level: ''},
 
     // Jasmine jquery is needed to allow angular to use JQuery in tests instead of JQLite.
     // This allows to get elements by selector(angular.element('body')), use find function to
@@ -101,10 +97,10 @@ module.exports = function(config) {
       // Make 'import ...' statements relative to the following paths.
       paths: [conf.paths.frontendSrc, conf.paths.frontendTest],
       transform: [
-        // Browserify transform for the istanbul code coverage tool. Isparta istrumenter for ES6
+        // Browserify transform for the istanbul code coverage tool. Isparta instrumenter for ES6
         // code coverage. TODO(floreks): try to make import work instead of require
         ['browserify-istanbul', {'instrumenter': require('isparta')}],
-        // Transform ES6 code into ES5 so that browsers can digest it.
+        // Transform ES2017 code into ES5 so that browsers can digest it.
         ['babelify'],
       ],
     },
@@ -124,10 +120,10 @@ module.exports = function(config) {
     let testName;
     if (process.env.TRAVIS) {
       testName = `Karma tests ${process.env.TRAVIS_REPO_SLUG}, build ` +
-          `${process.env.TRAVIS_BUILD_NUMBER}`;
+          `${process.env.TRAVIS_BUILD_NUMBER}, job ${process.env.TRAVIS_JOB_NUMBER}`;
       if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
         testName += `, PR: https://github.com/${process.env.TRAVIS_REPO_SLUG}/pull/` +
-            `${process.env.TRAVIS_PULL_REQUEST}`;
+            `${process.env.TRAVIS_PULL_REQUEST}, job ${process.env.TRAVIS_JOB_NUMBER}`;
       }
     } else {
       testName = 'Local karma tests';
@@ -155,7 +151,7 @@ module.exports = function(config) {
     configuration.browsers = ['Chrome'];
   }
 
-  // Convert all JS code written ES6 with modules to ES5 bundles that browsers can digest.
+  // Convert all JS code written ES2017 with modules to ES5 bundles that browsers can digest.
   configuration.preprocessors[path.join(conf.paths.frontendTest, '**/*.js')] =
       ['browserify', 'closure', 'closure-iit'];
   configuration.preprocessors[path.join(conf.paths.frontendSrc, '**/*.js')] =

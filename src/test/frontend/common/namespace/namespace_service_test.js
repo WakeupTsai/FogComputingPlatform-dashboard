@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import namespaceModule from 'common/namespace/namespace_module';
+import namespaceModule from 'common/namespace/module';
 
 describe('Namespace service', () => {
-  /** @type {!common/namespace/namespace_service.NamespaceService} */
+  /** @type {!common/namespace/service.NamespaceService} */
   let namespaceService;
-  /** @type {!chrome/chrome_state.StateParams} */
+  /** @type {!chrome/state.StateParams} */
   let stateParams;
 
   beforeEach(() => angular.mock.module(namespaceModule.name));

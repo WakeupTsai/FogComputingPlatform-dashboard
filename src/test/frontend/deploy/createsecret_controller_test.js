@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import CreateSecretController from 'deploy/createsecret_controller';
-import deployModule from 'deploy/deploy_module';
+import deployModule from 'deploy/module';
 
 describe('Create-Secret dialog', () => {
   /** @type {!CreateSecretControllerController} */
@@ -28,6 +28,7 @@ describe('Create-Secret dialog', () => {
         'namespace': 'default',
       });
       httpBackend = $httpBackend;
+      httpBackend.expectGET('api/v1/csrftoken/secret').respond(200, '{"token": "x"}');
     });
   });
 
@@ -90,6 +91,8 @@ describe('Create-Secret dialog', () => {
     ctrl.secretForm.$valid = false;
     // when trying to submit
     ctrl.createSecret();
+
+    httpBackend.flush(1);  // flush the get for the token.
     // then form data was not sent to backend (thus flush will throw error)
     expect(httpBackend.flush).toThrow();
   });
@@ -120,7 +123,7 @@ describe('Create-Secret dialog', () => {
     ctrl.secretForm.$valid = true;
     /** @type {string} */
     let errorMessage = 'Something bad happened';
-    // return an erranous response
+    // return an erroneous response
     httpBackend.expectPOST('api/v1/secret').respond(500, errorMessage);
     // when
     ctrl.createSecret();

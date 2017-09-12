@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import NamespaceDialogController from 'deploy/createnamespace_controller';
-import deployModule from 'deploy/deploy_module';
+import deployModule from 'deploy/module';
 
 describe('Create-Namespace dialog', () => {
 
@@ -29,6 +29,7 @@ describe('Create-Namespace dialog', () => {
         'errorDialog_': _errorDialog_,
       });
       httpBackend = $httpBackend;
+      httpBackend.expectGET('api/v1/csrftoken/namespace').respond(200, '{"token": "x"}');
     });
   });
 
@@ -93,6 +94,7 @@ describe('Create-Namespace dialog', () => {
     // when trying to submit
     ctrl.createNamespace();
 
+    httpBackend.flush(1);  // flush the get for the token.
     // then form data was not sent to backend (thus flush will throw error)
     expect(httpBackend.flush).toThrow();
   });
@@ -105,7 +107,7 @@ describe('Create-Namespace dialog', () => {
     ctrl.namespaceForm.$valid = true;
     /** @type {string} */
     let errorMessage = 'Something bad happened';
-    // return an erranous response
+    // return an erroneous response
     httpBackend.expectPOST('api/v1/namespace').respond(500, errorMessage);
     // when
     ctrl.createNamespace();

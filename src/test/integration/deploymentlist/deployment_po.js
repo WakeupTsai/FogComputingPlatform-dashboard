@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ export default class DeploymentPageObject {
    */
   getElementByAppName(xpathString, appName, isArray) {
     let elemQuery = by.xpath(
-        `//*[@href='#/deployment/default/${appName}?namespace=default']` +
+        `//*[@href='#!/deployment/default/${appName}?namespace=default']` +
         `/ancestor::kd-resource-card//${xpathString}`);
     if (isArray) {
       return element.all(elemQuery);

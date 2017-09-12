@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import componentsModule from 'common/components/components_module';
-import MiddleEllipsisController from 'common/components/middleellipsis/middleellipsis_controller';
+import MiddleEllipsisController from 'common/components/middleellipsis/component';
+import componentsModule from 'common/components/module';
 
 describe('Middle ellipsis controller', () => {
   /**
@@ -29,21 +29,7 @@ describe('Middle ellipsis controller', () => {
     });
   });
 
-  it('should truncate display string', () => {
-    // given
-    ctrl.displayString = new Array(32).join('x');
-    ctrl.maxLength = 16;
-
-    // then
-    expect(ctrl.shouldTruncate()).toBe(true);
-  });
-
-  it('should not truncate display string', () => {
-    // given
-    ctrl.displayString = new Array(16).join('x');
-    ctrl.maxLength = 32;
-
-    // then
-    expect(ctrl.shouldTruncate()).toBe(false);
+  it('should initialize controller', () => {
+    expect(ctrl).not.toBeNull();
   });
 });

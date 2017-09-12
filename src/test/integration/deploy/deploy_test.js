@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
 
 describe('Deploy view', () => {
   beforeEach(() => {
-    browser.get('#/deploy');
+    browser.get('#!/deploy');
   });
 
-  it('should do something', () => {
-                                // TODO(bryk): Write the test.
-                            });
+  it('should do something',
+     () => {
+         // TODO(bryk): Write the test.
+     });
 });

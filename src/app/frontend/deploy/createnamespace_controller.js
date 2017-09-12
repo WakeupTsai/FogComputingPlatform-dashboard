@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,12 @@ export default class NamespaceDialogController {
    * TODO (cheld) Set correct type after fixing issue #159
    * @param {!Object} errorDialog
    * @param {!Array<string>} namespaces
+   * @param {!./../common/csrftoken/service.CsrfTokenService} kdCsrfTokenService
+   * @param {string} kdCsrfTokenHeader
    * @ngInject
    */
-  constructor($mdDialog, $log, $resource, errorDialog, namespaces) {
+  constructor(
+      $mdDialog, $log, $resource, errorDialog, namespaces, kdCsrfTokenService, kdCsrfTokenHeader) {
     /** @private {!md.$dialog} */
     this.mdDialog_ = $mdDialog;
 
@@ -66,6 +69,12 @@ export default class NamespaceDialogController {
 
     /** @export {!angular.FormController} */
     this.namespaceForm;
+
+    /** @private {!angular.$q.Promise} */
+    this.tokenPromise = kdCsrfTokenService.getTokenForAction('namespace');
+
+    /** @private {string} */
+    this.csrfHeaderName_ = kdCsrfTokenHeader;
   }
 
   /**
@@ -95,14 +104,24 @@ export default class NamespaceDialogController {
     /** @type {!backendApi.NamespaceSpec} */
     let namespaceSpec = {name: this.namespace};
 
-    /** @type {!angular.Resource<!backendApi.NamespaceSpec>} */
-    let resource = this.resource_('api/v1/namespace');
+    this.tokenPromise.then(
+        (token) => {
+          /** @type {!angular.Resource} */
+          let resource = this.resource_(
+              'api/v1/namespace', {},
+              {save: {method: 'POST', headers: {[this.csrfHeaderName_]: token}}});
 
-    resource.save(
-        namespaceSpec,
-        (savedConfig) => {
-          this.log_.info('Successfully created namespace:', savedConfig);
-          this.mdDialog_.hide(this.namespace);
+          resource.save(
+              namespaceSpec,
+              (savedConfig) => {
+                this.log_.info('Successfully created namespace:', savedConfig);
+                this.mdDialog_.hide(this.namespace);
+              },
+              (err) => {
+                this.mdDialog_.hide();
+                this.errorDialog_.open('Error creating namespace', err.data);
+                this.log_.info('Error creating namespace:', err);
+              });
         },
         (err) => {
           this.mdDialog_.hide();

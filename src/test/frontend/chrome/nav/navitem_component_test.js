@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import module from 'chrome/nav/module';
-import {breadcrumbsConfig} from 'common/components/breadcrumbs/breadcrumbs_service';
 
 describe('Nav item component', () => {
-  /** @type {!chrome/nav/navitem_component.NavItemController} */
+  /** @type {!chrome/nav/component.NavItemController} */
   let ctrl;
-  /** @type {!common/state/futurestate_service.FutureStateService}*/
-  let kdFutureStateService;
+  /** @type {!chrome/nav/service.NavService} */
+  let kdNavService;
 
   beforeEach(() => {
     let fakeModule = angular.module('fakeModule', ['ui.router']);
@@ -28,47 +27,36 @@ describe('Nav item component', () => {
         url: 'fakeStateUrl',
         template: '<ui-view>Foo</ui-view>',
       });
-      $stateProvider.state('fakeNonActive', {
-        url: 'fakeStateUrl',
-        template: '<ui-view>Foo</ui-view>',
-      });
-      $stateProvider.state('fakeStateWithParent', {
-        url: 'fakeStateUrl',
-        template: '<ui-view>Foo</ui-view>',
-        data: {
-          [breadcrumbsConfig]: {
-            parent: 'fakeState',
-          },
-        },
-      });
     });
     angular.mock.module(module.name);
     angular.mock.module(fakeModule.name);
-    angular.mock.inject(($componentController, $rootScope, _kdFutureStateService_) => {
+    angular.mock.inject(($componentController, $rootScope, _kdNavService_) => {
       ctrl = $componentController('kdNavItem', {$scope: $rootScope}, {state: 'fakeState'});
-      kdFutureStateService = _kdFutureStateService_;
+      kdNavService = _kdNavService_;
     });
+  });
+
+  it('should register itself in nav service', () => {
+    expect(kdNavService.states_).toEqual([]);
+
+    ctrl.$onInit();
+
+    expect(kdNavService.states_).toEqual(['fakeState']);
   });
 
   it('should render href', () => {
     // initial state assert
     expect(ctrl.state).toBe('fakeState');
 
-    expect(ctrl.getHref()).toBe('#fakeStateUrl');
+    expect(ctrl.getHref()).toBe('#!fakeStateUrl');
   });
 
-  it('should detect activity', angular.mock.inject(($state, $rootScope) => {
+  it('should detect activity', () => {
+    spyOn(kdNavService, 'isActive').and.returnValue(false);
     expect(ctrl.isActive()).toBe(false);
 
-    kdFutureStateService.state = {name: 'fakeState'};
+    kdNavService.isActive.and.returnValue(true);
 
     expect(ctrl.isActive()).toBe(true);
-
-    kdFutureStateService.state = {name: 'fakeNonActive'};
-    expect(ctrl.isActive()).toBe(false);
-
-    $state.go('fakeStateWithParent');
-    $rootScope.$digest();
-    expect(ctrl.isActive()).toBe(true);
-  }));
+  });
 });

@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,53 +12,57 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {breadcrumbsConfig} from 'common/components/breadcrumbs/breadcrumbs_service';
-
 /**
  * @final
  */
 export class NavItemController {
   /**
    * @param {!ui.router.$state} $state
-   * @param {!./../../common/state/futurestate_service.FutureStateService} kdFutureStateService
+   * @param {!./nav_service.NavService} kdNavService
    * @ngInject
    */
-  constructor($state, kdFutureStateService) {
+  constructor($state, kdNavService) {
     /** @export {string} */
     this.state;
+
+    /** @export {string} */
+    this.href;
+
+    /** @export {boolean} */
+    this.active;
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
 
-    /** @private {!./../../common/state/futurestate_service.FutureStateService} */
-    this.kdFutureStateService_ = kdFutureStateService;
+    /** @private {!./nav_service.NavService} */
+    this.kdNavService_ = kdNavService;
+  }
+
+  /** @export */
+  $onInit() {
+    this.kdNavService_.registerState(this.state);
   }
 
   /**
+   * Returns reference link for menu entries. By default default href for state will be returned, it
+   * can be overwritten by passing 'href' to the component.
+   *
    * @return {string}
    * @export
    */
   getHref() {
-    return this.state_.href(this.state);
+    return this.href ? this.href : this.state_.href(this.state);
   }
 
   /**
+   * Returns true if current state is active and menu entry should be highlighted. By default uses
+   * navigation service, but can be overwritten by passing 'active' to the component.
+   *
    * @return {boolean}
    * @export
    */
   isActive() {
-    let state = this.kdFutureStateService_.state;
-    while (state) {
-      if (state.name === this.state) {
-        return true;
-      }
-      if (state && state.data && state.data[breadcrumbsConfig]) {
-        state = this.state_.get(state.data[breadcrumbsConfig]['parent']);
-      } else {
-        state = null;
-      }
-    }
-    return false;
+    return this.active !== undefined ? this.active : this.kdNavService_.isActive(this.state);
   }
 }
 
@@ -69,6 +73,8 @@ export const navItemComponent = {
   controller: NavItemController,
   bindings: {
     'state': '@',
+    'href': '@',
+    'active': '=',
   },
   transclude: true,
   templateUrl: 'chrome/nav/navitem.html',

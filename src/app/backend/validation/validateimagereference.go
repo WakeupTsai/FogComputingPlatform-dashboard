@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
 package validation
 
 import (
-	distreference "github.com/docker/distribution/reference"
 	"log"
+
+	"github.com/docker/distribution/reference"
 )
 
 // ImageReferenceValiditySpec is a specification of an image reference validation request.
@@ -35,10 +36,10 @@ type ImageReferenceValidity struct {
 
 // ValidateImageReference validates image reference.
 func ValidateImageReference(spec *ImageReferenceValiditySpec) (*ImageReferenceValidity, error) {
-	log.Printf("Validating %s as a image reference", spec.Reference)
+	log.Printf("Validating %s as an image reference", spec.Reference)
 
 	s := spec.Reference
-	_, err := distreference.ParseNamed(s)
+	_, err := reference.ParseNamed(s)
 	if err != nil {
 		return &ImageReferenceValidity{Valid: false, Reason: err.Error()}, nil
 	}

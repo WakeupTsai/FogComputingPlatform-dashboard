@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,15 +20,22 @@ export class ConfigController {
    * @param {!backendApi.Config} config
    * @param {!angular.Resource} kdConfigMapListResource
    * @param {!angular.Resource} kdSecretListResource
+   * @param {!angular.Resource} kdPersistentVolumeClaimListResource
    * @ngInject
    */
-  constructor(config, kdConfigMapListResource, kdSecretListResource) {
+  constructor(
+      config, kdConfigMapListResource, kdSecretListResource, kdPersistentVolumeClaimListResource) {
     /** @export {!backendApi.Config} */
     this.config = config;
+
     /** @export {!angular.Resource} */
     this.kdConfigMapListResource = kdConfigMapListResource;
+
     /** @export {!angular.Resource} */
     this.kdSecretListResource = kdSecretListResource;
+
+    /** @export {!angular.Resource} */
+    this.pvcListResource = kdPersistentVolumeClaimListResource;
   }
 
   /**
@@ -37,9 +44,9 @@ export class ConfigController {
    */
   shouldShowZeroState() {
     /** @type {number} */
-    let resourcesLength =
-        this.config.configMapList.listMeta.totalItems + this.config.secretList.listMeta.totalItems;
-
+    let resourcesLength = this.config.configMapList.listMeta.totalItems +
+        this.config.secretList.listMeta.totalItems +
+        this.config.persistentVolumeClaimList.listMeta.totalItems;
     return resourcesLength === 0;
   }
 }

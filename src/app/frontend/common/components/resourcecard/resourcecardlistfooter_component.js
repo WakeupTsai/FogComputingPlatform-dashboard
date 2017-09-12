@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,76 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * @final
- */
-export class ResourceCardListFooterController {
+const PAGINATION_SLOT = 'pagination';
+
+class ResourceCardListFooterController {
   /**
-   * @param {!../../pagination/pagination_service.PaginationService} kdPaginationService
-   * @param {!angular.$transclude} $transclude
+   * @param {!angular.JQLite} $element
    * @ngInject
    */
-  constructor(kdPaginationService, $transclude) {
-    /** @private {!./resourcecardlistpagination_component.ResourceCardListPaginationController} -
-     *  Initialized in ResourceCardListPaginationController in $onInit method */
-    this.listPagination_;
-    /** @private {!../../pagination/pagination_service.PaginationService} */
-    this.paginationService_ = kdPaginationService;
-    /** @private {!angular.$transclude} */
-    this.transclude_ = $transclude;
+  constructor($element) {
+    /** @private {!angular.JQLite} */
+    this.element_ = $element;
   }
 
   /**
-   * @param {!./resourcecardlistpagination_component.ResourceCardListPaginationController}
-   * listPagination
-   * @export
-   */
-  setListPagination(listPagination) {
-    if (this.listPagination_) {
-      throw new Error('List pagination controller already set.');
-    }
-
-    this.listPagination_ = listPagination;
-  }
-
-  /**
-   * Returns true if pagination slot has been filled and number of items on the list is bigger
-   * then min available rows limit, false otherwise.
+   * To avoid issue with duplicated bottom border on resource cards described in #1893 following
+   * function was added. Thanks to it footer border will not be displayed until there are pagination
+   * controls (this means, that footer is actually displayed).
    *
-   * @return {boolean}
-   * @private
-   */
-  shouldShowPagination_() {
-    return !!this.listPagination_ &&
-        this.listPagination_.list.listMeta.totalItems > this.paginationService_.getMinRowsLimit();
-  }
-
-  /**
-   * Returns true if footer content slot has been filled or pagination should be displayed on
-   * the footer, false otherwise.
-   *
-   * @return {boolean}
    * @export
+   * @return {boolean}
    */
-  shouldShowFooter() {
-    return this.transclude_.isSlotFilled('content') || this.shouldShowPagination_();
+  isBottomBorderVisible() {
+    return this.element_[0].innerHTML.indexOf('dir-pagination-controls') > 0;
   }
 }
 
 /**
- * Resource card list footer component. Provides footer to display some additional data, i.e.
- * pagination component.
- *
+ * Resource card list footer component. See resource card for documentation.
  * @type {!angular.Component}
  */
 export const resourceCardListFooterComponent = {
-  templateUrl: 'common/components/resourcecard/resourcecardlistfooter.html',
   controller: ResourceCardListFooterController,
-  transclude: /** @type {undefined} TODO: Remove this when externs are fixed */ ({
-    'content': '?kdResourceCardListFooterContent',
-    'pagination': '?kdResourceCardListPagination',
-  }),
-  require: {
-    'resourceCardListCtrl': '^kdResourceCardList',
+  templateUrl: 'common/components/resourcecard/resourcecardlistfooter.html',
+  transclude: {
+    [PAGINATION_SLOT]: '?kdResourceCardListPagination',
   },
 };

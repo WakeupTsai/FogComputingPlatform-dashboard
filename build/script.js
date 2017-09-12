@@ -16,22 +16,37 @@
  * Gulp tasks for processing and compiling frontend JavaScript files.
  */
 import async from 'async';
+import closureCompiler from 'google-closure-compiler';
 import gulp from 'gulp';
-import gulpClosureCompiler from 'gulp-closure-compiler';
 import gulpHtmlmin from 'gulp-htmlmin';
+import gulpIf from 'gulp-if';
 import gulpModify from 'gulp-modify';
 import gulpRename from 'gulp-rename';
+import gulpReplaceTask from 'gulp-replace-task';
 import path from 'path';
 import webpackStream from 'webpack-stream';
 
 import conf from './conf';
 import {processI18nMessages} from './i18n';
 
+const gulpClosureCompiler = closureCompiler.gulp();
+
 /**
- * Returns function creating a stream that compiles frontend JavaScript files into development bundle located in
- * {conf.paths.serve}
- * directory. This has to be done because currently browsers do not handle ES6 syntax and
- * modules correctly.
+ * Tasks used to set node process env variables. They are used by our compile tasks. Based on them
+ * different preset configs defined in '.babelrc' are used.
+ */
+gulp.task('set-dev-node-env', () => {
+  return process.env.NODE_ENV = conf.build.development;
+});
+
+gulp.task('set-prod-node-env', () => {
+  return process.env.NODE_ENV = conf.build.production;
+});
+
+/**
+ * Returns function creating a stream that compiles frontend JavaScript files into development
+ * bundle located in {conf.paths.serve} directory. This has to be done because currently browsers do
+ * not handle ES2017 syntax and modules correctly.
  *
  * Only dependencies of root application module are included in the bundle.
  * @param {boolean} throwError - whether task should throw an error in case of JS syntax errors.
@@ -42,16 +57,19 @@ import {processI18nMessages} from './i18n';
 function createScriptsStream(throwError) {
   return function() {
     let webpackOptions = {
-      devtool: 'inline-source-map',
-      module: {
-        // ES6 modules have to be preprocessed with Babel loader to work in browsers.
-        loaders: [{test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader']}],
-      },
-      output: {filename: 'app-dev.js'},
-      resolve: {
-        // Set the module resolve root, so that webpack knows how to process non-relative imports.
-        // Should be kept in sync with respective Closure Compiler option.
-        root: conf.paths.frontendSrc,
+      config: {
+        devtool: 'inline-source-map',
+        module: {
+          // ES2017 modules have to be preprocessed with Babel loader to work in browsers.
+          loaders: [{test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader']}],
+        },
+        output: {filename: 'app-dev.js'},
+        resolve: {
+          // Set the modules resolve path, so that webpack knows how to process non-relative
+          // imports.
+          // Should be kept in sync with respective Closure Compiler option.
+          modules: [conf.paths.frontendSrc],
+        },
       },
       quiet: true,
     };
@@ -71,18 +89,18 @@ function createScriptsStream(throwError) {
 }
 /**
  * Compiles frontend JavaScript files into development bundle located in
- * {conf.paths.serve} directory. This has to be done because currently browsers do not handle ES6
+ * {conf.paths.serve} directory. This has to be done because currently browsers do not handle ES2017
  * syntax and modules correctly.
  *
  * Only dependencies of root application module are included in the bundle.
  *
  * Throws an error in case of JS syntax errors.
  */
-gulp.task('scripts', createScriptsStream(true));
+gulp.task('scripts', ['set-dev-node-env'], createScriptsStream(true));
 
 /**
  * Compiles frontend JavaScript files into development bundle located in
- * {conf.paths.serve} directory. This has to be done because currently browsers do not handle ES6
+ * {conf.paths.serve} directory. This has to be done because currently browsers do not handle ES2017
  * syntax and modules correctly.
  *
  * Only dependencies of root application module are included in the bundle.
@@ -102,64 +120,6 @@ gulp.task('scripts-watch', createScriptsStream(false));
  * 'async'.
  */
 function createCompileTask(translation) {
-  let closureCompilerConfig = {
-    fileName: 'app.js',
-    // "foo_flag: null" means that a flag is enabled.
-    compilerFlags: {
-      angular_pass: null,
-      entry_point: 'index_module',
-      compilation_level: 'ADVANCED_OPTIMIZATIONS',
-      export_local_property_definitions: null,
-      externs: [
-        path.join(conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-1.5.js'),
-        path.join(
-            conf.paths.nodeModules,
-            'google-closure-compiler/contrib/externs/angular-1.5-http-promise_templated.js'),
-        path.join(
-            conf.paths.nodeModules,
-            'google-closure-compiler/contrib/externs/angular-1.5-q_templated.js'),
-        path.join(
-            conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-material.js'),
-        path.join(
-            conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular_ui_router.js'),
-        path.join(
-            conf.paths.nodeModules,
-            'google-closure-compiler/contrib/externs/angular-1.4-resource.js'),
-        path.join(
-            conf.paths.bowerComponents,
-            'cljsjs-packages-externs/d3/resources/cljsjs/d3/common/d3.ext.js'),
-        path.join(
-            conf.paths.bowerComponents,
-            'cljsjs-packages-externs/nvd3/resources/cljsjs/nvd3/common/nvd3.ext.js'),
-        path.join(conf.paths.externs, '**/*.js'),
-      ],
-      generate_exports: null,
-      js_module_root: path.relative(conf.paths.base, conf.paths.frontendSrc),
-      // Enable all compiler checks by default and make them errors.
-      jscomp_error: '*',
-      // Disable checks that are not applicable to the project.
-      jscomp_off: [
-        // Let ESLint handle all lint checks.
-        'lintChecks',
-        // This checks aren't working with current google-closure-library version. Will be deleted
-        // once it's fixed there.
-        'unnecessaryCasts',
-        'analyzerChecks',
-      ],
-      language_in: 'ECMASCRIPT6_STRICT',
-      language_out: 'ECMASCRIPT3',
-      dependency_mode: 'LOOSE',
-      use_types_for_optimization: null,
-    },
-    compilerPath: path.join(conf.paths.nodeModules, 'google-closure-compiler/compiler.jar'),
-    // This makes the compiler faster. Requires Java 7+.
-    tieredCompilation: true,
-  };
-
-  if (translation && translation.path) {
-    closureCompilerConfig.compilerFlags.translations_file = translation.path;
-  }
-
   let outputDir =
       translation ? path.join(conf.paths.i18nProd, `/${translation.key}`) : conf.paths.prodTmp;
 
@@ -175,28 +135,144 @@ function createCompileTask(translation) {
                 path.join(
                     conf.paths.bowerComponents, 'google-closure-library/closure/goog/base.js'),
               ])
-              .pipe(gulpClosureCompiler(closureCompilerConfig))
+              .pipe(patchBuildInformation())
+              .pipe(compileES6(translation))
               .pipe(gulp.dest(outputDir))
               .on('end', next));
+}
+
+
+/**
+ * Compiles ES2017 to ES3 for proper browser support
+ *
+ * @param {undefined|Object} translation - optional translation spec, otherwise compiles the default
+ * application logic.
+ * @return {stream}
+ */
+function compileES6(translation) {
+  let externs = [
+    path.join(conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-1.6.js'),
+    path.join(
+        conf.paths.nodeModules,
+        'google-closure-compiler/contrib/externs/angular-1.6-http-promise_templated.js'),
+    path.join(
+        conf.paths.nodeModules,
+        'google-closure-compiler/contrib/externs/angular-1.6-q_templated.js'),
+    path.join(
+        conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-material-1.1.js'),
+    path.join(
+        conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular_ui_router.js'),
+    path.join(
+        conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-1.6-resource.js'),
+    path.join(
+        conf.paths.bowerComponents,
+        'cljsjs-packages-externs/d3/resources/cljsjs/d3/common/d3.ext.js'),
+    path.join(
+        conf.paths.bowerComponents,
+        'cljsjs-packages-externs/nvd3/resources/cljsjs/nvd3/common/nvd3.ext.js'),
+    // Dashboard externs
+    path.join(conf.paths.externs, 'appconfig.js'),
+    path.join(conf.paths.externs, 'backendapi.js'),
+    path.join(conf.paths.externs, 'ansiup.js'),
+    path.join(conf.paths.externs, 'clipboard.js'),
+    path.join(conf.paths.externs, 'uirouter.js'),
+    path.join(conf.paths.externs, 'dataselect.js'),
+    path.join(conf.paths.externs, 'dirPagination.js'),
+    path.join(conf.paths.externs, 'searchapi.js'),
+    path.join(conf.paths.externs, 'shell.js'),
+    path.join(conf.paths.externs, 'hterm.js'),
+    path.join(conf.paths.externs, 'sockjs.js'),
+    path.join(conf.paths.externs, 'graph.js'),
+    path.join(conf.paths.externs, 'errors.js'),
+    path.join(conf.paths.externs, 'file.js'),
+  ];
+
+  let closureCompilerConfig = {
+    // ---- BASIC OPTIONS ----
+    compilation_level: 'ADVANCED',
+    js_output_file: 'app.js',
+    language_in: 'ECMASCRIPT_2017',
+    language_out: 'ECMASCRIPT3',
+    externs: externs,
+
+    // ---- OUTPUT ----
+    generate_exports: true,
+    export_local_property_definitions: true,
+    // TODO: enable once all type checks are fixed
+    // new_type_inf: true,
+
+    // ---- WARNING AND ERROR MANAGEMENT ----
+    // Enable all compiler checks by default and make them errors.
+    jscomp_error: '*',
+    // Disable checks that are not applicable to the project.
+    jscomp_off: [
+      // Let ESLint handle all lint checks.
+      'lintChecks',
+    ],
+    // new_type_inf: true,
+
+    // ---- DEPENDENCY MANAGEMENT ----
+    dependency_mode: 'LOOSE',
+    entry_point: `index_module`,
+
+    // ---- JS MODULES ----
+    js_module_root: `${conf.paths.frontendSrc}`,
+    module_resolution: 'NODE',
+
+    // ---- LIBRARY AND FRAMEWORK SPECIFIC OPTIONS ----
+    angular_pass: true,
+  };
+
+  if (translation && translation.path) {
+    closureCompilerConfig.translations_file = translation.path;
+  }
+
+  return gulpClosureCompiler(closureCompilerConfig);
+}
+
+/**
+ * Patches build information into the source code. This information can be given in issue reports.
+ * @return {stream}
+ */
+function patchBuildInformation() {
+  let commit = process.env.TRAVIS_COMMIT;
+  if (typeof (commit) === 'undefined') {
+    commit = '';
+  }
+  return gulpIf('**/appconfig/service.js', gulpReplaceTask({
+                  patterns: [
+                    {match: 'BUILD_GIT_COMMIT', replacement: commit},
+                    {match: 'BUILD_DASHBOARD_VERSION', replacement: conf.deploy.version.release},
+                    {match: 'BUILD_YEAR', replacement: new Date().getFullYear()},
+                  ],
+                }));
 }
 
 /**
  * Compiles frontend JavaScript files into production bundle located in {conf.paths.prodTmp}
  * directory. A separated bundle is created for each i18n locale.
  */
-gulp.task('scripts:prod', ['angular-templates', 'generate-xtbs'], function(doneFn) {
-  // add a compilation step to stream for each translation file
-  let streams = conf.translations.map((translation) => {
-    return createCompileTask(translation);
-  });
+gulp.task(
+    'scripts:prod', ['angular-templates', 'generate-xtbs', 'set-prod-node-env'], function(doneFn) {
+      // add a compilation step to stream for each translation file
+      let streams = conf.translations.map((translation) => {
+        return createCompileTask(translation);
+      });
 
-  // add a default compilation task (no localization)
-  streams = streams.concat(createCompileTask());
+      // add a default compilation task (no localization)
+      streams = streams.concat(createCompileTask());
 
-  // TODO (taimir) : do not run the tasks sequentially once
-  // gulp-closure-compiler can be run in parallel
-  async.series(streams, doneFn);
-});
+      // Handle unhandled rejections and fail immediately if any error occurs.
+      process.on('unhandledRejection', (reason) => {
+        if (reason.message.toLowerCase().includes('error')) {
+          doneFn(reason);
+        }
+      });
+
+      // TODO (taimir) : do not run the tasks sequentially once
+      // gulp-closure-compiler can be run in parallel
+      async.series(streams, doneFn);
+    });
 
 /**
  * Compiles each Angular HTML template file (path/foo.html) into three processed forms:

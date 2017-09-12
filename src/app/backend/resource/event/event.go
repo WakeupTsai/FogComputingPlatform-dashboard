@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,19 +18,18 @@ import (
 	"strings"
 
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
-
-	"k8s.io/kubernetes/pkg/api"
-	"k8s.io/kubernetes/pkg/types"
+	"k8s.io/apimachinery/pkg/types"
+	api "k8s.io/client-go/pkg/api/v1"
 )
 
 // FailedReasonPartials  is an array of partial strings to correctly filter warning events.
 // Have to be lower case for correct case insensitive comparison.
 // Based on k8s official events reason file:
-// https://github.com/kubernetes/kubernetes/blob/53f0f9d59860131c2be301a0054adfc86e43945d/pkg/kubelet/container/event.go
+// https://github.com/kubernetes/kubernetes/blob/886e04f1fffbb04faf8a9f9ee141143b2684ae68/pkg/kubelet/events/event.go
 // Partial strings that are not in event.go file are added in order to support
 // older versions of k8s which contained additional event reason messages.
 var FailedReasonPartials = []string{"failed", "err", "exceeded", "invalid", "unhealthy",
-	"mismatch", "insufficient", "conflict", "outof", "nil"}
+	"mismatch", "insufficient", "conflict", "outof", "nil", "backoff"}
 
 // GetPodsEventWarnings returns warning pod events by filtering out events targeting only given pods
 // TODO(floreks) : Import and use Set instead of custom function to get rid of duplicates
@@ -41,9 +40,9 @@ func GetPodsEventWarnings(events []api.Event, pods []api.Pod) []common.Event {
 	events = getWarningEvents(events)
 	failedPods := make([]api.Pod, 0)
 
-	// Filter out only 'failed' pods
+	// Filter out ready and successful pods
 	for _, pod := range pods {
-		if !isRunningOrSucceeded(pod) {
+		if !isReadyOrSucceeded(pod) {
 			failedPods = append(failedPods, pod)
 		}
 	}
@@ -140,10 +139,20 @@ func removeDuplicates(slice []api.Event) []api.Event {
 	return result
 }
 
-// Returns true if given pod is in state running or succeeded, false otherwise
-func isRunningOrSucceeded(pod api.Pod) bool {
-	switch pod.Status.Phase {
-	case api.PodRunning, api.PodSucceeded:
+// Returns true if given pod is in state ready or succeeded, false otherwise
+func isReadyOrSucceeded(pod api.Pod) bool {
+	if pod.Status.Phase == api.PodSucceeded {
+		return true
+	}
+	if pod.Status.Phase == api.PodRunning {
+		for _, c := range pod.Status.Conditions {
+			if c.Type == api.PodReady {
+				if c.Status == api.ConditionFalse {
+					return false
+				}
+			}
+		}
+
 		return true
 	}
 

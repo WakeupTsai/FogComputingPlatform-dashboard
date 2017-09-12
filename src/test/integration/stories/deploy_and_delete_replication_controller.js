@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ xdescribe('Deploy and delete replication controller user story test', () => {
   });
 
   it('should go to deploy page', () => {
-    browser.get('#/deploy');
+    browser.get('#!/deploy');
 
     expect(browser.getCurrentUrl()).toContain('deploy');
   });

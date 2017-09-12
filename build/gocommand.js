@@ -35,7 +35,7 @@ const env = lodash.merge(process.env, {GOPATH: sourceGopath, PATH: devPath});
 /**
  * Minimum required Go Version
  */
-const minGoVersion = '1.6.1';
+const minGoVersion = '1.8.3';
 
 /**
  * Spawns a Go process after making sure all Go prerequisites are
@@ -47,9 +47,23 @@ const minGoVersion = '1.6.1';
  * @param {function(?Error=)} doneFn - Callback.
  * @param {!Object<string, string>=} [envOverride] optional environment variables overrides map.
  */
-export default function spawnGoProcess(args, doneFn, envOverride) {
+export default function goCommand(args, doneFn, envOverride) {
   checkPrerequisites()
-      .then(() => spawnProcess(args, envOverride))
+      .then(() => spawnGoProcess(args, envOverride))
+      .then(doneFn)
+      .fail((error) => doneFn(error));
+}
+
+/**
+ * Spawns a goimports process after making sure all Go prerequisites are present.
+ *
+ * @param {!Array<string>} args - Arguments of the go command.
+ * @param {function(?Error=)} doneFn - Callback.
+ * @param {!Object<string, string>=} [envOverride] optional environment variables overrides map.
+ */
+export function goimportsCommand(args, doneFn, envOverride) {
+  checkPrerequisites()
+      .then(() => spawnGoimportsProcess(args, envOverride))
       .then(doneFn)
       .fail((error) => doneFn(error));
 }
@@ -95,8 +109,17 @@ function checkGoVersion() {
         env: env,
       },
       function(error, stdout) {
-        let match = /[\d\.]+/.exec(stdout.toString());  // matches version number
-        if (match.length < 1) {
+        let match = /go version devel/.exec(stdout.toString());
+        if (match && match.length > 0) {
+          // If running a development version of Go we asume the version to be
+          // good enough, if compilation gives weird errors the developer also
+          // should know what is going on, since he uses a development version
+          // of Go :)
+          deferred.resolve();
+          return;
+        }
+        match = /[\d.]+/.exec(stdout.toString());  // matches version number
+        if (match && match.length < 1) {
           deferred.reject(new Error('Go version not found.'));
           return;
         }
@@ -142,17 +165,18 @@ function checkGovendor() {
 }
 
 /**
- * Spawns Go process.
+ * Spawns a process.
  * Promises an error if the go command process fails.
  *
+ * @param {string} processName - Process name to spawn.
  * @param {!Array<string>} args - Arguments of the go command.
  * @param {!Object<string, string>=} [envOverride] optional environment variables overrides map.
  * @return {Q.Promise} A promise object.
  */
-function spawnProcess(args, envOverride) {
+function spawnProcess(processName, args, envOverride) {
   let deferred = q.defer();
   let envLocal = lodash.merge(env, envOverride);
-  let goTask = child.spawn('go', args, {
+  let goTask = child.spawn(processName, args, {
     env: envLocal,
     stdio: 'inherit',
   });
@@ -166,4 +190,28 @@ function spawnProcess(args, envOverride) {
     deferred.resolve();
   });
   return deferred.promise;
+}
+
+/**
+ * Spawns go process.
+ * Promises an error if the go command process fails.
+ *
+ * @param {!Array<string>} args - Arguments of the go command.
+ * @param {!Object<string, string>=} [envOverride] optional environment variables overrides map.
+ * @return {Q.Promise} A promise object.
+ */
+function spawnGoProcess(args, envOverride) {
+  return spawnProcess('go', args, envOverride);
+}
+
+/**
+ * Spawns goimports process.
+ * Promises an error if the go command process fails.
+ *
+ * @param {!Array<string>} args - Arguments of the go command.
+ * @param {!Object<string, string>=} [envOverride] optional environment variables overrides map.
+ * @return {Q.Promise} A promise object.
+ */
+function spawnGoimportsProcess(args, envOverride) {
+  return spawnProcess('goimports', args, envOverride);
 }

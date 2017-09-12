@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,28 +13,73 @@
 // limitations under the License.
 
 import module from 'chrome/nav/module';
+import {breadcrumbsConfig} from 'common/components/breadcrumbs/service';
 
 describe('Nav service', () => {
-  /** @type {!chrome/nav/nav_service.NavService} */
+  /** @type {!chrome/nav/service.NavService} */
   let navService;
+  /** @type {!common/state/service.FutureStateService}*/
+  let kdFutureStateService;
 
-  beforeEach(() => angular.mock.module(module.name));
-
-  beforeEach(angular.mock.inject((kdNavService) => {
+  beforeEach(() => {
+    angular.mock.module(module.name);
+    let fakeModule = angular.module('fakeModule', ['ui.router']);
+    fakeModule.config(($stateProvider) => {
+      $stateProvider.state('fakeState', {
+        url: 'fakeStateUrl',
+        template: '<ui-view>Foo</ui-view>',
+      });
+      $stateProvider.state('fakeNonActive', {
+        url: 'fakeStateUrl',
+        template: '<ui-view>Foo</ui-view>',
+      });
+      $stateProvider.state('fakeStateWithParent', {
+        url: 'fakeStateUrl',
+        template: '<ui-view>Foo</ui-view>',
+        data: {
+          [breadcrumbsConfig]: {
+            parent: 'fakeState',
+          },
+        },
+      });
+    });
+    angular.mock.module(fakeModule.name);
+  });
+  beforeEach(angular.mock.inject((kdNavService, _kdFutureStateService_) => {
     navService = kdNavService;
+    kdFutureStateService = _kdFutureStateService_;
   }));
 
-  it('should deny toggle when not initialized', () => {
-    expect(() => {
-      navService.toggle();
-    }).toThrow(new Error('Navigation menu is not registered. This is likely a programming error.'));
-  });
+  it('should detect activity', () => {
+    navService.registerState('fakeState');
+    navService.registerState('fakeNonActive');
 
-  it('toggle nav', () => {
-    let comp = jasmine.createSpy('comp');
-    navService.registerNav({toggle: comp});
-    navService.toggle();
+    expect(navService.isActive('fakeState')).toBe(false);
+    expect(navService.isActive('fakeNonActive')).toBe(false);
+    expect(navService.isActive('fakeStateWithParent')).toBe(false);
 
-    expect(comp).toHaveBeenCalled();
+    kdFutureStateService.state = {name: 'fakeState'};
+
+    expect(navService.isActive('fakeState')).toBe(true);
+    expect(navService.isActive('fakeNonActive')).toBe(false);
+    expect(navService.isActive('fakeStateWithParent')).toBe(false);
+
+    kdFutureStateService.state = {name: 'fakeNonActive'};
+
+    expect(navService.isActive('fakeState')).toBe(false);
+    expect(navService.isActive('fakeNonActive')).toBe(true);
+    expect(navService.isActive('fakeStateWithParent')).toBe(false);
+
+    kdFutureStateService.state = {
+      name: 'fakeStateWithParent',
+      data: {
+        [breadcrumbsConfig]: {
+          parent: 'fakeState',
+        },
+      },
+    };
+    expect(navService.isActive('fakeState')).toBe(true);
+    expect(navService.isActive('fakeNonActive')).toBe(false);
+    expect(navService.isActive('fakeStateWithParent')).toBe(false);
   });
 });

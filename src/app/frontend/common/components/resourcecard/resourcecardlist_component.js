@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const HEADER_SLOT = 'header';
+const FOOTER_SLOT = 'footer';
+
 /**
  * @final
  */
 export class ResourceCardListController {
   /**
+   * @param {!angular.$transclude} $transclude
    * @ngInject
    */
-  constructor() {
+  constructor($transclude) {
+    /**
+     * Whether this list is in a pending async state (e.g., loading new page);
+     * @export {boolean}
+     */
+    this.pending = false;
+
     /**
      * Whether to make list items selectable.
-     * Initialized from a bingind.
+     * Initialized from a binding.
      * @export {boolean|undefined}
      */
     this.selectable;
 
     /**
      * Whether to make show statuses for list items.
-     * Initialized from a bingind.
+     * Initialized from a binding.
      * @export {boolean|undefined}
      */
     this.withStatuses;
@@ -38,6 +48,18 @@ export class ResourceCardListController {
      * @private {!./resourcecardheadercolumns_component.ResourceCardHeaderColumnsController}
      */
     this.headerColumns_;
+
+    /** @private {!angular.$transclude} */
+    this.transclude_ = $transclude;
+
+    /** @export {string} - Unique data select id. Initialized from binding. */
+    this.selectId;
+
+    /** @export {{listMeta: !backendApi.ListMeta}|undefined} - Initialized from binding. */
+    this.list;
+
+    /** @export {angular.$resource} - Initialized from binding. */
+    this.listResource;
   }
 
   /**
@@ -58,6 +80,29 @@ export class ResourceCardListController {
   sizeBodyColumn(columnElement, index) {
     this.headerColumns_.sizeBodyColumn(columnElement, index);
   }
+
+  /**
+   * @param {boolean} pending the pending state to set.
+   */
+  setPending(pending) {
+    this.pending = pending;
+  }
+
+  /**
+   * @return {boolean}
+   * @export
+   */
+  hasHeader() {
+    return this.transclude_.isSlotFilled(HEADER_SLOT);
+  }
+
+  /**
+   * @return {boolean}
+   * @export
+   */
+  hasFooter() {
+    return this.transclude_.isSlotFilled(FOOTER_SLOT);
+  }
 }
 
 /**
@@ -67,6 +112,9 @@ export class ResourceCardListController {
  *
  * Sample usage:
  *   <kd-resource-card-list selectable="true" with-statuses="true">
+ *     <kd-resource-card-list-header>
+ *       [[Pods|Object label]]
+ *     </kd-resource-card-list-header>
  *     <kd-resource-card-header-columns>
  *       <kd-resource-card-header-column size="medium" grow="2">
  *         Name
@@ -100,13 +148,26 @@ export class ResourceCardListController {
  */
 export const resourceCardListComponent = {
   templateUrl: 'common/components/resourcecard/resourcecardlist.html',
-  transclude: true,
+  transclude: {
+    [HEADER_SLOT]: '?kdResourceCardListHeader',
+    [FOOTER_SLOT]: '?kdResourceCardListFooter',
+  },
   controller: ResourceCardListController,
   bindings: {
     /** {boolean|undefined} whether to make list items selectable */
     'selectable': '<',
     /** {boolean|undefined} whether to show statuses for list items */
     'withStatuses': '<',
+    /**
+     * Below properties are required if any data select operations (pagination, sort)
+     * should be supported.
+     */
+    /** {string|undefined} unique data select id */
+    'selectId': '@',
+    /** {Array<Object>|undefined} List of objects to apply data selection */
+    'list': '=',
+    /** {angular.$resource} */
+    'listResource': '<',
   },
   bindToController: true,
 };

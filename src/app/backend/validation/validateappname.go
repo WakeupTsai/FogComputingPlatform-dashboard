@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,16 +17,14 @@ package validation
 import (
 	"log"
 
-	k8serrors "k8s.io/kubernetes/pkg/api/errors"
-	client "k8s.io/kubernetes/pkg/client/unversioned"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	client "k8s.io/client-go/kubernetes"
 )
 
 // AppNameValiditySpec is a specification for application name validation request.
 type AppNameValiditySpec struct {
-	// Name of the application.
-	Name string `json:"name"`
-
-	// Namespace of the application.
+	Name      string `json:"name"`
 	Namespace string `json:"namespace"`
 }
 
@@ -44,7 +42,7 @@ func ValidateAppName(spec *AppNameValiditySpec, client client.Interface) (*AppNa
 	isValidRc := false
 	isValidService := false
 
-	_, err := client.ReplicationControllers(spec.Namespace).Get(spec.Name)
+	_, err := client.CoreV1().ReplicationControllers(spec.Namespace).Get(spec.Name, metaV1.GetOptions{})
 	if err != nil {
 		if isNotFoundError(err) {
 			isValidRc = true
@@ -53,7 +51,7 @@ func ValidateAppName(spec *AppNameValiditySpec, client client.Interface) (*AppNa
 		}
 	}
 
-	_, err = client.Services(spec.Namespace).Get(spec.Name)
+	_, err = client.CoreV1().Services(spec.Namespace).Get(spec.Name, metaV1.GetOptions{})
 	if err != nil {
 		if isNotFoundError(err) {
 			isValidService = true
@@ -72,7 +70,7 @@ func ValidateAppName(spec *AppNameValiditySpec, client client.Interface) (*AppNa
 
 // Returns true when the given error is 404-NotFound error.
 func isNotFoundError(err error) bool {
-	statusErr, ok := err.(*k8serrors.StatusError)
+	statusErr, ok := err.(*errors.StatusError)
 	if !ok {
 		return false
 	}

@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,13 @@
 package common
 
 import (
-	"k8s.io/kubernetes/pkg/api/unversioned"
+	"github.com/kubernetes/dashboard/src/app/backend/api"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EventList is an events response structure.
 type EventList struct {
-	ListMeta ListMeta `json:"listMeta"`
+	ListMeta api.ListMeta `json:"listMeta"`
 
 	// List of events from given namespace.
 	Events []Event `json:"events"`
@@ -28,8 +29,8 @@ type EventList struct {
 
 // Event is a single event representation.
 type Event struct {
-	ObjectMeta ObjectMeta `json:"objectMeta"`
-	TypeMeta   TypeMeta   `json:"typeMeta"`
+	ObjectMeta api.ObjectMeta `json:"objectMeta"`
+	TypeMeta   api.TypeMeta   `json:"typeMeta"`
 
 	// A human-readable description of the status of related object.
 	Message string `json:"message"`
@@ -50,10 +51,10 @@ type Event struct {
 	Count int32 `json:"count"`
 
 	// The time at which the event was first recorded.
-	FirstSeen unversioned.Time `json:"firstSeen"`
+	FirstSeen v1.Time `json:"firstSeen"`
 
 	// The time at which the most recent occurrence of this event was recorded.
-	LastSeen unversioned.Time `json:"lastSeen"`
+	LastSeen v1.Time `json:"lastSeen"`
 
 	// Short, machine understandable string that gives the reason
 	// for this event being generated.

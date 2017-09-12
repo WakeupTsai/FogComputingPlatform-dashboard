@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import resourceModule from 'common/resource/resource_module';
+import resourceModule from 'common/resource/module';
 
 describe('Verber service', () => {
-  /** @type !{!common/resource/verber_service.VerberService} */
+  /** @type {!VerberService} */
   let verber;
   /** @type {!md.$dialog} */
   let mdDialog;
@@ -25,28 +25,32 @@ describe('Verber service', () => {
   let scope;
   /** @type {!ui.router.State} **/
   let state;
+  /** @type {!angular.$log} */
+  let log;
 
   beforeEach(() => angular.mock.module(resourceModule.name));
 
-  beforeEach(angular.mock.inject((kdResourceVerberService, $mdDialog, $q, $rootScope, $state) => {
-    verber = kdResourceVerberService;
-    mdDialog = $mdDialog;
-    q = $q;
-    scope = $rootScope.$new();
-    state = $state;
-  }));
+  beforeEach(
+      angular.mock.inject((kdResourceVerberService, $mdDialog, $q, $rootScope, $state, $log) => {
+        verber = kdResourceVerberService;
+        mdDialog = $mdDialog;
+        q = $q;
+        scope = $rootScope.$new();
+        state = $state;
+        log = $log;
+      }));
 
   it('should show delete dialog resource', (doneFn) => {
     let deferred = q.defer();
     spyOn(mdDialog, 'show').and.returnValue(deferred.promise);
 
-    let promise = verber.showDeleteDialog('Foo resource', {foo: 'bar'}, {baz: 'qux'});
+    let promise = verber.showDeleteDialog('Foo resource', {kind: 'bar'}, {name: 'qux'});
 
     expect(mdDialog.show).toHaveBeenCalledWith(jasmine.objectContaining({
       locals: {
         'resourceKindName': 'Foo resource',
-        'typeMeta': {foo: 'bar'},
-        'objectMeta': {baz: 'qux'},
+        'resourceUrl': 'api/v1/_raw/bar/name/qux',
+        'objectMeta': {name: 'qux'},
       },
     }));
 
@@ -60,9 +64,12 @@ describe('Verber service', () => {
     spyOn(mdDialog, 'show').and.returnValue(deferred.promise);
     spyOn(state, 'reload');
     spyOn(mdDialog, 'alert').and.callThrough();
-    let promise = verber.showDeleteDialog();
+    let promise = verber.showDeleteDialog('', {}, {}).catch((err) => {
+      log.error('Error showing delete dialog:', err);
+    });
 
     deferred.reject({data: 'foo-data', statusText: 'foo-text'});
+    deferred.promise.catch(doneFn);
     scope.$digest();
     expect(state.reload).not.toHaveBeenCalled();
     expect(mdDialog.alert).toHaveBeenCalled();
@@ -76,13 +83,13 @@ describe('Verber service', () => {
     let deferred = q.defer();
     spyOn(mdDialog, 'show').and.returnValue(deferred.promise);
 
-    let promise = verber.showEditDialog('Foo resource', {foo: 'bar'}, {baz: 'qux'});
+    let promise =
+        verber.showEditDialog('Foo resource', {kind: 'bar'}, {name: 'qux', namespace: 'foo'});
 
     expect(mdDialog.show).toHaveBeenCalledWith(jasmine.objectContaining({
       locals: {
         'resourceKindName': 'Foo resource',
-        'typeMeta': {foo: 'bar'},
-        'objectMeta': {baz: 'qux'},
+        'resourceUrl': 'api/v1/_raw/bar/namespace/foo/name/qux',
       },
     }));
     deferred.resolve();
@@ -95,9 +102,12 @@ describe('Verber service', () => {
     spyOn(mdDialog, 'show').and.returnValue(deferred.promise);
     spyOn(state, 'reload');
     spyOn(mdDialog, 'alert').and.callThrough();
-    let promise = verber.showEditDialog();
+    let promise = verber.showEditDialog('Foo resource', {kind: 'bar'}, {}).catch((err) => {
+      log.error('Error showing edit dialog:', err);
+    });
 
     deferred.reject({data: 'foo-data', statusText: 'foo-text'});
+    deferred.promise.catch(doneFn);
     scope.$digest();
     expect(state.reload).not.toHaveBeenCalled();
     expect(mdDialog.alert).toHaveBeenCalled();

@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All Rights Reserved.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import componentsModule from 'common/components/module';
 import resourceCardModule from 'common/components/resourcecard/resourcecard_module';
+import errorModule from 'common/errorhandling/module';
 
 describe('Resource card list', () => {
   /** @type {!angular.Scope} */
@@ -22,6 +24,8 @@ describe('Resource card list', () => {
 
   beforeEach(() => {
     angular.mock.module(resourceCardModule.name);
+    angular.mock.module(componentsModule.name);
+    angular.mock.module(errorModule.name);
 
     angular.mock.inject(($rootScope, $compile) => {
       scope = $rootScope.$new();
@@ -32,6 +36,7 @@ describe('Resource card list', () => {
   it('should fill the card layout', () => {
     let compileFn = compile(`
       <kd-resource-card-list selectable="selectable" with-statuses="withStatuses">
+        <kd-resource-card-list-header>Foo</kd-resource-card-list-header>
         <kd-resource-card-header-columns>
           <kd-resource-card-header-column size="small" grow="nogrow">
             NAME_COLUMN
@@ -91,6 +96,7 @@ describe('Resource card list', () => {
     expect(elem.html()).not.toContain('STATUS');
     expect(elem.html()).toContain('FOOTER');
     expect(elem.html()).not.toContain('md-checkbox');
+    expect(elem.html()).toContain('kd-resource-card-list-header');
 
     scope.withStatuses = true;
     scope.$digest();
