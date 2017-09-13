@@ -41,8 +41,17 @@ limitations under the License.
         <md-tooltip md-direction="bottom">
           [[Deploy a service.]]
         </md-tooltip>
-        [[Service deploy|Label for global action bar create button.]]
-      </md-button> 
+        [[Service Deploy|Label for global action bar create service button.]]
+      </md-button>
+
+      <!-- phstsai -->
+      <md-button ng-click="$ctrl.showMap()">
+        <md-icon class="kd-global-action-icon">map</md-icon>
+        <md-tooltip md-direction="bottom">
+          [[Show the deploy map.]]
+        </md-tooltip>
+        [[Show Map|Label for global action bar map button.]]
+      </md-button>
 
       <kd-control-panel></kd-control-panel>
     </div>
