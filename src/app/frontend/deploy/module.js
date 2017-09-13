@@ -23,6 +23,8 @@ import {deployFromFileComponent} from './deployfromfile_component';
 import {deployFromSettingsComponent} from './deployfromsettings_component';
 /** phstsai **/
 import {deployMyServiceComponent} from './deploymyservice_component';
+import {showMapComponent} from './showmap_component';
+
 import {deployLabelComponent} from './deploylabel_component';
 import {environmentVariablesComponent} from './environmentvariables_component';
 import fileReaderDirective from './filereader_directive';
@@ -68,4 +70,5 @@ export default angular
     .component('kdDeployFromFile', deployFromFileComponent)
     .component('kdDeployFromSettings', deployFromSettingsComponent)
     /** phstsai **/
-    .component('kdDeployMyService', deployMyServiceComponent);
+    .component('kdDeployMyService', deployMyServiceComponent)
+    .component('kdShowMap', showMapComponent);

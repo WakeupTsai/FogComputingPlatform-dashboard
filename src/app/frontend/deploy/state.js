@@ -21,3 +21,4 @@ export const deployFileStateName = 'deployFile';
 
 /** phstsai **/
 export const deployMyServiceStateName = 'deployMyService';
+export const showMapStateName = 'showMapService';
