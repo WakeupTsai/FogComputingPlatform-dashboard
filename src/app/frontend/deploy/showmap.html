@@ -1,0 +1,30 @@
+<!-- phstsai -->
+<kd-content-card>
+  <kd-title>Map</kd-title>
+  <kd-content class="kd-content-padded">
+    <kd-help-section>
+      <kd-user-help>
+        <span ng-bind-html="::ctrl.i18n.MSG_DEPLOY_DASHBOARD_TOUR_USER_HELP"></span>
+      </kd-user-help>
+    </kd-help-section>
+    <div ui-view>
+
+      <div id="map" style="width:400px;height:400px;background:yellow"></div>
+
+      <script>
+      function myMap() {
+      var mapOptions = {
+          center: new google.maps.LatLng(51.5, -0.12),
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.HYBRID
+      }
+      var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      }
+      </script>
+
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8FLccDBYbLiPfGNvvplRAV3rgyCWmnaI&callback=myMap"></script>
+
+
+    </div>
+  </kd-content>
+</kd-content-card>
