@@ -1,0 +1,11 @@
+<!--- phstsai -->
+
+<div ng-if="::sensorLabelsCtrl.sensorlabels">
+  <div ng-repeat="(key, value) in ::sensorLabelsCtrl.sensorlabels"
+       ng-if="value == 'true' && key.includes('sensor')"
+       class="kd-chips">
+        <kd-middle-ellipsis display-string="{{::key.split('/')[1]}}"
+                          class="kd-chip">
+        </kd-middle-ellipsis>
+  </div>
+</div>
