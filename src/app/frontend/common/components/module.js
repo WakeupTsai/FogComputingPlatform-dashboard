@@ -26,6 +26,8 @@ import endpointModule from './endpoint/module';
 import graphModule from './graph/module';
 import infoCardModule from './infocard/infocard_module';
 import {labelComponent} from './labels/component';
+/** phstsai **/
+import {sensorLabelComponent} from './sensorlabel/component';
 import {middleEllipsisComponent} from './middleellipsis/component';
 import resourceCardModule from './resourcecard/resourcecard_module';
 import {infoCardComponent} from './resourcedetail/component';
@@ -60,6 +62,8 @@ export default angular
           allocatedResourcesChartModule.name,
         ])
     .component('kdLabels', labelComponent)
+    /** phstsai **/
+    .component('kdSensorLabels', sensorLabelComponent)
     .component('kdZeroState', zeroStateComponent)
     .component('kdMiddleEllipsis', middleEllipsisComponent)
     .component('kdSparkline', sparklineComponent)
