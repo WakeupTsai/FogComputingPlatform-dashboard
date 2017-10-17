@@ -37,6 +37,13 @@ limitations under the License.
 </kd-info-card-entry>
 <!--- phstsai -->
 
+<!--- phstsai -->
+<kd-info-card-entry ng-if="::$ctrl.objectMeta.labels"
+                    title="[[Location|Label 'Location' for a resource.]]">
+  <kd-location-labels locationlabels="::$ctrl.objectMeta.labels"></kd-location-labels>
+</kd-info-card-entry>
+<!--- phstsai -->
+
 
 <kd-info-card-entry ng-if="::$ctrl.objectMeta.annotations"
                     title="[[Annotations|Label 'Annotations' for a resource.]]">

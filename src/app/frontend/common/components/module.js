@@ -28,6 +28,8 @@ import infoCardModule from './infocard/infocard_module';
 import {labelComponent} from './labels/component';
 /** phstsai **/
 import {sensorLabelComponent} from './sensorlabel/component';
+import {locationLabelComponent} from './locationlabel/component';
+/** phstsai **/
 import {middleEllipsisComponent} from './middleellipsis/component';
 import resourceCardModule from './resourcecard/resourcecard_module';
 import {infoCardComponent} from './resourcedetail/component';
@@ -64,6 +66,8 @@ export default angular
     .component('kdLabels', labelComponent)
     /** phstsai **/
     .component('kdSensorLabels', sensorLabelComponent)
+    .component('kdLocationLabels', locationLabelComponent)
+    /** phstsai **/
     .component('kdZeroState', zeroStateComponent)
     .component('kdMiddleEllipsis', middleEllipsisComponent)
     .component('kdSparkline', sparklineComponent)

@@ -111,7 +111,9 @@ export class ChromeController {
 
   /** phstsai **/
   showMap() {
-    this.state_.go(showMapStateName);
+    //document.body.scrollTop = document.body.scrollHeight;
+    $("html, body").animate({ scrollTop: document.body.scrollHeight }, 1000);
+    // this.state_.go(showMapStateName);
   }
 
 }
