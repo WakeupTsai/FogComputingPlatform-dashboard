@@ -17,12 +17,19 @@ limitations under the License.
 package fake
 
 import (
+<<<<<<< HEAD
+=======
+	v1beta1 "k8s.io/api/apps/v1beta1"
+>>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
+<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/apps/v1beta1"
+=======
+>>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -36,6 +43,50 @@ var statefulsetsResource = schema.GroupVersionResource{Group: "apps", Version: "
 
 var statefulsetsKind = schema.GroupVersionKind{Group: "apps", Version: "v1beta1", Kind: "StatefulSet"}
 
+<<<<<<< HEAD
+=======
+// Get takes name of the statefulSet, and returns the corresponding statefulSet object, and an error if there is any.
+func (c *FakeStatefulSets) Get(name string, options v1.GetOptions) (result *v1beta1.StatefulSet, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewGetAction(statefulsetsResource, c.ns, name), &v1beta1.StatefulSet{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.StatefulSet), err
+}
+
+// List takes label and field selectors, and returns the list of StatefulSets that match those selectors.
+func (c *FakeStatefulSets) List(opts v1.ListOptions) (result *v1beta1.StatefulSetList, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewListAction(statefulsetsResource, statefulsetsKind, c.ns, opts), &v1beta1.StatefulSetList{})
+
+	if obj == nil {
+		return nil, err
+	}
+
+	label, _, _ := testing.ExtractFromListOptions(opts)
+	if label == nil {
+		label = labels.Everything()
+	}
+	list := &v1beta1.StatefulSetList{}
+	for _, item := range obj.(*v1beta1.StatefulSetList).Items {
+		if label.Matches(labels.Set(item.Labels)) {
+			list.Items = append(list.Items, item)
+		}
+	}
+	return list, err
+}
+
+// Watch returns a watch.Interface that watches the requested statefulSets.
+func (c *FakeStatefulSets) Watch(opts v1.ListOptions) (watch.Interface, error) {
+	return c.Fake.
+		InvokesWatch(testing.NewWatchAction(statefulsetsResource, c.ns, opts))
+
+}
+
+// Create takes the representation of a statefulSet and creates it.  Returns the server's representation of the statefulSet, and an error, if there is any.
+>>>>>>> upstream/master
 func (c *FakeStatefulSets) Create(statefulSet *v1beta1.StatefulSet) (result *v1beta1.StatefulSet, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(statefulsetsResource, c.ns, statefulSet), &v1beta1.StatefulSet{})
@@ -46,6 +97,10 @@ func (c *FakeStatefulSets) Create(statefulSet *v1beta1.StatefulSet) (result *v1b
 	return obj.(*v1beta1.StatefulSet), err
 }
 
+<<<<<<< HEAD
+=======
+// Update takes the representation of a statefulSet and updates it. Returns the server's representation of the statefulSet, and an error, if there is any.
+>>>>>>> upstream/master
 func (c *FakeStatefulSets) Update(statefulSet *v1beta1.StatefulSet) (result *v1beta1.StatefulSet, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(statefulsetsResource, c.ns, statefulSet), &v1beta1.StatefulSet{})
@@ -56,6 +111,11 @@ func (c *FakeStatefulSets) Update(statefulSet *v1beta1.StatefulSet) (result *v1b
 	return obj.(*v1beta1.StatefulSet), err
 }
 
+<<<<<<< HEAD
+=======
+// UpdateStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+>>>>>>> upstream/master
 func (c *FakeStatefulSets) UpdateStatus(statefulSet *v1beta1.StatefulSet) (*v1beta1.StatefulSet, error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateSubresourceAction(statefulsetsResource, "status", c.ns, statefulSet), &v1beta1.StatefulSet{})
@@ -66,6 +126,10 @@ func (c *FakeStatefulSets) UpdateStatus(statefulSet *v1beta1.StatefulSet) (*v1be
 	return obj.(*v1beta1.StatefulSet), err
 }
 
+<<<<<<< HEAD
+=======
+// Delete takes name of the statefulSet and deletes it. Returns an error if one occurs.
+>>>>>>> upstream/master
 func (c *FakeStatefulSets) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(statefulsetsResource, c.ns, name), &v1beta1.StatefulSet{})
@@ -73,6 +137,10 @@ func (c *FakeStatefulSets) Delete(name string, options *v1.DeleteOptions) error 
 	return err
 }
 
+<<<<<<< HEAD
+=======
+// DeleteCollection deletes a collection of objects.
+>>>>>>> upstream/master
 func (c *FakeStatefulSets) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(statefulsetsResource, c.ns, listOptions)
 
@@ -80,6 +148,7 @@ func (c *FakeStatefulSets) DeleteCollection(options *v1.DeleteOptions, listOptio
 	return err
 }
 
+<<<<<<< HEAD
 func (c *FakeStatefulSets) Get(name string, options v1.GetOptions) (result *v1beta1.StatefulSet, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(statefulsetsResource, c.ns, name), &v1beta1.StatefulSet{})
@@ -118,6 +187,8 @@ func (c *FakeStatefulSets) Watch(opts v1.ListOptions) (watch.Interface, error) {
 
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched statefulSet.
 func (c *FakeStatefulSets) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.StatefulSet, err error) {
 	obj, err := c.Fake.

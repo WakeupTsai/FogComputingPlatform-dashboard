@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +23,19 @@ import (
 	"time"
 
 	syncApi "github.com/kubernetes/dashboard/src/app/backend/sync/api"
+<<<<<<< HEAD
+=======
+	"k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes/fake"
+<<<<<<< HEAD
 	"k8s.io/client-go/pkg/api/v1"
+=======
+>>>>>>> upstream/master
 	k8stest "k8s.io/client-go/testing"
 )
 

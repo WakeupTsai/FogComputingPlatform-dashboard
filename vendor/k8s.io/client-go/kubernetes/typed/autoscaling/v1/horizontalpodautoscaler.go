@@ -17,11 +17,18 @@ limitations under the License.
 package v1
 
 import (
+<<<<<<< HEAD
+=======
+	v1 "k8s.io/api/autoscaling/v1"
+>>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/apis/autoscaling/v1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -59,6 +66,44 @@ func newHorizontalPodAutoscalers(c *AutoscalingV1Client, namespace string) *hori
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the horizontalPodAutoscaler, and returns the corresponding horizontalPodAutoscaler object, and an error if there is any.
+func (c *horizontalPodAutoscalers) Get(name string, options meta_v1.GetOptions) (result *v1.HorizontalPodAutoscaler, err error) {
+	result = &v1.HorizontalPodAutoscaler{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("horizontalpodautoscalers").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of HorizontalPodAutoscalers that match those selectors.
+func (c *horizontalPodAutoscalers) List(opts meta_v1.ListOptions) (result *v1.HorizontalPodAutoscalerList, err error) {
+	result = &v1.HorizontalPodAutoscalerList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("horizontalpodautoscalers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested horizontalPodAutoscalers.
+func (c *horizontalPodAutoscalers) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("horizontalpodautoscalers").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a horizontalPodAutoscaler and creates it.  Returns the server's representation of the horizontalPodAutoscaler, and an error, if there is any.
 func (c *horizontalPodAutoscalers) Create(horizontalPodAutoscaler *v1.HorizontalPodAutoscaler) (result *v1.HorizontalPodAutoscaler, err error) {
 	result = &v1.HorizontalPodAutoscaler{}
@@ -85,7 +130,11 @@ func (c *horizontalPodAutoscalers) Update(horizontalPodAutoscaler *v1.Horizontal
 }
 
 // UpdateStatus was generated because the type contains a Status member.
+<<<<<<< HEAD
 // Add a +genclientstatus=false comment above the type to avoid generating UpdateStatus().
+=======
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+>>>>>>> upstream/master
 
 func (c *horizontalPodAutoscalers) UpdateStatus(horizontalPodAutoscaler *v1.HorizontalPodAutoscaler) (result *v1.HorizontalPodAutoscaler, err error) {
 	result = &v1.HorizontalPodAutoscaler{}
@@ -122,6 +171,7 @@ func (c *horizontalPodAutoscalers) DeleteCollection(options *meta_v1.DeleteOptio
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the horizontalPodAutoscaler, and returns the corresponding horizontalPodAutoscaler object, and an error if there is any.
 func (c *horizontalPodAutoscalers) Get(name string, options meta_v1.GetOptions) (result *v1.HorizontalPodAutoscaler, err error) {
 	result = &v1.HorizontalPodAutoscaler{}
@@ -157,6 +207,8 @@ func (c *horizontalPodAutoscalers) Watch(opts meta_v1.ListOptions) (watch.Interf
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched horizontalPodAutoscaler.
 func (c *horizontalPodAutoscalers) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.HorizontalPodAutoscaler, err error) {
 	result = &v1.HorizontalPodAutoscaler{}

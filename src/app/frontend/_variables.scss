@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +37,7 @@ $footer-font-size-base:   rem(1) !default;
 $font-family-monospace: 'Roboto Mono Regular', monospace;
 $font-family-medium-monospace: 'Roboto Mono Medium', monospace;
 $font-family-medium: 'Roboto-Medium';
+$font-family-sans: Roboto, 'Helvetica Neue', sans-serif;
 
 $primary: #326de6;
 $secondary: #f51200;

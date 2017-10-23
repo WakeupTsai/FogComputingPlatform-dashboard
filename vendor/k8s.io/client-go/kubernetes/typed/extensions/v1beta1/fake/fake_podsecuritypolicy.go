@@ -17,12 +17,19 @@ limitations under the License.
 package fake
 
 import (
+<<<<<<< HEAD
+=======
+	v1beta1 "k8s.io/api/extensions/v1beta1"
+>>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
+<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+>>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -35,6 +42,7 @@ var podsecuritypoliciesResource = schema.GroupVersionResource{Group: "extensions
 
 var podsecuritypoliciesKind = schema.GroupVersionKind{Group: "extensions", Version: "v1beta1", Kind: "PodSecurityPolicy"}
 
+<<<<<<< HEAD
 func (c *FakePodSecurityPolicies) Create(podSecurityPolicy *v1beta1.PodSecurityPolicy) (result *v1beta1.PodSecurityPolicy, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootCreateAction(podsecuritypoliciesResource, podSecurityPolicy), &v1beta1.PodSecurityPolicy{})
@@ -66,6 +74,9 @@ func (c *FakePodSecurityPolicies) DeleteCollection(options *v1.DeleteOptions, li
 	return err
 }
 
+=======
+// Get takes name of the podSecurityPolicy, and returns the corresponding podSecurityPolicy object, and an error if there is any.
+>>>>>>> upstream/master
 func (c *FakePodSecurityPolicies) Get(name string, options v1.GetOptions) (result *v1beta1.PodSecurityPolicy, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootGetAction(podsecuritypoliciesResource, name), &v1beta1.PodSecurityPolicy{})
@@ -75,6 +86,10 @@ func (c *FakePodSecurityPolicies) Get(name string, options v1.GetOptions) (resul
 	return obj.(*v1beta1.PodSecurityPolicy), err
 }
 
+<<<<<<< HEAD
+=======
+// List takes label and field selectors, and returns the list of PodSecurityPolicies that match those selectors.
+>>>>>>> upstream/master
 func (c *FakePodSecurityPolicies) List(opts v1.ListOptions) (result *v1beta1.PodSecurityPolicyList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootListAction(podsecuritypoliciesResource, podsecuritypoliciesKind, opts), &v1beta1.PodSecurityPolicyList{})
@@ -101,6 +116,44 @@ func (c *FakePodSecurityPolicies) Watch(opts v1.ListOptions) (watch.Interface, e
 		InvokesWatch(testing.NewRootWatchAction(podsecuritypoliciesResource, opts))
 }
 
+<<<<<<< HEAD
+=======
+// Create takes the representation of a podSecurityPolicy and creates it.  Returns the server's representation of the podSecurityPolicy, and an error, if there is any.
+func (c *FakePodSecurityPolicies) Create(podSecurityPolicy *v1beta1.PodSecurityPolicy) (result *v1beta1.PodSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewRootCreateAction(podsecuritypoliciesResource, podSecurityPolicy), &v1beta1.PodSecurityPolicy{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PodSecurityPolicy), err
+}
+
+// Update takes the representation of a podSecurityPolicy and updates it. Returns the server's representation of the podSecurityPolicy, and an error, if there is any.
+func (c *FakePodSecurityPolicies) Update(podSecurityPolicy *v1beta1.PodSecurityPolicy) (result *v1beta1.PodSecurityPolicy, err error) {
+	obj, err := c.Fake.
+		Invokes(testing.NewRootUpdateAction(podsecuritypoliciesResource, podSecurityPolicy), &v1beta1.PodSecurityPolicy{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.PodSecurityPolicy), err
+}
+
+// Delete takes name of the podSecurityPolicy and deletes it. Returns an error if one occurs.
+func (c *FakePodSecurityPolicies) Delete(name string, options *v1.DeleteOptions) error {
+	_, err := c.Fake.
+		Invokes(testing.NewRootDeleteAction(podsecuritypoliciesResource, name), &v1beta1.PodSecurityPolicy{})
+	return err
+}
+
+// DeleteCollection deletes a collection of objects.
+func (c *FakePodSecurityPolicies) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
+	action := testing.NewRootDeleteCollectionAction(podsecuritypoliciesResource, listOptions)
+
+	_, err := c.Fake.Invokes(action, &v1beta1.PodSecurityPolicyList{})
+	return err
+}
+
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched podSecurityPolicy.
 func (c *FakePodSecurityPolicies) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.PodSecurityPolicy, err error) {
 	obj, err := c.Fake.

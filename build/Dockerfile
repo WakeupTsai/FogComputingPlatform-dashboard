@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc. All Rights Reserved.
+# Copyright 2017 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,8 +37,13 @@ RUN curl -sSL https://get.docker.com/builds/Linux/x86_64/docker-1.9.1 > /usr/bin
 # Current directory is always /dashboard
 WORKDIR /dashboard
 
+<<<<<<< HEAD
 # Install all npm deps, bower deps. This will take a while.
 COPY package.json bower.json ./
+=======
+# Install all npm deps. This will take a while.
+COPY package.json ./
+>>>>>>> upstream/master
 COPY build/postinstall.sh build/
 RUN npm install --unsafe-perm
 

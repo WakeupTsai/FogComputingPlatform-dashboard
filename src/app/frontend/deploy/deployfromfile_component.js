@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +27,10 @@ import showDeployAnywayDialog from './deployanyway_dialog';
 class DeployFromFileController {
   /**
    * @param {!angular.$log} $log
+<<<<<<< HEAD
+=======
+   * @param {!ui.router.$state} $state
+>>>>>>> upstream/master
    * @param {!angular.$resource} $resource
    * @param {!angular.$q} $q
    * TODO (cheld) Set correct type after fixing issue #159
@@ -36,7 +44,11 @@ class DeployFromFileController {
    * @ngInject
    */
   constructor(
+<<<<<<< HEAD
       $log, $resource, $q, errorDialog, kdHistoryService, $mdDialog, kdCsrfTokenService,
+=======
+      $log, $state, $resource, $q, errorDialog, kdHistoryService, $mdDialog, kdCsrfTokenService,
+>>>>>>> upstream/master
       $stateParams, localizerService, kdCsrfTokenHeader) {
     /**
      * Initialized the template.
@@ -60,6 +72,12 @@ class DeployFromFileController {
     /** @private {!angular.$log} */
     this.log_ = $log;
 
+<<<<<<< HEAD
+=======
+    /** @private {!ui.router.$state} */
+    this.state_ = $state;
+
+>>>>>>> upstream/master
     /**
      * TODO (cheld) Set correct type after fixing issue #159
      * @private {!Object}
@@ -123,7 +141,11 @@ class DeployFromFileController {
                   if (response.error.length > 0) {
                     this.errorDialog_.open('Deployment has been partly completed', response.error);
                   }
+<<<<<<< HEAD
                   this.kdHistoryService_.back(overview);
+=======
+                  this.state_.go(overview);
+>>>>>>> upstream/master
                 },
                 (err) => {
                   defer.reject(err);  // Progress ends

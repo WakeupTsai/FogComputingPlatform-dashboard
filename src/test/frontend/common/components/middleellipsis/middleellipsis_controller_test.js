@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +16,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+<<<<<<< HEAD
 import MiddleEllipsisController from 'common/components/middleellipsis/component';
+=======
+>>>>>>> upstream/master
 import componentsModule from 'common/components/module';
 
 describe('Middle ellipsis controller', () => {
@@ -24,8 +31,8 @@ describe('Middle ellipsis controller', () => {
   beforeEach(() => {
     angular.mock.module(componentsModule.name);
 
-    angular.mock.inject(($controller, $rootScope) => {
-      ctrl = $controller(MiddleEllipsisController, {$scope: $rootScope});
+    angular.mock.inject(($componentController, $rootScope) => {
+      ctrl = $componentController('kdMiddleEllipsis', {$scope: $rootScope});
     });
   });
 

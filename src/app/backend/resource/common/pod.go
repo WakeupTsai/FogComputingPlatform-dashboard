@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +19,19 @@
 package common
 
 import (
+<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/pkg/api/helper"
 	"k8s.io/client-go/pkg/api/v1"
 	batch "k8s.io/client-go/pkg/apis/batch/v1"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+	batch "k8s.io/api/batch/v1"
+	"k8s.io/api/core/v1"
+	extensions "k8s.io/api/extensions/v1beta1"
+	"k8s.io/apimachinery/pkg/api/equality"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+>>>>>>> upstream/master
 )
 
 // FilterPodsByControllerResource returns a subset of pods controlled by given deployment.
@@ -73,6 +85,18 @@ func GetContainerImages(podTemplate *v1.PodSpec) []string {
 	return containerImages
 }
 
+<<<<<<< HEAD
+=======
+// GetInitContainerImages returns init container image strings from the given pod spec.
+func GetInitContainerImages(podTemplate *v1.PodSpec) []string {
+	var initContainerImages []string
+	for _, initContainer := range podTemplate.InitContainers {
+		initContainerImages = append(initContainerImages, initContainer.Image)
+	}
+	return initContainerImages
+}
+
+>>>>>>> upstream/master
 // GetContainerNames returns the container image name without the version number from the given pod spec.
 func GetContainerNames(podTemplate *v1.PodSpec) []string {
 	var containerNames []string
@@ -82,6 +106,18 @@ func GetContainerNames(podTemplate *v1.PodSpec) []string {
 	return containerNames
 }
 
+<<<<<<< HEAD
+=======
+// GetInitContainerNames returns the init container image name without the version number from the given pod spec.
+func GetInitContainerNames(podTemplate *v1.PodSpec) []string {
+	var initContainerNames []string
+	for _, initContainer := range podTemplate.InitContainers {
+		initContainerNames = append(initContainerNames, initContainer.Name)
+	}
+	return initContainerNames
+}
+
+>>>>>>> upstream/master
 // EqualIgnoreHash returns true if two given podTemplateSpec are equal, ignoring the diff in value of Labels[pod-template-hash]
 // We ignore pod-template-hash because the hash result would be different upon podTemplateSpec API changes
 // (e.g. the addition of a new field will cause the hash code to change)
@@ -100,5 +136,9 @@ func EqualIgnoreHash(template1, template2 v1.PodTemplateSpec) bool {
 	}
 	// Then, compare the templates without comparing their labels
 	template1.Labels, template2.Labels = nil, nil
+<<<<<<< HEAD
 	return helper.Semantic.DeepEqual(template1, template2)
+=======
+	return equality.Semantic.DeepEqual(template1, template2)
+>>>>>>> upstream/master
 }

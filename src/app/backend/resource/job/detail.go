@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +25,15 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
+<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sClient "k8s.io/client-go/kubernetes"
 	batch "k8s.io/client-go/pkg/apis/batch/v1"
+=======
+	batch "k8s.io/api/batch/v1"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8sClient "k8s.io/client-go/kubernetes"
+>>>>>>> upstream/master
 )
 
 // JobDetail is a presentation layer view of Kubernetes Job resource. This means
@@ -42,6 +52,12 @@ type JobDetail struct {
 	// Container images of the Job.
 	ContainerImages []string `json:"containerImages"`
 
+<<<<<<< HEAD
+=======
+	// Init container images of the Job.
+	InitContainerImages []string `json:"initContainerImages"`
+
+>>>>>>> upstream/master
 	// List of events related to this Job.
 	EventList common.EventList `json:"eventList"`
 
@@ -89,6 +105,7 @@ func GetJobDetail(client k8sClient.Interface, metricClient metricapi.MetricClien
 func toJobDetail(job *batch.Job, eventList common.EventList, podList pod.PodList, podInfo common.PodInfo,
 	nonCriticalErrors []error) JobDetail {
 	return JobDetail{
+<<<<<<< HEAD
 		ObjectMeta:      api.NewObjectMeta(job.ObjectMeta),
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindJob),
 		ContainerImages: common.GetContainerImages(&job.Spec.Template.Spec),
@@ -98,5 +115,17 @@ func toJobDetail(job *batch.Job, eventList common.EventList, podList pod.PodList
 		Parallelism:     job.Spec.Parallelism,
 		Completions:     job.Spec.Completions,
 		Errors:          nonCriticalErrors,
+=======
+		ObjectMeta:          api.NewObjectMeta(job.ObjectMeta),
+		TypeMeta:            api.NewTypeMeta(api.ResourceKindJob),
+		ContainerImages:     common.GetContainerImages(&job.Spec.Template.Spec),
+		InitContainerImages: common.GetInitContainerImages(&job.Spec.Template.Spec),
+		PodInfo:             podInfo,
+		PodList:             podList,
+		EventList:           eventList,
+		Parallelism:         job.Spec.Parallelism,
+		Completions:         job.Spec.Completions,
+		Errors:              nonCriticalErrors,
+>>>>>>> upstream/master
 	}
 }

@@ -1,5 +1,9 @@
 <!--
+<<<<<<< HEAD
 Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -69,7 +73,11 @@ limitations under the License.
         {{::$ctrl.pod.objectMeta.creationTimestamp | relativeTime}}
         <md-tooltip md-delay="500"
                     md-autohide>
+<<<<<<< HEAD
           {{::$ctrl.getStartedAtTooltip($ctrl.pod.objectMeta.creationTimestamp)}}
+=======
+          [[Started at | Tooltip for the age column ]] {{::$ctrl.pod.objectMeta.creationTimestamp | date}}
+>>>>>>> upstream/master
         </md-tooltip>
       </div>
       <div ng-if="::!$ctrl.pod.objectMeta.creationTimestamp">-</div>
@@ -103,8 +111,12 @@ limitations under the License.
     </kd-resource-card-column>
   </kd-resource-card-columns>
   <kd-resource-card-footer ng-if="::$ctrl.isFailed()">
+<<<<<<< HEAD
     <div ng-repeat="warning in ::$ctrl.pod.warnings">
       <span class="kd-error">{{::warning.message}}</span>
     </div>
+=======
+    <kd-pod-warnings warnings="::$ctrl.pod.warnings"></kd-pod-warnings>
+>>>>>>> upstream/master
   </kd-resource-card-footer>
 </kd-resource-card>

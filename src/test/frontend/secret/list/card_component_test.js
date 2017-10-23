@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,9 +37,12 @@ describe('Secret card', () => {
     spyOn(ctrl.kdNamespaceService_, 'areMultipleNamespacesSelected').and.returnValue(true);
     expect(ctrl.areMultipleNamespacesSelected()).toBe(true);
   });
+<<<<<<< HEAD
 
   it('should format the "secret start date" tooltip correctly', () => {
     expect(ctrl.getStartedAtTooltip('2016-06-06T09:13:12Z'))
         .toBe('Created at 2016-06-06T09:13 UTC');
   });
+=======
+>>>>>>> upstream/master
 });

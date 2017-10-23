@@ -72,7 +72,11 @@ func Perm(n int) []int {
 
 // We omit vowels from the set of available characters to reduce the chances
 // of "bad words" being formed.
+<<<<<<< HEAD
 var alphanums = []rune("bcdfghjklmnpqrstvwxz0123456789")
+=======
+var alphanums = []rune("bcdfghjklmnpqrstvwxz2456789")
+>>>>>>> upstream/master
 
 // String generates a random alphanumeric string, without vowels, which is n
 // characters long.  This will panic if n is less than zero.
@@ -83,3 +87,16 @@ func String(length int) string {
 	}
 	return string(b)
 }
+<<<<<<< HEAD
+=======
+
+// SafeEncodeString encodes s using the same characters as rand.String. This reduces the chances of bad words and
+// ensures that strings generated from hash functions appear consistent throughout the API.
+func SafeEncodeString(s string) string {
+	r := make([]rune, len(s))
+	for i, b := range []rune(s) {
+		r[i] = alphanums[(int(b) % len(alphanums))]
+	}
+	return string(r)
+}
+>>>>>>> upstream/master

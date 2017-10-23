@@ -1,5 +1,9 @@
 <!--
+<<<<<<< HEAD
 Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -32,11 +36,17 @@ limitations under the License.
       <div ng-switch-default
            class="kd-chip">
         <span>{{::key}}:&nbsp;</span>
+<<<<<<< HEAD
         <kd-middle-ellipsis class="kd-chip-value"
                             ng-if="!annotationsCtrl.isHref(value)"
                             display-string=" {{::value}}"></kd-middle-ellipsis>
         <a ng-if="annotationsCtrl.isHref(value)"
            class="kd-chip-value"
+=======
+        <kd-middle-ellipsis ng-if="!annotationsCtrl.isHref(value)"
+                            display-string=" {{::value}}"></kd-middle-ellipsis>
+        <a ng-if="annotationsCtrl.isHref(value)"
+>>>>>>> upstream/master
            href="{{::value}}"
            target="_blank">
           <kd-middle-ellipsis display-string=" {{::value}}"></kd-middle-ellipsis>

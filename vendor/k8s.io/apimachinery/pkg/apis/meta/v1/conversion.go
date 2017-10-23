@@ -39,6 +39,12 @@ func AddConversionFuncs(scheme *runtime.Scheme) error {
 
 		Convert_unversioned_Time_To_unversioned_Time,
 
+<<<<<<< HEAD
+=======
+		Convert_Pointer_v1_Duration_To_v1_Duration,
+		Convert_v1_Duration_To_Pointer_v1_Duration,
+
+>>>>>>> upstream/master
 		Convert_Slice_string_To_unversioned_Time,
 
 		Convert_resource_Quantity_To_resource_Quantity,
@@ -181,6 +187,24 @@ func Convert_unversioned_Time_To_unversioned_Time(in *Time, out *Time, s convers
 	return nil
 }
 
+<<<<<<< HEAD
+=======
+func Convert_Pointer_v1_Duration_To_v1_Duration(in **Duration, out *Duration, s conversion.Scope) error {
+	if *in == nil {
+		*out = Duration{} // zero duration
+		return nil
+	}
+	*out = **in // copy
+	return nil
+}
+
+func Convert_v1_Duration_To_Pointer_v1_Duration(in *Duration, out **Duration, s conversion.Scope) error {
+	temp := *in //copy
+	*out = &temp
+	return nil
+}
+
+>>>>>>> upstream/master
 // Convert_Slice_string_To_unversioned_Time allows converting a URL query parameter value
 func Convert_Slice_string_To_unversioned_Time(input *[]string, out *Time, s conversion.Scope) error {
 	str := ""

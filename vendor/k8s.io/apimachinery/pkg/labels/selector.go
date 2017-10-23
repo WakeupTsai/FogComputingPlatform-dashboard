@@ -51,6 +51,12 @@ type Selector interface {
 	// If there are querying parameters, it will return converted requirements and selectable=true.
 	// If this selector doesn't want to select anything, it will return selectable=false.
 	Requirements() (requirements Requirements, selectable bool)
+<<<<<<< HEAD
+=======
+
+	// Make a deep copy of the selector.
+	DeepCopySelector() Selector
+>>>>>>> upstream/master
 }
 
 // Everything returns a selector that matches all labels.
@@ -65,6 +71,10 @@ func (n nothingSelector) Empty() bool                        { return false }
 func (n nothingSelector) String() string                     { return "" }
 func (n nothingSelector) Add(_ ...Requirement) Selector      { return n }
 func (n nothingSelector) Requirements() (Requirements, bool) { return nil, false }
+<<<<<<< HEAD
+=======
+func (n nothingSelector) DeepCopySelector() Selector         { return n }
+>>>>>>> upstream/master
 
 // Nothing returns a selector that matches no labels
 func Nothing() Selector {
@@ -78,6 +88,24 @@ func NewSelector() Selector {
 
 type internalSelector []Requirement
 
+<<<<<<< HEAD
+=======
+func (s internalSelector) DeepCopy() internalSelector {
+	if s == nil {
+		return nil
+	}
+	result := make([]Requirement, len(s))
+	for i := range s {
+		s[i].DeepCopyInto(&result[i])
+	}
+	return result
+}
+
+func (s internalSelector) DeepCopySelector() Selector {
+	return s.DeepCopy()
+}
+
+>>>>>>> upstream/master
 // ByKey sorts requirements by key to obtain deterministic parser
 type ByKey []Requirement
 
@@ -91,6 +119,10 @@ func (a ByKey) Less(i, j int) bool { return a[i].key < a[j].key }
 // The zero value of Requirement is invalid.
 // Requirement implements both set based match and exact match
 // Requirement should be initialized via NewRequirement constructor for creating a valid Requirement.
+<<<<<<< HEAD
+=======
+// +k8s:deepcopy-gen=true
+>>>>>>> upstream/master
 type Requirement struct {
 	key      string
 	operator selection.Operator

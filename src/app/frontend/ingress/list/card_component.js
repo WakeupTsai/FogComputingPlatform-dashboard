@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +22,7 @@ import {stateName} from '../../ingress/detail/state';
 class IngressCardController {
   /**
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
+<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
    * @param {!ui.router.$state} $state
    * @ngInject
@@ -28,6 +33,15 @@ class IngressCardController {
 
     /** @private {!angular.$interpolate} */
     this.interpolate_ = $interpolate;
+=======
+   * @param {!ui.router.$state} $state
+   * @ngInject
+   */
+  constructor($state, kdNamespaceService) {
+    /** @export {!backendApi.Ingress} Ingress initialised from a bindig. */
+    this.ingress;
+
+>>>>>>> upstream/master
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
@@ -37,6 +51,7 @@ class IngressCardController {
   }
 
   /**
+<<<<<<< HEAD
    * @export
    * @param  {string} startDate - start date of the ingress
    * @return {string} localized tooltip with the formated start date
@@ -53,6 +68,8 @@ class IngressCardController {
   }
 
   /**
+=======
+>>>>>>> upstream/master
    * @return {string}
    * @export
    */

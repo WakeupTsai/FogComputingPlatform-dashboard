@@ -17,9 +17,15 @@ limitations under the License.
 package v1
 
 import (
+<<<<<<< HEAD
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/kubernetes/scheme"
 	v1 "k8s.io/client-go/pkg/apis/authorization/v1"
+=======
+	v1 "k8s.io/api/authorization/v1"
+	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/kubernetes/scheme"
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -27,6 +33,10 @@ type AuthorizationV1Interface interface {
 	RESTClient() rest.Interface
 	LocalSubjectAccessReviewsGetter
 	SelfSubjectAccessReviewsGetter
+<<<<<<< HEAD
+=======
+	SelfSubjectRulesReviewsGetter
+>>>>>>> upstream/master
 	SubjectAccessReviewsGetter
 }
 
@@ -43,6 +53,13 @@ func (c *AuthorizationV1Client) SelfSubjectAccessReviews() SelfSubjectAccessRevi
 	return newSelfSubjectAccessReviews(c)
 }
 
+<<<<<<< HEAD
+=======
+func (c *AuthorizationV1Client) SelfSubjectRulesReviews() SelfSubjectRulesReviewInterface {
+	return newSelfSubjectRulesReviews(c)
+}
+
+>>>>>>> upstream/master
 func (c *AuthorizationV1Client) SubjectAccessReviews() SubjectAccessReviewInterface {
 	return newSubjectAccessReviews(c)
 }

@@ -108,7 +108,11 @@ func DialerFor(transport http.RoundTripper) (DialFunc, error) {
 	case RoundTripperWrapper:
 		return DialerFor(transport.WrappedRoundTripper())
 	default:
+<<<<<<< HEAD
 		return nil, fmt.Errorf("unknown transport type: %v", transport)
+=======
+		return nil, fmt.Errorf("unknown transport type: %T", transport)
+>>>>>>> upstream/master
 	}
 }
 
@@ -129,7 +133,11 @@ func TLSClientConfig(transport http.RoundTripper) (*tls.Config, error) {
 	case RoundTripperWrapper:
 		return TLSClientConfig(transport.WrappedRoundTripper())
 	default:
+<<<<<<< HEAD
 		return nil, fmt.Errorf("unknown transport type: %v", transport)
+=======
+		return nil, fmt.Errorf("unknown transport type: %T", transport)
+>>>>>>> upstream/master
 	}
 }
 
@@ -277,6 +285,16 @@ func NewProxierWithNoProxyCIDR(delegate func(req *http.Request) (*url.URL, error
 	}
 }
 
+<<<<<<< HEAD
+=======
+// DialerFunc implements Dialer for the provided function.
+type DialerFunc func(req *http.Request) (net.Conn, error)
+
+func (fn DialerFunc) Dial(req *http.Request) (net.Conn, error) {
+	return fn(req)
+}
+
+>>>>>>> upstream/master
 // Dialer dials a host and writes a request to it.
 type Dialer interface {
 	// Dial connects to the host specified by req's URL, writes the request to the connection, and

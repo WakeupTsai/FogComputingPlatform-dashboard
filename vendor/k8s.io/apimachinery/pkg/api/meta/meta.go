@@ -34,6 +34,7 @@ import (
 // interfaces.
 var errNotList = fmt.Errorf("object does not implement the List interfaces")
 
+<<<<<<< HEAD
 // ListAccessor returns a List interface for the provided object or an error if the object does
 // not provide List.
 // IMPORTANT: Objects are a superset of lists, so all Objects return List metadata. Do not use this
@@ -44,6 +45,64 @@ func ListAccessor(obj interface{}) (List, error) {
 	case List:
 		return t, nil
 	case metav1.List:
+=======
+var errNotCommon = fmt.Errorf("object does not implement the common interface for accessing the SelfLink")
+
+// CommonAccessor returns a Common interface for the provided object or an error if the object does
+// not provide List.
+// TODO: return bool instead of error
+func CommonAccessor(obj interface{}) (metav1.Common, error) {
+	switch t := obj.(type) {
+	case List:
+		return t, nil
+	case metav1.ListInterface:
+>>>>>>> upstream/master
+		return t, nil
+	case ListMetaAccessor:
+		if m := t.GetListMeta(); m != nil {
+			return m, nil
+		}
+<<<<<<< HEAD
+		return nil, errNotList
+=======
+		return nil, errNotCommon
+>>>>>>> upstream/master
+	case metav1.ListMetaAccessor:
+		if m := t.GetListMeta(); m != nil {
+			return m, nil
+		}
+<<<<<<< HEAD
+		return nil, errNotList
+=======
+		return nil, errNotCommon
+>>>>>>> upstream/master
+	case metav1.Object:
+		return t, nil
+	case metav1.ObjectMetaAccessor:
+		if m := t.GetObjectMeta(); m != nil {
+			return m, nil
+		}
+<<<<<<< HEAD
+		return nil, errNotList
+	default:
+		return nil, errNotList
+=======
+		return nil, errNotCommon
+	default:
+		return nil, errNotCommon
+	}
+}
+
+// ListAccessor returns a List interface for the provided object or an error if the object does
+// not provide List.
+// IMPORTANT: Objects are NOT a superset of lists. Do not use this check to determine whether an
+// object *is* a List.
+// TODO: return bool instead of error
+func ListAccessor(obj interface{}) (List, error) {
+	switch t := obj.(type) {
+	case List:
+		return t, nil
+	case metav1.ListInterface:
 		return t, nil
 	case ListMetaAccessor:
 		if m := t.GetListMeta(); m != nil {
@@ -55,15 +114,9 @@ func ListAccessor(obj interface{}) (List, error) {
 			return m, nil
 		}
 		return nil, errNotList
-	case metav1.Object:
-		return t, nil
-	case metav1.ObjectMetaAccessor:
-		if m := t.GetObjectMeta(); m != nil {
-			return m, nil
-		}
-		return nil, errNotList
 	default:
-		return nil, errNotList
+		panic(fmt.Errorf("%T does not implement the List interface", obj))
+>>>>>>> upstream/master
 	}
 }
 
@@ -274,7 +327,11 @@ func (resourceAccessor) SetUID(obj runtime.Object, uid types.UID) error {
 }
 
 func (resourceAccessor) SelfLink(obj runtime.Object) (string, error) {
+<<<<<<< HEAD
 	accessor, err := ListAccessor(obj)
+=======
+	accessor, err := CommonAccessor(obj)
+>>>>>>> upstream/master
 	if err != nil {
 		return "", err
 	}
@@ -282,7 +339,11 @@ func (resourceAccessor) SelfLink(obj runtime.Object) (string, error) {
 }
 
 func (resourceAccessor) SetSelfLink(obj runtime.Object, selfLink string) error {
+<<<<<<< HEAD
 	accessor, err := ListAccessor(obj)
+=======
+	accessor, err := CommonAccessor(obj)
+>>>>>>> upstream/master
 	if err != nil {
 		return err
 	}
@@ -325,7 +386,11 @@ func (resourceAccessor) SetAnnotations(obj runtime.Object, annotations map[strin
 }
 
 func (resourceAccessor) ResourceVersion(obj runtime.Object) (string, error) {
+<<<<<<< HEAD
 	accessor, err := ListAccessor(obj)
+=======
+	accessor, err := CommonAccessor(obj)
+>>>>>>> upstream/master
 	if err != nil {
 		return "", err
 	}
@@ -333,7 +398,11 @@ func (resourceAccessor) ResourceVersion(obj runtime.Object) (string, error) {
 }
 
 func (resourceAccessor) SetResourceVersion(obj runtime.Object, version string) error {
+<<<<<<< HEAD
 	accessor, err := ListAccessor(obj)
+=======
+	accessor, err := CommonAccessor(obj)
+>>>>>>> upstream/master
 	if err != nil {
 		return err
 	}

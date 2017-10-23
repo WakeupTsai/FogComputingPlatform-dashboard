@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +25,10 @@ import {actionbarDetailButtonsComponent} from './actionbardetailbuttons_componen
 import {actionbarEditItemComponent} from './actionbaredititem_component';
 import {actionbarListButtonsComponent} from './actionbarlistbuttons_component';
 import {actionbarLogsComponent} from './actionbarlogs_component';
+<<<<<<< HEAD
+=======
+import {actionbarNamespaceOverviewComponent} from './actionbarnamespaceoverview_component';
+>>>>>>> upstream/master
 import {actionbarComponent} from './component';
 import {actionbarShellButtonComponent} from './shell_component';
 
@@ -38,6 +46,10 @@ export default angular
     .component('kdActionbar', actionbarComponent)
     .component('kdBreadcrumbs', breadcrumbsComponent)
     .component('kdActionbarLogs', actionbarLogsComponent)
+<<<<<<< HEAD
+=======
+    .component('kdActionbarNamespaceOverview', actionbarNamespaceOverviewComponent)
+>>>>>>> upstream/master
     .component('kdActionbarDeleteItem', actionbarDeleteItemComponent)
     .component('kdActionbarEditItem', actionbarEditItemComponent)
     .component('kdActionbarDetailButtons', actionbarDetailButtonsComponent)

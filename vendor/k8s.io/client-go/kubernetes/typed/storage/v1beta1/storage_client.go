@@ -17,9 +17,15 @@ limitations under the License.
 package v1beta1
 
 import (
+<<<<<<< HEAD
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/kubernetes/scheme"
 	v1beta1 "k8s.io/client-go/pkg/apis/storage/v1beta1"
+=======
+	v1beta1 "k8s.io/api/storage/v1beta1"
+	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/kubernetes/scheme"
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 

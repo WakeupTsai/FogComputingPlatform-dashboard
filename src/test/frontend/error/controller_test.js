@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +18,10 @@
 
 import authModule from 'common/auth/module';
 import commonErrorModule from 'common/errorhandling/module';
+<<<<<<< HEAD
+=======
+import historyModule from 'common/history/module';
+>>>>>>> upstream/master
 import {InternalErrorController} from 'error/controller';
 import errorModule from 'error/module';
 import {StateParams} from 'error/state';
@@ -28,6 +36,10 @@ describe('Internal error controller', () => {
     angular.mock.module(errorModule.name);
     angular.mock.module(commonErrorModule.name);
     angular.mock.module(authModule.name);
+<<<<<<< HEAD
+=======
+    angular.mock.module(historyModule.name);
+>>>>>>> upstream/master
 
     angular.mock.inject(($controller) => {
       stateParams = new StateParams({status: undefined});

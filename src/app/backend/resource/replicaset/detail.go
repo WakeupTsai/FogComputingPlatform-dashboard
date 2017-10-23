@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,9 +30,15 @@ import (
 	hpa "github.com/kubernetes/dashboard/src/app/backend/resource/horizontalpodautoscaler"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
 	resourceService "github.com/kubernetes/dashboard/src/app/backend/resource/service"
+<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sClient "k8s.io/client-go/kubernetes"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+	extensions "k8s.io/api/extensions/v1beta1"
+	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8sClient "k8s.io/client-go/kubernetes"
+>>>>>>> upstream/master
 )
 
 // ReplicaSetDetail is a presentation layer view of Kubernetes Replica Set resource. This means
@@ -50,6 +60,12 @@ type ReplicaSetDetail struct {
 	// Container images of the Replica Set.
 	ContainerImages []string `json:"containerImages"`
 
+<<<<<<< HEAD
+=======
+	// Init Container images of the Replica Set.
+	InitContainerImages []string `json:"initContainerImages"`
+
+>>>>>>> upstream/master
 	// List of events related to this Replica Set.
 	EventList common.EventList `json:"eventList"`
 
@@ -115,6 +131,10 @@ func toReplicaSetDetail(replicaSet *extensions.ReplicaSet, eventList common.Even
 		ObjectMeta:                  api.NewObjectMeta(replicaSet.ObjectMeta),
 		TypeMeta:                    api.NewTypeMeta(api.ResourceKindReplicaSet),
 		ContainerImages:             common.GetContainerImages(&replicaSet.Spec.Template.Spec),
+<<<<<<< HEAD
+=======
+		InitContainerImages:         common.GetInitContainerImages(&replicaSet.Spec.Template.Spec),
+>>>>>>> upstream/master
 		Selector:                    replicaSet.Spec.Selector,
 		PodInfo:                     podInfo,
 		PodList:                     podList,

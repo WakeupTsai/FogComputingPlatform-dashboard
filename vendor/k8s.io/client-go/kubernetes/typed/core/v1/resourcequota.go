@@ -17,11 +17,18 @@ limitations under the License.
 package v1
 
 import (
+<<<<<<< HEAD
+=======
+	v1 "k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/api/v1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -59,6 +66,44 @@ func newResourceQuotas(c *CoreV1Client, namespace string) *resourceQuotas {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the resourceQuota, and returns the corresponding resourceQuota object, and an error if there is any.
+func (c *resourceQuotas) Get(name string, options meta_v1.GetOptions) (result *v1.ResourceQuota, err error) {
+	result = &v1.ResourceQuota{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcequotas").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ResourceQuotas that match those selectors.
+func (c *resourceQuotas) List(opts meta_v1.ListOptions) (result *v1.ResourceQuotaList, err error) {
+	result = &v1.ResourceQuotaList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcequotas").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested resourceQuotas.
+func (c *resourceQuotas) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("resourcequotas").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a resourceQuota and creates it.  Returns the server's representation of the resourceQuota, and an error, if there is any.
 func (c *resourceQuotas) Create(resourceQuota *v1.ResourceQuota) (result *v1.ResourceQuota, err error) {
 	result = &v1.ResourceQuota{}
@@ -85,7 +130,11 @@ func (c *resourceQuotas) Update(resourceQuota *v1.ResourceQuota) (result *v1.Res
 }
 
 // UpdateStatus was generated because the type contains a Status member.
+<<<<<<< HEAD
 // Add a +genclientstatus=false comment above the type to avoid generating UpdateStatus().
+=======
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+>>>>>>> upstream/master
 
 func (c *resourceQuotas) UpdateStatus(resourceQuota *v1.ResourceQuota) (result *v1.ResourceQuota, err error) {
 	result = &v1.ResourceQuota{}
@@ -122,6 +171,7 @@ func (c *resourceQuotas) DeleteCollection(options *meta_v1.DeleteOptions, listOp
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the resourceQuota, and returns the corresponding resourceQuota object, and an error if there is any.
 func (c *resourceQuotas) Get(name string, options meta_v1.GetOptions) (result *v1.ResourceQuota, err error) {
 	result = &v1.ResourceQuota{}
@@ -157,6 +207,8 @@ func (c *resourceQuotas) Watch(opts meta_v1.ListOptions) (watch.Interface, error
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched resourceQuota.
 func (c *resourceQuotas) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.ResourceQuota, err error) {
 	result = &v1.ResourceQuota{}

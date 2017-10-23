@@ -17,11 +17,18 @@ limitations under the License.
 package v1alpha1
 
 import (
+<<<<<<< HEAD
+=======
+	v1alpha1 "k8s.io/api/settings/v1alpha1"
+>>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v1alpha1 "k8s.io/client-go/pkg/apis/settings/v1alpha1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -58,6 +65,44 @@ func newPodPresets(c *SettingsV1alpha1Client, namespace string) *podPresets {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the podPreset, and returns the corresponding podPreset object, and an error if there is any.
+func (c *podPresets) Get(name string, options v1.GetOptions) (result *v1alpha1.PodPreset, err error) {
+	result = &v1alpha1.PodPreset{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("podpresets").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of PodPresets that match those selectors.
+func (c *podPresets) List(opts v1.ListOptions) (result *v1alpha1.PodPresetList, err error) {
+	result = &v1alpha1.PodPresetList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("podpresets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested podPresets.
+func (c *podPresets) Watch(opts v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("podpresets").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a podPreset and creates it.  Returns the server's representation of the podPreset, and an error, if there is any.
 func (c *podPresets) Create(podPreset *v1alpha1.PodPreset) (result *v1alpha1.PodPreset, err error) {
 	result = &v1alpha1.PodPreset{}
@@ -105,6 +150,7 @@ func (c *podPresets) DeleteCollection(options *v1.DeleteOptions, listOptions v1.
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the podPreset, and returns the corresponding podPreset object, and an error if there is any.
 func (c *podPresets) Get(name string, options v1.GetOptions) (result *v1alpha1.PodPreset, err error) {
 	result = &v1alpha1.PodPreset{}
@@ -140,6 +186,8 @@ func (c *podPresets) Watch(opts v1.ListOptions) (watch.Interface, error) {
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched podPreset.
 func (c *podPresets) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha1.PodPreset, err error) {
 	result = &v1alpha1.PodPreset{}

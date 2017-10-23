@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +17,7 @@
 // limitations under the License.
 
 
+<<<<<<< HEAD
 // Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +32,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+=======
+>>>>>>> upstream/master
 import {VerberService} from './verber_service';
 
 /**
@@ -40,6 +47,10 @@ export default angular
           'ngMaterial',
           'ui.router',
           'ngResource',
+<<<<<<< HEAD
           'ng.jsoneditor',
+=======
+          'angular-jsoneditor',
+>>>>>>> upstream/master
         ])
     .service('kdResourceVerberService', VerberService);

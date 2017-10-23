@@ -47,6 +47,20 @@ func NewGetAction(resource schema.GroupVersionResource, namespace, name string) 
 	return action
 }
 
+<<<<<<< HEAD
+=======
+func NewGetSubresourceAction(resource schema.GroupVersionResource, namespace, subresource, name string) GetActionImpl {
+	action := GetActionImpl{}
+	action.Verb = "get"
+	action.Resource = resource
+	action.Subresource = subresource
+	action.Namespace = namespace
+	action.Name = name
+
+	return action
+}
+
+>>>>>>> upstream/master
 func NewRootListAction(resource schema.GroupVersionResource, kind schema.GroupVersionKind, opts interface{}) ListActionImpl {
 	action := ListActionImpl{}
 	action.Verb = "list"
@@ -70,6 +84,23 @@ func NewListAction(resource schema.GroupVersionResource, kind schema.GroupVersio
 	return action
 }
 
+<<<<<<< HEAD
+=======
+func NewListSubresourceAction(resource schema.GroupVersionResource, name, subresource string, kind schema.GroupVersionKind, namespace string, opts interface{}) ListActionImpl {
+	action := ListActionImpl{}
+	action.Verb = "list"
+	action.Resource = resource
+	action.Subresource = subresource
+	action.Kind = kind
+	action.Namespace = namespace
+	action.Name = name
+	labelSelector, fieldSelector, _ := ExtractFromListOptions(opts)
+	action.ListRestrictions = ListRestrictions{labelSelector, fieldSelector}
+
+	return action
+}
+
+>>>>>>> upstream/master
 func NewRootCreateAction(resource schema.GroupVersionResource, object runtime.Object) CreateActionImpl {
 	action := CreateActionImpl{}
 	action.Verb = "create"
@@ -89,6 +120,21 @@ func NewCreateAction(resource schema.GroupVersionResource, namespace string, obj
 	return action
 }
 
+<<<<<<< HEAD
+=======
+func NewCreateSubresourceAction(resource schema.GroupVersionResource, name, subresource string, namespace string, object runtime.Object) CreateActionImpl {
+	action := CreateActionImpl{}
+	action.Verb = "create"
+	action.Resource = resource
+	action.Subresource = subresource
+	action.Namespace = namespace
+	action.Name = name
+	action.Object = object
+
+	return action
+}
+
+>>>>>>> upstream/master
 func NewRootUpdateAction(resource schema.GroupVersionResource, object runtime.Object) UpdateActionImpl {
 	action := UpdateActionImpl{}
 	action.Verb = "update"
@@ -319,6 +365,20 @@ type DeleteAction interface {
 	GetName() string
 }
 
+<<<<<<< HEAD
+=======
+type DeleteCollectionAction interface {
+	Action
+	GetListRestrictions() ListRestrictions
+}
+
+type PatchAction interface {
+	Action
+	GetName() string
+	GetPatch() []byte
+}
+
+>>>>>>> upstream/master
 type WatchAction interface {
 	Action
 	GetWatchRestrictions() WatchRestrictions
@@ -378,6 +438,10 @@ func (a GetActionImpl) GetName() string {
 type ListActionImpl struct {
 	ActionImpl
 	Kind             schema.GroupVersionKind
+<<<<<<< HEAD
+=======
+	Name             string
+>>>>>>> upstream/master
 	ListRestrictions ListRestrictions
 }
 
@@ -391,6 +455,10 @@ func (a ListActionImpl) GetListRestrictions() ListRestrictions {
 
 type CreateActionImpl struct {
 	ActionImpl
+<<<<<<< HEAD
+=======
+	Name   string
+>>>>>>> upstream/master
 	Object runtime.Object
 }
 

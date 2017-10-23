@@ -20,7 +20,11 @@ import (
 	"encoding/json"
 	"time"
 
+<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/openapi"
+=======
+	openapi "k8s.io/kube-openapi/pkg/common"
+>>>>>>> upstream/master
 
 	"github.com/go-openapi/spec"
 	"github.com/google/gofuzz"
@@ -37,11 +41,19 @@ type Time struct {
 	time.Time `protobuf:"-"`
 }
 
+<<<<<<< HEAD
 // DeepCopy returns a deep-copy of the Time value.  The underlying time.Time
 // type is effectively immutable in the time API, so it is safe to
 // copy-by-assign, despite the presence of (unexported) Pointer fields.
 func (t Time) DeepCopy() Time {
 	return t
+=======
+// DeepCopyInto creates a deep-copy of the Time value.  The underlying time.Time
+// type is effectively immutable in the time API, so it is safe to
+// copy-by-assign, despite the presence of (unexported) Pointer fields.
+func (t *Time) DeepCopyInto(out *Time) {
+	*out = *t
+>>>>>>> upstream/master
 }
 
 // String returns the representation of the time.
@@ -74,12 +86,20 @@ func (t *Time) IsZero() bool {
 }
 
 // Before reports whether the time instant t is before u.
+<<<<<<< HEAD
 func (t Time) Before(u Time) bool {
+=======
+func (t *Time) Before(u *Time) bool {
+>>>>>>> upstream/master
 	return t.Time.Before(u.Time)
 }
 
 // Equal reports whether the time instant t is equal to u.
+<<<<<<< HEAD
 func (t Time) Equal(u Time) bool {
+=======
+func (t *Time) Equal(u *Time) bool {
+>>>>>>> upstream/master
 	return t.Time.Equal(u.Time)
 }
 

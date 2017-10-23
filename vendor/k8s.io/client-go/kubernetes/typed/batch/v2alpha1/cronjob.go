@@ -17,11 +17,18 @@ limitations under the License.
 package v2alpha1
 
 import (
+<<<<<<< HEAD
+=======
+	v2alpha1 "k8s.io/api/batch/v2alpha1"
+>>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v2alpha1 "k8s.io/client-go/pkg/apis/batch/v2alpha1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -59,6 +66,44 @@ func newCronJobs(c *BatchV2alpha1Client, namespace string) *cronJobs {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the cronJob, and returns the corresponding cronJob object, and an error if there is any.
+func (c *cronJobs) Get(name string, options v1.GetOptions) (result *v2alpha1.CronJob, err error) {
+	result = &v2alpha1.CronJob{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cronjobs").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of CronJobs that match those selectors.
+func (c *cronJobs) List(opts v1.ListOptions) (result *v2alpha1.CronJobList, err error) {
+	result = &v2alpha1.CronJobList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("cronjobs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested cronJobs.
+func (c *cronJobs) Watch(opts v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("cronjobs").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a cronJob and creates it.  Returns the server's representation of the cronJob, and an error, if there is any.
 func (c *cronJobs) Create(cronJob *v2alpha1.CronJob) (result *v2alpha1.CronJob, err error) {
 	result = &v2alpha1.CronJob{}
@@ -85,7 +130,11 @@ func (c *cronJobs) Update(cronJob *v2alpha1.CronJob) (result *v2alpha1.CronJob, 
 }
 
 // UpdateStatus was generated because the type contains a Status member.
+<<<<<<< HEAD
 // Add a +genclientstatus=false comment above the type to avoid generating UpdateStatus().
+=======
+// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
+>>>>>>> upstream/master
 
 func (c *cronJobs) UpdateStatus(cronJob *v2alpha1.CronJob) (result *v2alpha1.CronJob, err error) {
 	result = &v2alpha1.CronJob{}
@@ -122,6 +171,7 @@ func (c *cronJobs) DeleteCollection(options *v1.DeleteOptions, listOptions v1.Li
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the cronJob, and returns the corresponding cronJob object, and an error if there is any.
 func (c *cronJobs) Get(name string, options v1.GetOptions) (result *v2alpha1.CronJob, err error) {
 	result = &v2alpha1.CronJob{}
@@ -157,6 +207,8 @@ func (c *cronJobs) Watch(opts v1.ListOptions) (watch.Interface, error) {
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched cronJob.
 func (c *cronJobs) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v2alpha1.CronJob, err error) {
 	result = &v2alpha1.CronJob{}

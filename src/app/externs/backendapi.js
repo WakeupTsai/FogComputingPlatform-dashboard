@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -268,6 +272,7 @@ backendApi.PodInfo;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>
  * }}
  */
 backendApi.ReplicationController;
@@ -278,6 +283,7 @@ backendApi.ReplicationController;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>
  * }}
  */
 backendApi.ReplicaSet;
@@ -289,6 +295,10 @@ backendApi.ReplicaSet;
  *   podInfo: !backendApi.PodInfo,
  *   podList: !backendApi.PodList,
  *   containerImages: !Array<string>,
+<<<<<<< HEAD
+=======
+ *   initContainerImages: !Array<string>,
+>>>>>>> upstream/master
  *   eventList: !backendApi.EventList,
  *   errors: !Array<!backendApi.Error>
  * }}
@@ -310,6 +320,10 @@ backendApi.ReplicaSetList;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+<<<<<<< HEAD
+=======
+ *   initContainerImages: !Array<string>,
+>>>>>>> upstream/master
  *   parallelism: number
  * }}
  */
@@ -322,6 +336,7 @@ backendApi.Job;
  *   podInfo: !backendApi.PodInfo,
  *   podList: !backendApi.PodList,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>,
  *   eventList: !backendApi.EventList,
  *   parallelism: number,
  *   completions: number
@@ -344,6 +359,7 @@ backendApi.JobList;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>
  * }}
  */
 backendApi.StatefulSet;
@@ -355,6 +371,10 @@ backendApi.StatefulSet;
  *   podInfo: !backendApi.PodInfo,
  *   podList: !backendApi.PodList,
  *   containerImages: !Array<string>,
+<<<<<<< HEAD
+=======
+ *   initContainerImages: !Array<string>,
+>>>>>>> upstream/master
  *   eventList: !backendApi.EventList,
  *   errors: !Array<!backendApi.Error>
  * }}
@@ -596,6 +616,7 @@ backendApi.FlockerVolumeSource;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>
  * }}
  */
 backendApi.Deployment;
@@ -696,6 +717,7 @@ backendApi.TypeMeta;
  *   typeMeta: !backendApi.TypeMeta,
  *   labelSelector: !Object<string, string>,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>,
  *   podInfo: !backendApi.PodInfo,
  *   podList: !backendApi.PodList,
  *   serviceList: !backendApi.ServiceList,
@@ -820,6 +842,10 @@ backendApi.PodStatus;
  *   podStatus: !backendApi.PodStatus,
  *   podIP: string,
  *   restartCount: number,
+<<<<<<< HEAD
+=======
+ *   qosClass: string,
+>>>>>>> upstream/master
  *   metrics: backendApi.PodMetrics,
  *   warnings: !Array<!backendApi.Event>,
  *   nodeName: string
@@ -925,6 +951,7 @@ backendApi.ServiceList;
  *  typeMeta: !backendApi.TypeMeta,
  *  labelSelector: !Object<string, string>,
  *  containerImages: !Array<string>,
+ *  initContainerImages: !Array<string>,
  *  podInfo: !backendApi.PodInfo,
  *  podList: !backendApi.PodList,
  *  serviceList: !backendApi.ServiceList,
@@ -941,6 +968,7 @@ backendApi.DaemonSetDetail;
  *  typeMeta: !backendApi.TypeMeta,
  *  pods: !backendApi.PodInfo,
  *  containerImages: !Array<string>,
+ *  initContainerImages: !Array<string>
  * }}
  */
 backendApi.DaemonSet;
@@ -1009,7 +1037,12 @@ backendApi.ReplicationControllerPods;
 /**
  * @typedef {{
  *   podNames: !Array<string>,
+<<<<<<< HEAD
  *   containerNames: !Array<string>
+=======
+ *   containerNames: !Array<string>,
+ *   initContainerNames: !Array<string>
+>>>>>>> upstream/master
  * }}
  */
 backendApi.LogSources;
@@ -1027,6 +1060,10 @@ backendApi.LogDetails;
  * @typedef {{
  *   podName: string,
  *   containerName: string,
+<<<<<<< HEAD
+=======
+ *   initContainerName: string,
+>>>>>>> upstream/master
  *   fromDate: string,
  *   toDate: string,
  *   truncated: boolean
@@ -1041,6 +1078,7 @@ backendApi.LogInfo;
  * }}
  */
 backendApi.LogLine;
+<<<<<<< HEAD
 
 /**
  * @typedef {{
@@ -1058,6 +1096,25 @@ backendApi.LogSelection;
  *   lineNum: number,
  * }}
  */
+=======
+
+/**
+ * @typedef {{
+ *   logFilePosition: string,
+ *   referencePoint: !backendApi.LogLineReference,
+ *   offsetFrom: number,
+ *   offsetTo: number
+ * }}
+ */
+backendApi.LogSelection;
+
+/**
+ * @typedef {{
+ *   timestamp: string,
+ *   lineNum: number,
+ * }}
+ */
+>>>>>>> upstream/master
 backendApi.LogLineReference;
 
 /**
@@ -1262,6 +1319,7 @@ backendApi.NodeAllocatedResources;
  *   nodeInfo: !backendApi.NodeInfo,
  *   conditions: !backendApi.ConditionList,
  *   containerImages: !Array<string>,
+ *   initContainerImages: !Array<string>,
  *   podList: !backendApi.PodList,
  *   eventList: !backendApi.EventList,
  *   errors: !Array<!backendApi.Error>
@@ -1392,6 +1450,10 @@ backendApi.StorageClassList;
  *   typeMeta: !backendApi.TypeMeta,
  *   pods: !backendApi.PodInfo,
  *   containerImages: !Array<string>,
+<<<<<<< HEAD
+=======
+ *   initContainerImages: !Array<string>
+>>>>>>> upstream/master
  * }}
  */
 backendApi.Controller;
@@ -1405,6 +1467,7 @@ backendApi.APIVersion;
 
 /**
  * @typedef {{
+<<<<<<< HEAD
  *   objectMeta: !backendApi.ObjectMeta,
  *   typeMeta: !backendApi.TypeMeta,
  *   description: string,
@@ -1438,6 +1501,8 @@ backendApi.ThirdPartyResourceObjectList;
 
 /**
  * @typedef {{
+=======
+>>>>>>> upstream/master
  *   token: string
  * }}
  */

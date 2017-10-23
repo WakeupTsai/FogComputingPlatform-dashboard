@@ -17,7 +17,11 @@ limitations under the License.
 package fake
 
 import (
+<<<<<<< HEAD
 	"k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+	"k8s.io/api/extensions/v1beta1"
+>>>>>>> upstream/master
 	core "k8s.io/client-go/testing"
 )
 

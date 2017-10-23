@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +27,15 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/event"
+<<<<<<< HEAD
 	client "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+	"k8s.io/api/core/v1"
+	extensions "k8s.io/api/extensions/v1beta1"
+	client "k8s.io/client-go/kubernetes"
+>>>>>>> upstream/master
 )
 
 // DeploymentList contains a list of Deployments in the cluster.
@@ -52,6 +62,12 @@ type Deployment struct {
 
 	// Container images of the Deployment.
 	ContainerImages []string `json:"containerImages"`
+<<<<<<< HEAD
+=======
+
+	// Init Container images of the Deployment.
+	InitContainerImages []string `json:"initContainerImages"`
+>>>>>>> upstream/master
 }
 
 // GetDeploymentList returns a list of all Deployments in the cluster.
@@ -129,10 +145,18 @@ func toDeploymentList(deployments []extensions.Deployment, pods []v1.Pod, events
 
 		deploymentList.Deployments = append(deploymentList.Deployments,
 			Deployment{
+<<<<<<< HEAD
 				ObjectMeta:      api.NewObjectMeta(deployment.ObjectMeta),
 				TypeMeta:        api.NewTypeMeta(api.ResourceKindDeployment),
 				ContainerImages: common.GetContainerImages(&deployment.Spec.Template.Spec),
 				Pods:            podInfo,
+=======
+				ObjectMeta:          api.NewObjectMeta(deployment.ObjectMeta),
+				TypeMeta:            api.NewTypeMeta(api.ResourceKindDeployment),
+				ContainerImages:     common.GetContainerImages(&deployment.Spec.Template.Spec),
+				InitContainerImages: common.GetInitContainerImages(&deployment.Spec.Template.Spec),
+				Pods:                podInfo,
+>>>>>>> upstream/master
 			})
 	}
 

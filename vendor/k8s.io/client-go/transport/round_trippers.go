@@ -19,10 +19,20 @@ package transport
 import (
 	"fmt"
 	"net/http"
+<<<<<<< HEAD
+=======
+	"path/filepath"
+>>>>>>> upstream/master
 	"strings"
 	"time"
 
 	"github.com/golang/glog"
+<<<<<<< HEAD
+=======
+	"github.com/gregjones/httpcache"
+	"github.com/gregjones/httpcache/diskcache"
+	"github.com/peterbourgon/diskv"
+>>>>>>> upstream/master
 
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 )
@@ -56,6 +66,12 @@ func HTTPWrappersForConfig(config *Config, rt http.RoundTripper) (http.RoundTrip
 		len(config.Impersonate.Extra) > 0 {
 		rt = NewImpersonatingRoundTripper(config.Impersonate, rt)
 	}
+<<<<<<< HEAD
+=======
+	if len(config.CacheDir) > 0 {
+		rt = NewCacheRoundTripper(config.CacheDir, rt)
+	}
+>>>>>>> upstream/master
 	return rt, nil
 }
 
@@ -79,6 +95,33 @@ type requestCanceler interface {
 	CancelRequest(*http.Request)
 }
 
+<<<<<<< HEAD
+=======
+type cacheRoundTripper struct {
+	rt *httpcache.Transport
+}
+
+// NewCacheRoundTripper creates a roundtripper that reads the ETag on
+// response headers and send the If-None-Match header on subsequent
+// corresponding requests.
+func NewCacheRoundTripper(cacheDir string, rt http.RoundTripper) http.RoundTripper {
+	d := diskv.New(diskv.Options{
+		BasePath: cacheDir,
+		TempDir:  filepath.Join(cacheDir, ".diskv-temp"),
+	})
+	t := httpcache.NewTransport(diskcache.NewWithDiskv(d))
+	t.Transport = rt
+
+	return &cacheRoundTripper{rt: t}
+}
+
+func (rt *cacheRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	return rt.rt.RoundTrip(req)
+}
+
+func (rt *cacheRoundTripper) WrappedRoundTripper() http.RoundTripper { return rt.rt.Transport }
+
+>>>>>>> upstream/master
 type authProxyRoundTripper struct {
 	username string
 	groups   []string

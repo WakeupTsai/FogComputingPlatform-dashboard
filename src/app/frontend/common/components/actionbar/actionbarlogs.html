@@ -1,5 +1,9 @@
 <!--
+<<<<<<< HEAD
 Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,11 +18,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+<<<<<<< HEAD
 <md-button ng-click="::$ctrl.viewLogs()">
   <md-icon class="kd-actionbar-icon-button">subject</md-icon>
+=======
+<md-button ng-click="::$ctrl.viewLogs()"
+           class="kd-actionbar-button">
+  <md-icon>subject</md-icon>
+>>>>>>> upstream/master
   <md-tooltip md-delay="500"
               md-autohide>
     [[View logs|Tooltip for the 'logs' button on the action bar.]]
   </md-tooltip>
+<<<<<<< HEAD
   [[Logs|Tooltip for the 'logs' button on the action bar.]]
+=======
+  <div class="kd-actionbar-button-text">[[Logs|Tooltip for the 'logs' button on the action bar.]]</div>
+>>>>>>> upstream/master
 </md-button>

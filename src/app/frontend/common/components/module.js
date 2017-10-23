@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +16,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+<<<<<<< HEAD
 import filtersModule from '../filters/module';
 import stateModule from '../state/module';
 
@@ -20,17 +25,33 @@ import namespaceModule from './../namespace/module';
 import actionbarModule from './actionbar/module';
 import allocatedResourcesChartModule from './allocatedresourceschart/module';
 import annotationsModule from './annotations/module';
+=======
+import dataSelectModule from '../dataselect/module';
+import filtersModule from '../filters/module';
+import namespaceModule from '../namespace/module';
+import stateModule from '../state/module';
+
+import actionbarModule from './actionbar/module';
+import allocatedResourcesChartModule from './allocatedresourceschart/module';
+import annotationsModule from './annotations/module';
+import {capacityComponent} from './capacity/component';
+>>>>>>> upstream/master
 import {conditionListComponent} from './conditions/component';
 import {contentCardComponent} from './contentcard/component';
 import endpointModule from './endpoint/module';
 import graphModule from './graph/module';
 import infoCardModule from './infocard/infocard_module';
 import {labelComponent} from './labels/component';
+<<<<<<< HEAD
 /** phstsai **/
 import {sensorLabelComponent} from './sensorlabel/component';
 import {locationLabelComponent} from './locationlabel/component';
 /** phstsai **/
 import {middleEllipsisComponent} from './middleellipsis/component';
+=======
+import {middleEllipsisComponent} from './middleellipsis/component';
+import {podWarningsComponent} from './podwarnings/component';
+>>>>>>> upstream/master
 import resourceCardModule from './resourcecard/resourcecard_module';
 import {infoCardComponent} from './resourcedetail/component';
 import {scaleButtonComponent} from './scale/component';
@@ -64,10 +85,13 @@ export default angular
           allocatedResourcesChartModule.name,
         ])
     .component('kdLabels', labelComponent)
+<<<<<<< HEAD
     /** phstsai **/
     .component('kdSensorLabels', sensorLabelComponent)
     .component('kdLocationLabels', locationLabelComponent)
     /** phstsai **/
+=======
+>>>>>>> upstream/master
     .component('kdZeroState', zeroStateComponent)
     .component('kdMiddleEllipsis', middleEllipsisComponent)
     .component('kdSparkline', sparklineComponent)
@@ -78,5 +102,10 @@ export default angular
     .component('kdWarnings', warningsComponent)
     .component('kdConditionList', conditionListComponent)
     .component('kdScaleButton', scaleButtonComponent)
+<<<<<<< HEAD
+=======
+    .component('kdPodWarnings', podWarningsComponent)
+    .component('kdCapacity', capacityComponent)
+>>>>>>> upstream/master
     .directive('kdWarnThreshold', warnThresholdDirective)
     .directive('kdUploadFile', uploadFileDirective);

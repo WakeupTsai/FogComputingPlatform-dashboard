@@ -34,6 +34,13 @@ func (c *FakeAuthorizationV1) SelfSubjectAccessReviews() v1.SelfSubjectAccessRev
 	return &FakeSelfSubjectAccessReviews{c}
 }
 
+<<<<<<< HEAD
+=======
+func (c *FakeAuthorizationV1) SelfSubjectRulesReviews() v1.SelfSubjectRulesReviewInterface {
+	return &FakeSelfSubjectRulesReviews{c}
+}
+
+>>>>>>> upstream/master
 func (c *FakeAuthorizationV1) SubjectAccessReviews() v1.SubjectAccessReviewInterface {
 	return &FakeSubjectAccessReviews{c}
 }

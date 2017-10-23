@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +26,10 @@ import {stateName} from '../../persistentvolumeclaim/detail/state';
 class PersistentVolumeClaimCardController {
   /**
    * @param {!ui.router.$state} $state
+<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
+=======
+>>>>>>> upstream/master
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    * @ngInject
    */
@@ -36,9 +43,12 @@ class PersistentVolumeClaimCardController {
     /** @private {!ui.router.$state} */
     this.state_ = $state;
 
+<<<<<<< HEAD
     /** @private */
     this.interpolate_ = $interpolate;
 
+=======
+>>>>>>> upstream/master
     /** @private {!../../common/namespace/service.NamespaceService} */
     this.kdNamespaceService_ = kdNamespaceService;
   }
@@ -89,6 +99,7 @@ class PersistentVolumeClaimCardController {
   isLost() {
     return this.persistentVolumeClaim.status === 'Lost';
   }
+<<<<<<< HEAD
 
   /**
    * @export
@@ -105,6 +116,8 @@ class PersistentVolumeClaimCardController {
         goog.getMsg('Created at {$creationDate}', {'creationDate': filter({'date': creationDate})});
     return MSG_PERSISTENT_VOLUME_CLAIM_LIST_CREATED_AT_TOOLTIP;
   }
+=======
+>>>>>>> upstream/master
 }
 
 /**

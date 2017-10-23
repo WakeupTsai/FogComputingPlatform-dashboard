@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +27,20 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/event"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
+<<<<<<< HEAD
+=======
+	batch "k8s.io/api/batch/v1"
+	"k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	k8sClient "k8s.io/client-go/kubernetes"
+<<<<<<< HEAD
 	"k8s.io/client-go/pkg/api/v1"
 	batch "k8s.io/client-go/pkg/apis/batch/v1"
+=======
+>>>>>>> upstream/master
 )
 
 // GetJobPods return list of pods targeting job.
@@ -93,5 +105,13 @@ func getJobPodInfo(client k8sClient.Interface, job *batch.Job) (*common.PodInfo,
 	}
 
 	podInfo := common.GetPodInfo(job.Status.Active, job.Spec.Completions, pods.Items)
+<<<<<<< HEAD
+=======
+
+	// This pod info for jobs should be get from job status, similar to kubectl describe logic.
+	podInfo.Running = job.Status.Active
+	podInfo.Succeeded = job.Status.Succeeded
+	podInfo.Failed = job.Status.Failed
+>>>>>>> upstream/master
 	return &podInfo, nil
 }

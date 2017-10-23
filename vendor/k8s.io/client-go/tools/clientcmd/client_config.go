@@ -27,7 +27,11 @@ import (
 	"github.com/golang/glog"
 	"github.com/imdario/mergo"
 
+<<<<<<< HEAD
 	"k8s.io/client-go/pkg/api/v1"
+=======
+	"k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	restclient "k8s.io/client-go/rest"
 	clientauth "k8s.io/client-go/tools/auth"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -82,7 +86,11 @@ describe('DeployFromFile controller', () => {
 
   it('should open error dialog and redirect the page', () => {
     spyOn(ctrl.errorDialog_, 'open');
+<<<<<<< HEAD
     spyOn(ctrl.kdHistoryService_, 'back');
+=======
+    spyOn(ctrl.state_, 'go');
+>>>>>>> upstream/master
     let response = {
       name: 'foo-name',
       content: 'foo-content',
@@ -99,12 +107,20 @@ describe('DeployFromFile controller', () => {
 
     // then
     expect(ctrl.errorDialog_.open).toHaveBeenCalled();
+<<<<<<< HEAD
     expect(ctrl.kdHistoryService_.back).toHaveBeenCalled();
+=======
+    expect(ctrl.state_.go).toHaveBeenCalled();
+>>>>>>> upstream/master
   });
 
   it('should redirect the page and not open error dialog', () => {
     spyOn(ctrl.errorDialog_, 'open');
+<<<<<<< HEAD
     spyOn(ctrl.kdHistoryService_, 'back');
+=======
+    spyOn(ctrl.state_, 'go');
+>>>>>>> upstream/master
     mockResource.and.callFake(resource);
     let response = {
       name: 'foo-name',
@@ -118,7 +134,11 @@ describe('DeployFromFile controller', () => {
 
     // then
     expect(ctrl.errorDialog_.open).not.toHaveBeenCalled();
+<<<<<<< HEAD
     expect(ctrl.kdHistoryService_.back).toHaveBeenCalled();
+=======
+    expect(ctrl.state_.go).toHaveBeenCalled();
+>>>>>>> upstream/master
   });
 
   it('should not redirect the page and but open error dialog', (doneFn) => {

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +25,15 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/event"
+<<<<<<< HEAD
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
+=======
+	"k8s.io/api/core/v1"
+	extensions "k8s.io/api/extensions/v1beta1"
+	"k8s.io/client-go/kubernetes"
+>>>>>>> upstream/master
 )
 
 // DaemonSetList contains a list of Daemon Sets in the cluster.
@@ -46,6 +56,12 @@ type DaemonSet struct {
 
 	// Container images of the Daemon Set.
 	ContainerImages []string `json:"containerImages"`
+<<<<<<< HEAD
+=======
+
+	// InitContainer images of the Daemon Set.
+	InitContainerImages []string `json:"initContainerImages"`
+>>>>>>> upstream/master
 }
 
 // GetDaemonSetList returns a list of all Daemon Set in the cluster.
@@ -116,10 +132,18 @@ func toDaemonSetList(daemonSets []extensions.DaemonSet, pods []v1.Pod, events []
 		podInfo.Warnings = event.GetPodsEventWarnings(events, matchingPods)
 
 		daemonSetList.DaemonSets = append(daemonSetList.DaemonSets, DaemonSet{
+<<<<<<< HEAD
 			ObjectMeta:      api.NewObjectMeta(daemonSet.ObjectMeta),
 			TypeMeta:        api.NewTypeMeta(api.ResourceKindDaemonSet),
 			Pods:            podInfo,
 			ContainerImages: common.GetContainerImages(&daemonSet.Spec.Template.Spec),
+=======
+			ObjectMeta:          api.NewObjectMeta(daemonSet.ObjectMeta),
+			TypeMeta:            api.NewTypeMeta(api.ResourceKindDaemonSet),
+			Pods:                podInfo,
+			ContainerImages:     common.GetContainerImages(&daemonSet.Spec.Template.Spec),
+			InitContainerImages: common.GetInitContainerImages(&daemonSet.Spec.Template.Spec),
+>>>>>>> upstream/master
 		})
 	}
 

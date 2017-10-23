@@ -20,7 +20,11 @@ import (
 	"encoding/json"
 	"time"
 
+<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/openapi"
+=======
+	openapi "k8s.io/kube-openapi/pkg/common"
+>>>>>>> upstream/master
 
 	"github.com/go-openapi/spec"
 	"github.com/google/gofuzz"
@@ -40,8 +44,13 @@ type MicroTime struct {
 // DeepCopy returns a deep-copy of the MicroTime value.  The underlying time.Time
 // type is effectively immutable in the time API, so it is safe to
 // copy-by-assign, despite the presence of (unexported) Pointer fields.
+<<<<<<< HEAD
 func (t MicroTime) DeepCopy() MicroTime {
 	return t
+=======
+func (t *MicroTime) DeepCopyInto(out *MicroTime) {
+	*out = *t
+>>>>>>> upstream/master
 }
 
 // String returns the representation of the time.
@@ -74,22 +83,38 @@ func (t *MicroTime) IsZero() bool {
 }
 
 // Before reports whether the time instant t is before u.
+<<<<<<< HEAD
 func (t MicroTime) Before(u MicroTime) bool {
+=======
+func (t *MicroTime) Before(u *MicroTime) bool {
+>>>>>>> upstream/master
 	return t.Time.Before(u.Time)
 }
 
 // Equal reports whether the time instant t is equal to u.
+<<<<<<< HEAD
 func (t MicroTime) Equal(u MicroTime) bool {
+=======
+func (t *MicroTime) Equal(u *MicroTime) bool {
+>>>>>>> upstream/master
 	return t.Time.Equal(u.Time)
 }
 
 // BeforeTime reports whether the time instant t is before second-lever precision u.
+<<<<<<< HEAD
 func (t MicroTime) BeforeTime(u Time) bool {
+=======
+func (t *MicroTime) BeforeTime(u *Time) bool {
+>>>>>>> upstream/master
 	return t.Time.Before(u.Time)
 }
 
 // EqualTime reports whether the time instant t is equal to second-lever precision u.
+<<<<<<< HEAD
 func (t MicroTime) EqualTime(u Time) bool {
+=======
+func (t *MicroTime) EqualTime(u *Time) bool {
+>>>>>>> upstream/master
 	return t.Time.Equal(u.Time)
 }
 

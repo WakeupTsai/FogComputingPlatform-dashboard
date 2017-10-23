@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -130,7 +134,11 @@ kd-content-card {
   transform: scale(-1, 1);
 }
 
+<<<<<<< HEAD
 .kd-logs-timer-icon {
+=======
+.kd-logs-icon {
+>>>>>>> upstream/master
   color: $logs-color-black;
 }
 
@@ -140,4 +148,9 @@ kd-content-card {
 
 .kd-logs-style-buttons {
   float: right;
+}
+
+.kd-cross-line-black {
+  stroke: $emphasis;
+  stroke-width: 2;
 }

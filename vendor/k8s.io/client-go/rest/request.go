@@ -33,27 +33,40 @@ import (
 	"time"
 
 	"github.com/golang/glog"
+<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
+=======
+	"golang.org/x/net/http2"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+>>>>>>> upstream/master
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer/streaming"
 	"k8s.io/apimachinery/pkg/util/net"
+<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/pkg/api/v1"
+=======
+	"k8s.io/apimachinery/pkg/watch"
+>>>>>>> upstream/master
 	restclientwatch "k8s.io/client-go/rest/watch"
 	"k8s.io/client-go/tools/metrics"
 	"k8s.io/client-go/util/flowcontrol"
 )
 
 var (
+<<<<<<< HEAD
 	// specialParams lists parameters that are handled specially and which users of Request
 	// are therefore not allowed to set manually.
 	specialParams = sets.NewString("timeout")
 
+=======
+>>>>>>> upstream/master
 	// longThrottleLatency defines threshold for logging requests. All requests being
 	// throttle for more than longThrottleLatency will be logged.
 	longThrottleLatency = 50 * time.Millisecond
@@ -269,7 +282,11 @@ func (r *Request) AbsPath(segments ...string) *Request {
 }
 
 // RequestURI overwrites existing path and parameters with the value of the provided server relative
+<<<<<<< HEAD
 // URI. Some parameters (those in specialParameters) cannot be overwritten.
+=======
+// URI.
+>>>>>>> upstream/master
 func (r *Request) RequestURI(uri string) *Request {
 	if r.err != nil {
 		return r
@@ -291,6 +308,7 @@ func (r *Request) RequestURI(uri string) *Request {
 	return r
 }
 
+<<<<<<< HEAD
 const (
 	// A constant that clients can use to refer in a field selector to the object name field.
 	// Will be automatically emitted as the correct name for the API version.
@@ -428,6 +446,8 @@ func (r *Request) UintParam(paramName string, u uint64) *Request {
 	return r.setParam(paramName, strconv.FormatUint(u, 10))
 }
 
+=======
+>>>>>>> upstream/master
 // Param creates a query parameter with the given string value.
 func (r *Request) Param(paramName, s string) *Request {
 	if r.err != nil {
@@ -439,6 +459,11 @@ func (r *Request) Param(paramName, s string) *Request {
 // VersionedParams will take the provided object, serialize it to a map[string][]string using the
 // implicit RESTClient API version and the default parameter codec, and then add those as parameters
 // to the request. Use this to provide versioned query parameters from client libraries.
+<<<<<<< HEAD
+=======
+// VersionedParams will not write query parameters that have omitempty set and are empty. If a
+// parameter has already been set it is appended to (Params and VersionedParams are additive).
+>>>>>>> upstream/master
 func (r *Request) VersionedParams(obj runtime.Object, codec runtime.ParameterCodec) *Request {
 	if r.err != nil {
 		return r
@@ -449,6 +474,7 @@ func (r *Request) VersionedParams(obj runtime.Object, codec runtime.ParameterCod
 		return r
 	}
 	for k, v := range params {
+<<<<<<< HEAD
 		for _, value := range v {
 			// TODO: Move it to setParam method, once we get rid of
 			// FieldSelectorParam & LabelSelectorParam methods.
@@ -486,15 +512,24 @@ func (r *Request) VersionedParams(obj runtime.Object, codec runtime.ParameterCod
 
 			r.setParam(k, value)
 		}
+=======
+		if r.params == nil {
+			r.params = make(url.Values)
+		}
+		r.params[k] = append(r.params[k], v...)
+>>>>>>> upstream/master
 	}
 	return r
 }
 
 func (r *Request) setParam(paramName, value string) *Request {
+<<<<<<< HEAD
 	if specialParams.Has(paramName) {
 		r.err = fmt.Errorf("must set %v through the corresponding function, not directly.", paramName)
 		return r
 	}
+=======
+>>>>>>> upstream/master
 	if r.params == nil {
 		r.params = make(url.Values)
 	}
@@ -502,11 +537,22 @@ func (r *Request) setParam(paramName, value string) *Request {
 	return r
 }
 
+<<<<<<< HEAD
 func (r *Request) SetHeader(key, value string) *Request {
 	if r.headers == nil {
 		r.headers = http.Header{}
 	}
 	r.headers.Set(key, value)
+=======
+func (r *Request) SetHeader(key string, values ...string) *Request {
+	if r.headers == nil {
+		r.headers = http.Header{}
+	}
+	r.headers.Del(key)
+	for _, value := range values {
+		r.headers.Add(key, value)
+	}
+>>>>>>> upstream/master
 	return r
 }
 
@@ -609,7 +655,11 @@ func (r *Request) URL() *url.URL {
 // finalURLTemplate is similar to URL(), but will make all specific parameter values equal
 // - instead of name or namespace, "{name}" and "{namespace}" will be used, and all query
 // parameters will be reset. This creates a copy of the request so as not to change the
+<<<<<<< HEAD
 // underyling object.  This means some useful request info (like the types of field
+=======
+// underlying object.  This means some useful request info (like the types of field
+>>>>>>> upstream/master
 // selectors in use) will be lost.
 // TODO: preserve field selector keys
 func (r Request) finalURLTemplate() url.URL {
@@ -921,8 +971,34 @@ func (r *Request) DoRaw() ([]byte, error) {
 func (r *Request) transformResponse(resp *http.Response, req *http.Request) Result {
 	var body []byte
 	if resp.Body != nil {
+<<<<<<< HEAD
 		if data, err := ioutil.ReadAll(resp.Body); err == nil {
 			body = data
+=======
+		data, err := ioutil.ReadAll(resp.Body)
+		switch err.(type) {
+		case nil:
+			body = data
+		case http2.StreamError:
+			// This is trying to catch the scenario that the server may close the connection when sending the
+			// response body. This can be caused by server timeout due to a slow network connection.
+			// TODO: Add test for this. Steps may be:
+			// 1. client-go (or kubectl) sends a GET request.
+			// 2. Apiserver sends back the headers and then part of the body
+			// 3. Apiserver closes connection.
+			// 4. client-go should catch this and return an error.
+			glog.V(2).Infof("Stream error %#v when reading response body, may be caused by closed connection.", err)
+			streamErr := fmt.Errorf("Stream error %#v when reading response body, may be caused by closed connection. Please retry.", err)
+			return Result{
+				err: streamErr,
+			}
+		default:
+			glog.Errorf("Unexpected error when reading response body: %#v", err)
+			unexpectedErr := fmt.Errorf("Unexpected error %#v when reading response body. Please retry.", err)
+			return Result{
+				err: unexpectedErr,
+			}
+>>>>>>> upstream/master
 		}
 	}
 
@@ -1069,7 +1145,11 @@ func isTextResponse(resp *http.Response) bool {
 func checkWait(resp *http.Response) (int, bool) {
 	switch r := resp.StatusCode; {
 	// any 500 error code and 429 can trigger a wait
+<<<<<<< HEAD
 	case r == errors.StatusTooManyRequests, r >= 500:
+=======
+	case r == http.StatusTooManyRequests, r >= 500:
+>>>>>>> upstream/master
 	default:
 		return 0, false
 	}

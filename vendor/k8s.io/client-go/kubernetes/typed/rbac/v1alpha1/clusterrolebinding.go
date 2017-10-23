@@ -17,11 +17,18 @@ limitations under the License.
 package v1alpha1
 
 import (
+<<<<<<< HEAD
+=======
+	v1alpha1 "k8s.io/api/rbac/v1alpha1"
+>>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v1alpha1 "k8s.io/client-go/pkg/apis/rbac/v1alpha1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -56,6 +63,41 @@ func newClusterRoleBindings(c *RbacV1alpha1Client) *clusterRoleBindings {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the clusterRoleBinding, and returns the corresponding clusterRoleBinding object, and an error if there is any.
+func (c *clusterRoleBindings) Get(name string, options v1.GetOptions) (result *v1alpha1.ClusterRoleBinding, err error) {
+	result = &v1alpha1.ClusterRoleBinding{}
+	err = c.client.Get().
+		Resource("clusterrolebindings").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of ClusterRoleBindings that match those selectors.
+func (c *clusterRoleBindings) List(opts v1.ListOptions) (result *v1alpha1.ClusterRoleBindingList, err error) {
+	result = &v1alpha1.ClusterRoleBindingList{}
+	err = c.client.Get().
+		Resource("clusterrolebindings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested clusterRoleBindings.
+func (c *clusterRoleBindings) Watch(opts v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Resource("clusterrolebindings").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a clusterRoleBinding and creates it.  Returns the server's representation of the clusterRoleBinding, and an error, if there is any.
 func (c *clusterRoleBindings) Create(clusterRoleBinding *v1alpha1.ClusterRoleBinding) (result *v1alpha1.ClusterRoleBinding, err error) {
 	result = &v1alpha1.ClusterRoleBinding{}
@@ -99,6 +141,7 @@ func (c *clusterRoleBindings) DeleteCollection(options *v1.DeleteOptions, listOp
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the clusterRoleBinding, and returns the corresponding clusterRoleBinding object, and an error if there is any.
 func (c *clusterRoleBindings) Get(name string, options v1.GetOptions) (result *v1alpha1.ClusterRoleBinding, err error) {
 	result = &v1alpha1.ClusterRoleBinding{}
@@ -131,6 +174,8 @@ func (c *clusterRoleBindings) Watch(opts v1.ListOptions) (watch.Interface, error
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched clusterRoleBinding.
 func (c *clusterRoleBindings) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha1.ClusterRoleBinding, err error) {
 	result = &v1alpha1.ClusterRoleBinding{}

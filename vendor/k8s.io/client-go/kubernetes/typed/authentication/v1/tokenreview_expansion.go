@@ -17,7 +17,11 @@ limitations under the License.
 package v1
 
 import (
+<<<<<<< HEAD
 	authenticationapi "k8s.io/client-go/pkg/apis/authentication/v1"
+=======
+	authenticationapi "k8s.io/api/authentication/v1"
+>>>>>>> upstream/master
 )
 
 type TokenReviewExpansion interface {

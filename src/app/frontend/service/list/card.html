@@ -1,5 +1,9 @@
 <!--
+<<<<<<< HEAD
 Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -66,7 +70,11 @@ limitations under the License.
         {{::$ctrl.service.objectMeta.creationTimestamp | relativeTime}}
         <md-tooltip md-delay="500"
                     md-autohide>
+<<<<<<< HEAD
           {{::$ctrl.getStartedAtTooltip($ctrl.service.objectMeta.creationTimestamp)}}
+=======
+          [[Created at| Tooltip for the age column ]] {{::$ctrl.service.objectMeta.creationTimestamp | date}}
+>>>>>>> upstream/master
         </md-tooltip>
       </div>
       <div ng-if="::!$ctrl.service.objectMeta.creationTimestamp">-</div>

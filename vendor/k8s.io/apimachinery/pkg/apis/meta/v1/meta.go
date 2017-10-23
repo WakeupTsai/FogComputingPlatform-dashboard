@@ -67,6 +67,7 @@ type Object interface {
 
 // ListMetaAccessor retrieves the list interface from an object
 type ListMetaAccessor interface {
+<<<<<<< HEAD
 	GetListMeta() List
 }
 
@@ -75,12 +76,38 @@ type ListMetaAccessor interface {
 // not support that field will be a no-op and return a default value.
 // TODO: move this, and TypeMeta and ListMeta, to a different package
 type List interface {
+=======
+	GetListMeta() ListInterface
+}
+
+// Common lets you work with core metadata from any of the versioned or
+// internal API objects. Attempting to set or retrieve a field on an object that does
+// not support that field will be a no-op and return a default value.
+// TODO: move this, and TypeMeta and ListMeta, to a different package
+type Common interface {
+>>>>>>> upstream/master
 	GetResourceVersion() string
 	SetResourceVersion(version string)
 	GetSelfLink() string
 	SetSelfLink(selfLink string)
 }
 
+<<<<<<< HEAD
+=======
+// ListInterface lets you work with list metadata from any of the versioned or
+// internal API objects. Attempting to set or retrieve a field on an object that does
+// not support that field will be a no-op and return a default value.
+// TODO: move this, and TypeMeta and ListMeta, to a different package
+type ListInterface interface {
+	GetResourceVersion() string
+	SetResourceVersion(version string)
+	GetSelfLink() string
+	SetSelfLink(selfLink string)
+	GetContinue() string
+	SetContinue(c string)
+}
+
+>>>>>>> upstream/master
 // Type exposes the type and APIVersion of versioned or internal API objects.
 // TODO: move this, and TypeMeta and ListMeta, to a different package
 type Type interface {
@@ -94,6 +121,11 @@ func (meta *ListMeta) GetResourceVersion() string        { return meta.ResourceV
 func (meta *ListMeta) SetResourceVersion(version string) { meta.ResourceVersion = version }
 func (meta *ListMeta) GetSelfLink() string               { return meta.SelfLink }
 func (meta *ListMeta) SetSelfLink(selfLink string)       { meta.SelfLink = selfLink }
+<<<<<<< HEAD
+=======
+func (meta *ListMeta) GetContinue() string               { return meta.Continue }
+func (meta *ListMeta) SetContinue(c string)              { meta.Continue = c }
+>>>>>>> upstream/master
 
 func (obj *TypeMeta) GetObjectKind() schema.ObjectKind { return obj }
 
@@ -107,7 +139,11 @@ func (obj *TypeMeta) GroupVersionKind() schema.GroupVersionKind {
 	return schema.FromAPIVersionAndKind(obj.APIVersion, obj.Kind)
 }
 
+<<<<<<< HEAD
 func (obj *ListMeta) GetListMeta() List { return obj }
+=======
+func (obj *ListMeta) GetListMeta() ListInterface { return obj }
+>>>>>>> upstream/master
 
 func (obj *ObjectMeta) GetObjectMeta() Object { return obj }
 

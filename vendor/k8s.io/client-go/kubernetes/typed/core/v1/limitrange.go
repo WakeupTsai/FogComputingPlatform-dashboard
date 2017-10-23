@@ -17,11 +17,18 @@ limitations under the License.
 package v1
 
 import (
+<<<<<<< HEAD
+=======
+	v1 "k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
+<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/api/v1"
+=======
+>>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -58,6 +65,44 @@ func newLimitRanges(c *CoreV1Client, namespace string) *limitRanges {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Get takes name of the limitRange, and returns the corresponding limitRange object, and an error if there is any.
+func (c *limitRanges) Get(name string, options meta_v1.GetOptions) (result *v1.LimitRange, err error) {
+	result = &v1.LimitRange{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("limitranges").
+		Name(name).
+		VersionedParams(&options, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// List takes label and field selectors, and returns the list of LimitRanges that match those selectors.
+func (c *limitRanges) List(opts meta_v1.ListOptions) (result *v1.LimitRangeList, err error) {
+	result = &v1.LimitRangeList{}
+	err = c.client.Get().
+		Namespace(c.ns).
+		Resource("limitranges").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Do().
+		Into(result)
+	return
+}
+
+// Watch returns a watch.Interface that watches the requested limitRanges.
+func (c *limitRanges) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
+	opts.Watch = true
+	return c.client.Get().
+		Namespace(c.ns).
+		Resource("limitranges").
+		VersionedParams(&opts, scheme.ParameterCodec).
+		Watch()
+}
+
+>>>>>>> upstream/master
 // Create takes the representation of a limitRange and creates it.  Returns the server's representation of the limitRange, and an error, if there is any.
 func (c *limitRanges) Create(limitRange *v1.LimitRange) (result *v1.LimitRange, err error) {
 	result = &v1.LimitRange{}
@@ -105,6 +150,7 @@ func (c *limitRanges) DeleteCollection(options *meta_v1.DeleteOptions, listOptio
 		Error()
 }
 
+<<<<<<< HEAD
 // Get takes name of the limitRange, and returns the corresponding limitRange object, and an error if there is any.
 func (c *limitRanges) Get(name string, options meta_v1.GetOptions) (result *v1.LimitRange, err error) {
 	result = &v1.LimitRange{}
@@ -140,6 +186,8 @@ func (c *limitRanges) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
 		Watch()
 }
 
+=======
+>>>>>>> upstream/master
 // Patch applies the patch and returns the patched limitRange.
 func (c *limitRanges) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.LimitRange, err error) {
 	result = &v1.LimitRange{}

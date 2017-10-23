@@ -19,12 +19,20 @@ package v1
 import (
 	"fmt"
 
+<<<<<<< HEAD
+=======
+	"k8s.io/api/core/v1"
+>>>>>>> upstream/master
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+<<<<<<< HEAD
 	"k8s.io/client-go/pkg/api/v1"
 	"k8s.io/client-go/pkg/api/v1/ref"
+=======
+	ref "k8s.io/client-go/tools/reference"
+>>>>>>> upstream/master
 )
 
 // The EventExpansion interface allows manually adding extra methods to the EventInterface.

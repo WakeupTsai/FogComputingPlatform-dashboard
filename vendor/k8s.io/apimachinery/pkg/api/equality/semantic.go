@@ -34,6 +34,12 @@ var Semantic = conversion.EqualitiesOrDie(
 		// Uninitialized quantities are equivalent to 0 quantities.
 		return a.Cmp(b) == 0
 	},
+<<<<<<< HEAD
+=======
+	func(a, b metav1.MicroTime) bool {
+		return a.UTC() == b.UTC()
+	},
+>>>>>>> upstream/master
 	func(a, b metav1.Time) bool {
 		return a.UTC() == b.UTC()
 	},

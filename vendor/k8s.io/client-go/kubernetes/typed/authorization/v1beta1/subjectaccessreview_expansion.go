@@ -17,7 +17,11 @@ limitations under the License.
 package v1beta1
 
 import (
+<<<<<<< HEAD
 	authorizationapi "k8s.io/client-go/pkg/apis/authorization/v1beta1"
+=======
+	authorizationapi "k8s.io/api/authorization/v1beta1"
+>>>>>>> upstream/master
 )
 
 // The SubjectAccessReviewExpansion interface allows manually adding extra methods to the AuthorizationInterface.

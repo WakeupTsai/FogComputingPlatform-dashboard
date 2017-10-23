@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +17,7 @@
 // limitations under the License.
 
 /**
+<<<<<<< HEAD
  * @final
  */
 export default class NamespaceInfoController {
@@ -29,12 +34,17 @@ export default class NamespaceInfoController {
 }
 
 /**
+=======
+>>>>>>> upstream/master
  * Definition object for the component that displays namespace info.
  *
  * @return {!angular.Component}
  */
 export const namespaceInfoComponent = {
+<<<<<<< HEAD
   controller: NamespaceInfoController,
+=======
+>>>>>>> upstream/master
   templateUrl: 'namespace/detail/info.html',
   bindings: {
     /** {!backendApi.NamespaceDetail} */

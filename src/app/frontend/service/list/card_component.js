@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +25,10 @@ import {stateName} from '../../service/detail/state';
 export class ServiceCardController {
   /**
    * @param {!ui.router.$state} $state
+<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
+=======
+>>>>>>> upstream/master
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    * @ngInject
    */
@@ -34,9 +41,12 @@ export class ServiceCardController {
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+<<<<<<< HEAD
 
     /** @private {!angular.$interpolate} */
     this.interpolate_ = $interpolate;
+=======
+>>>>>>> upstream/master
   }
 
   /**
@@ -87,6 +97,7 @@ export class ServiceCardController {
   getServiceClusterIP() {
     return this.service.clusterIP ? this.service.clusterIP : '-';
   }
+<<<<<<< HEAD
 
   /**
    * @export
@@ -103,6 +114,8 @@ export class ServiceCardController {
         goog.getMsg('Created at {$startDate} UTC', {'startDate': filter({'date': startDate})});
     return MSG_SERVICE_LIST_STARTED_AT_TOOLTIP;
   }
+=======
+>>>>>>> upstream/master
 }
 
 /**

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +58,10 @@ import serviceModule from './service/module';
 import shellModule from './shell/module';
 import statefulSetModule from './statefulset/module';
 import storageClassModule from './storageclass/module';
+<<<<<<< HEAD
 import thirdPartyResourceModule from './thirdpartyresource/module';
+=======
+>>>>>>> upstream/master
 import {TitleController} from './title_controller';
 import workloadsModule from './workloads/module';
 
@@ -103,7 +110,10 @@ export default angular
           configModule.name,
           csrfTokenModule.name,
           storageClassModule.name,
+<<<<<<< HEAD
           thirdPartyResourceModule.name,
+=======
+>>>>>>> upstream/master
           roleModule.name,
           scalingModule.name,
         ])

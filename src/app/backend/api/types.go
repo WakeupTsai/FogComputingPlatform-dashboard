@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
+=======
+// Copyright 2017 The Kubernetes Authors.
+>>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -122,7 +126,10 @@ const (
 	ResourceKindSecret                  = "secret"
 	ResourceKindService                 = "service"
 	ResourceKindStatefulSet             = "statefulset"
+<<<<<<< HEAD
 	ResourceKindThirdPartyResource      = "thirdpartyresource"
+=======
+>>>>>>> upstream/master
 	ResourceKindStorageClass            = "storageclass"
 	ResourceKindRbacRole                = "role"
 	ResourceKindRbacClusterRole         = "clusterrole"
@@ -176,7 +183,10 @@ var KindToAPIMapping = map[string]struct {
 	ResourceKindSecret:                  {"secrets", ClientTypeDefault, true},
 	ResourceKindService:                 {"services", ClientTypeDefault, true},
 	ResourceKindStatefulSet:             {"statefulsets", ClientTypeAppsClient, true},
+<<<<<<< HEAD
 	ResourceKindThirdPartyResource:      {"thirdpartyresources", ClientTypeExtensionClient, true},
+=======
+>>>>>>> upstream/master
 	ResourceKindStorageClass:            {"storageclasses", ClientTypeStorageClient, false},
 	ResourceKindEndpoint:                {"endpoints", ClientTypeDefault, true},
 }
