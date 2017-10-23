@@ -16,11 +16,7 @@ limitations under the License.
 
 package v1beta1
 
-<<<<<<< HEAD
 import "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
-import "k8s.io/api/extensions/v1beta1"
->>>>>>> upstream/master
 
 // The DeploymentExpansion interface allows manually adding extra methods to the DeploymentInterface.
 type DeploymentExpansion interface {

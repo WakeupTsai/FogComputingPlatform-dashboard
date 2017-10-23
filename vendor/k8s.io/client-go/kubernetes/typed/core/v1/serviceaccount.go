@@ -17,18 +17,11 @@ limitations under the License.
 package v1
 
 import (
-<<<<<<< HEAD
-=======
-	v1 "k8s.io/api/core/v1"
->>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/api/v1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -65,44 +58,6 @@ func newServiceAccounts(c *CoreV1Client, namespace string) *serviceAccounts {
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the serviceAccount, and returns the corresponding serviceAccount object, and an error if there is any.
-func (c *serviceAccounts) Get(name string, options meta_v1.GetOptions) (result *v1.ServiceAccount, err error) {
-	result = &v1.ServiceAccount{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("serviceaccounts").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ServiceAccounts that match those selectors.
-func (c *serviceAccounts) List(opts meta_v1.ListOptions) (result *v1.ServiceAccountList, err error) {
-	result = &v1.ServiceAccountList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("serviceaccounts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested serviceAccounts.
-func (c *serviceAccounts) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("serviceaccounts").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a serviceAccount and creates it.  Returns the server's representation of the serviceAccount, and an error, if there is any.
 func (c *serviceAccounts) Create(serviceAccount *v1.ServiceAccount) (result *v1.ServiceAccount, err error) {
 	result = &v1.ServiceAccount{}
@@ -150,7 +105,6 @@ func (c *serviceAccounts) DeleteCollection(options *meta_v1.DeleteOptions, listO
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the serviceAccount, and returns the corresponding serviceAccount object, and an error if there is any.
 func (c *serviceAccounts) Get(name string, options meta_v1.GetOptions) (result *v1.ServiceAccount, err error) {
 	result = &v1.ServiceAccount{}
@@ -186,8 +140,6 @@ func (c *serviceAccounts) Watch(opts meta_v1.ListOptions) (watch.Interface, erro
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched serviceAccount.
 func (c *serviceAccounts) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.ServiceAccount, err error) {
 	result = &v1.ServiceAccount{}

@@ -18,10 +18,6 @@ package clientcmd
 
 import (
 	"strconv"
-<<<<<<< HEAD
-=======
-	"strings"
->>>>>>> upstream/master
 
 	"github.com/spf13/pflag"
 
@@ -40,11 +36,7 @@ type ConfigOverrides struct {
 	Timeout         string
 }
 
-<<<<<<< HEAD
 // ConfigOverrideFlags holds the flag names to be used for binding command line flags.  Notice that this structure tightly
-=======
-// ConfigOverrideFlags holds the flag names to be used for binding command line flags. Notice that this structure tightly
->>>>>>> upstream/master
 // corresponds to ConfigOverrides
 type ConfigOverrideFlags struct {
 	AuthOverrideFlags    AuthOverrideFlags
@@ -109,18 +101,6 @@ func (f FlagInfo) BindStringFlag(flags *pflag.FlagSet, target *string) FlagInfo 
 	return f
 }
 
-<<<<<<< HEAD
-=======
-// BindTransformingStringFlag binds the flag based on the provided info.  If LongName == "", nothing is registered
-func (f FlagInfo) BindTransformingStringFlag(flags *pflag.FlagSet, target *string, transformer func(string) (string, error)) FlagInfo {
-	// you can't register a flag without a long name
-	if len(f.LongName) > 0 {
-		flags.VarP(newTransformingStringValue(f.Default, target, transformer), f.LongName, f.ShortName, f.Description)
-	}
-	return f
-}
-
->>>>>>> upstream/master
 // BindStringSliceFlag binds the flag based on the provided info.  If LongName == "", nothing is registered
 func (f FlagInfo) BindStringArrayFlag(flags *pflag.FlagSet, target *[]string) FlagInfo {
 	// you can't register a flag without a long name
@@ -242,20 +222,5 @@ func BindClusterFlags(clusterInfo *clientcmdapi.Cluster, flags *pflag.FlagSet, f
 func BindContextFlags(contextInfo *clientcmdapi.Context, flags *pflag.FlagSet, flagNames ContextOverrideFlags) {
 	flagNames.ClusterName.BindStringFlag(flags, &contextInfo.Cluster)
 	flagNames.AuthInfoName.BindStringFlag(flags, &contextInfo.AuthInfo)
-<<<<<<< HEAD
 	flagNames.Namespace.BindStringFlag(flags, &contextInfo.Namespace)
-=======
-	flagNames.Namespace.BindTransformingStringFlag(flags, &contextInfo.Namespace, RemoveNamespacesPrefix)
-}
-
-// RemoveNamespacesPrefix is a transformer that strips "ns/", "namespace/" and "namespaces/" prefixes case-insensitively
-func RemoveNamespacesPrefix(value string) (string, error) {
-	for _, prefix := range []string{"namespaces/", "namespace/", "ns/"} {
-		if len(value) > len(prefix) && strings.EqualFold(value[0:len(prefix)], prefix) {
-			value = value[len(prefix):]
-			break
-		}
-	}
-	return value, nil
->>>>>>> upstream/master
 }

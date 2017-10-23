@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,15 +20,9 @@ import (
 
 	"github.com/kubernetes/dashboard/src/app/backend/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
-<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 	autoscaling "k8s.io/client-go/pkg/apis/autoscaling/v1"
-=======
-	autoscaling "k8s.io/api/autoscaling/v1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes/fake"
->>>>>>> upstream/master
 )
 
 var (

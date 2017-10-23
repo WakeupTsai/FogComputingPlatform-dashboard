@@ -234,10 +234,6 @@ type SelfLinker interface {
 // to return a no-op ObjectKindAccessor in cases where it is not expected to be serialized.
 type Object interface {
 	GetObjectKind() schema.ObjectKind
-<<<<<<< HEAD
-=======
-	DeepCopyObject() Object
->>>>>>> upstream/master
 }
 
 // Unstructured objects store values as map[string]interface{}, with only values that can be serialized

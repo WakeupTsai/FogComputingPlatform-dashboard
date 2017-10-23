@@ -17,18 +17,11 @@ limitations under the License.
 package v1beta1
 
 import (
-<<<<<<< HEAD
-=======
-	v1beta1 "k8s.io/api/storage/v1beta1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/storage/v1beta1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -63,41 +56,6 @@ func newStorageClasses(c *StorageV1beta1Client) *storageClasses {
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the storageClass, and returns the corresponding storageClass object, and an error if there is any.
-func (c *storageClasses) Get(name string, options v1.GetOptions) (result *v1beta1.StorageClass, err error) {
-	result = &v1beta1.StorageClass{}
-	err = c.client.Get().
-		Resource("storageclasses").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of StorageClasses that match those selectors.
-func (c *storageClasses) List(opts v1.ListOptions) (result *v1beta1.StorageClassList, err error) {
-	result = &v1beta1.StorageClassList{}
-	err = c.client.Get().
-		Resource("storageclasses").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested storageClasses.
-func (c *storageClasses) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Resource("storageclasses").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a storageClass and creates it.  Returns the server's representation of the storageClass, and an error, if there is any.
 func (c *storageClasses) Create(storageClass *v1beta1.StorageClass) (result *v1beta1.StorageClass, err error) {
 	result = &v1beta1.StorageClass{}
@@ -141,7 +99,6 @@ func (c *storageClasses) DeleteCollection(options *v1.DeleteOptions, listOptions
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the storageClass, and returns the corresponding storageClass object, and an error if there is any.
 func (c *storageClasses) Get(name string, options v1.GetOptions) (result *v1beta1.StorageClass, err error) {
 	result = &v1beta1.StorageClass{}
@@ -174,8 +131,6 @@ func (c *storageClasses) Watch(opts v1.ListOptions) (watch.Interface, error) {
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched storageClass.
 func (c *storageClasses) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.StorageClass, err error) {
 	result = &v1beta1.StorageClass{}

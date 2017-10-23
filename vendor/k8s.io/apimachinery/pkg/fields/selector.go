@@ -50,12 +50,6 @@ type Selector interface {
 
 	// String returns a human readable string that represents this selector.
 	String() string
-<<<<<<< HEAD
-=======
-
-	// Make a deep copy of the selector.
-	DeepCopySelector() Selector
->>>>>>> upstream/master
 }
 
 // Everything returns a selector that matches all fields.
@@ -105,18 +99,6 @@ func (t *hasTerm) String() string {
 	return fmt.Sprintf("%v=%v", t.field, EscapeValue(t.value))
 }
 
-<<<<<<< HEAD
-=======
-func (t *hasTerm) DeepCopySelector() Selector {
-	if t == nil {
-		return nil
-	}
-	out := new(hasTerm)
-	*out = *t
-	return out
-}
-
->>>>>>> upstream/master
 type notHasTerm struct {
 	field, value string
 }
@@ -156,18 +138,6 @@ func (t *notHasTerm) String() string {
 	return fmt.Sprintf("%v!=%v", t.field, EscapeValue(t.value))
 }
 
-<<<<<<< HEAD
-=======
-func (t *notHasTerm) DeepCopySelector() Selector {
-	if t == nil {
-		return nil
-	}
-	out := new(notHasTerm)
-	*out = *t
-	return out
-}
-
->>>>>>> upstream/master
 type andTerm []Selector
 
 func (t andTerm) Matches(ls Fields) bool {
@@ -237,20 +207,6 @@ func (t andTerm) String() string {
 	return strings.Join(terms, ",")
 }
 
-<<<<<<< HEAD
-=======
-func (t andTerm) DeepCopySelector() Selector {
-	if t == nil {
-		return nil
-	}
-	out := make([]Selector, len(t))
-	for i := range t {
-		out[i] = t[i].DeepCopySelector()
-	}
-	return andTerm(out)
-}
-
->>>>>>> upstream/master
 // SelectorFromSet returns a Selector which will match exactly the given Set. A
 // nil Set is considered equivalent to Everything().
 func SelectorFromSet(ls Set) Selector {

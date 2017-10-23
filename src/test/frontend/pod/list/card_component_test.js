@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -180,14 +176,11 @@ describe('Pod card controller', () => {
     expect(ctrl.isFailed()).toBeFalsy();
   });
 
-<<<<<<< HEAD
   it('should format the "pod start date" tooltip correctly', () => {
     expect(ctrl.getStartedAtTooltip('2016-06-06T09:13:12Z'))
         .toBe('Started at 2016-06-06T09:13 UTC');
   });
 
-=======
->>>>>>> upstream/master
   it('should show and hide cpu metrics', () => {
     let cases = [
       {pod: {}, expected: false},

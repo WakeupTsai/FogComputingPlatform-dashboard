@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +19,7 @@ import (
 	metricapi "github.com/kubernetes/dashboard/src/app/backend/integration/metric/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-<<<<<<< HEAD
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
-	extensions "k8s.io/api/extensions/v1beta1"
->>>>>>> upstream/master
 )
 
 // ReplicaSet is a presentation layer view of Kubernetes Replica Set resource. This means
@@ -42,29 +34,15 @@ type ReplicaSet struct {
 
 	// Container images of the Replica Set.
 	ContainerImages []string `json:"containerImages"`
-<<<<<<< HEAD
-=======
-
-	// Init Container images of the Replica Set.
-	InitContainerImages []string `json:"initContainerImages"`
->>>>>>> upstream/master
 }
 
 // ToReplicaSet converts replica set api object to replica set model object.
 func ToReplicaSet(replicaSet *extensions.ReplicaSet, podInfo *common.PodInfo) ReplicaSet {
 	return ReplicaSet{
-<<<<<<< HEAD
 		ObjectMeta:      api.NewObjectMeta(replicaSet.ObjectMeta),
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindReplicaSet),
 		ContainerImages: common.GetContainerImages(&replicaSet.Spec.Template.Spec),
 		Pods:            *podInfo,
-=======
-		ObjectMeta:          api.NewObjectMeta(replicaSet.ObjectMeta),
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindReplicaSet),
-		ContainerImages:     common.GetContainerImages(&replicaSet.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&replicaSet.Spec.Template.Spec),
-		Pods:                *podInfo,
->>>>>>> upstream/master
 	}
 }
 

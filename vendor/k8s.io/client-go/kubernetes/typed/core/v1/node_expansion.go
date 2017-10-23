@@ -17,13 +17,8 @@ limitations under the License.
 package v1
 
 import (
-<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/pkg/api/v1"
-=======
-	"k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/types"
->>>>>>> upstream/master
 )
 
 // The NodeExpansion interface allows manually adding extra methods to the NodeInterface.

@@ -17,20 +17,12 @@ limitations under the License.
 package fake
 
 import (
-<<<<<<< HEAD
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-=======
-	core_v1 "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
->>>>>>> upstream/master
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/api/v1"
-=======
->>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -44,41 +36,23 @@ var servicesResource = schema.GroupVersionResource{Group: "", Version: "v1", Res
 
 var servicesKind = schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Service"}
 
-<<<<<<< HEAD
 func (c *FakeServices) Create(service *v1.Service) (result *v1.Service, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(servicesResource, c.ns, service), &v1.Service{})
-=======
-// Get takes name of the service, and returns the corresponding service object, and an error if there is any.
-func (c *FakeServices) Get(name string, options v1.GetOptions) (result *core_v1.Service, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(servicesResource, c.ns, name), &core_v1.Service{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	return obj.(*v1.Service), err
 }
 
 func (c *FakeServices) Update(service *v1.Service) (result *v1.Service, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(servicesResource, c.ns, service), &v1.Service{})
-=======
-	return obj.(*core_v1.Service), err
-}
-
-// List takes label and field selectors, and returns the list of Services that match those selectors.
-func (c *FakeServices) List(opts v1.ListOptions) (result *core_v1.ServiceList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(servicesResource, servicesKind, c.ns, opts), &core_v1.ServiceList{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	return obj.(*v1.Service), err
 }
 
@@ -109,70 +83,20 @@ func (c *FakeServices) DeleteCollection(options *meta_v1.DeleteOptions, listOpti
 func (c *FakeServices) Get(name string, options meta_v1.GetOptions) (result *v1.Service, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(servicesResource, c.ns, name), &v1.Service{})
-=======
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &core_v1.ServiceList{}
-	for _, item := range obj.(*core_v1.ServiceList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested services.
-func (c *FakeServices) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(servicesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a service and creates it.  Returns the server's representation of the service, and an error, if there is any.
-func (c *FakeServices) Create(service *core_v1.Service) (result *core_v1.Service, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(servicesResource, c.ns, service), &core_v1.Service{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*core_v1.Service), err
-}
-
-// Update takes the representation of a service and updates it. Returns the server's representation of the service, and an error, if there is any.
-func (c *FakeServices) Update(service *core_v1.Service) (result *core_v1.Service, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(servicesResource, c.ns, service), &core_v1.Service{})
->>>>>>> upstream/master
-
-	if obj == nil {
-		return nil, err
-	}
-<<<<<<< HEAD
 	return obj.(*v1.Service), err
 }
 
 func (c *FakeServices) List(opts meta_v1.ListOptions) (result *v1.ServiceList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(servicesResource, servicesKind, c.ns, opts), &v1.ServiceList{})
-=======
-	return obj.(*core_v1.Service), err
-}
-
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeServices) UpdateStatus(service *core_v1.Service) (*core_v1.Service, error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(servicesResource, "status", c.ns, service), &core_v1.Service{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
 	if label == nil {
@@ -198,38 +122,9 @@ func (c *FakeServices) Watch(opts meta_v1.ListOptions) (watch.Interface, error) 
 func (c *FakeServices) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Service, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(servicesResource, c.ns, name, data, subresources...), &v1.Service{})
-=======
-	return obj.(*core_v1.Service), err
-}
-
-// Delete takes name of the service and deletes it. Returns an error if one occurs.
-func (c *FakeServices) Delete(name string, options *v1.DeleteOptions) error {
-	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(servicesResource, c.ns, name), &core_v1.Service{})
-
-	return err
-}
-
-// DeleteCollection deletes a collection of objects.
-func (c *FakeServices) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(servicesResource, c.ns, listOptions)
-
-	_, err := c.Fake.Invokes(action, &core_v1.ServiceList{})
-	return err
-}
-
-// Patch applies the patch and returns the patched service.
-func (c *FakeServices) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *core_v1.Service, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(servicesResource, c.ns, name, data, subresources...), &core_v1.Service{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	return obj.(*v1.Service), err
-=======
-	return obj.(*core_v1.Service), err
->>>>>>> upstream/master
 }

@@ -17,18 +17,11 @@ limitations under the License.
 package v1
 
 import (
-<<<<<<< HEAD
-=======
-	v1 "k8s.io/api/networking/v1"
->>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/apis/networking/v1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -65,44 +58,6 @@ func newNetworkPolicies(c *NetworkingV1Client, namespace string) *networkPolicie
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the networkPolicy, and returns the corresponding networkPolicy object, and an error if there is any.
-func (c *networkPolicies) Get(name string, options meta_v1.GetOptions) (result *v1.NetworkPolicy, err error) {
-	result = &v1.NetworkPolicy{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networkpolicies").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of NetworkPolicies that match those selectors.
-func (c *networkPolicies) List(opts meta_v1.ListOptions) (result *v1.NetworkPolicyList, err error) {
-	result = &v1.NetworkPolicyList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("networkpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested networkPolicies.
-func (c *networkPolicies) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("networkpolicies").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a networkPolicy and creates it.  Returns the server's representation of the networkPolicy, and an error, if there is any.
 func (c *networkPolicies) Create(networkPolicy *v1.NetworkPolicy) (result *v1.NetworkPolicy, err error) {
 	result = &v1.NetworkPolicy{}
@@ -150,7 +105,6 @@ func (c *networkPolicies) DeleteCollection(options *meta_v1.DeleteOptions, listO
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the networkPolicy, and returns the corresponding networkPolicy object, and an error if there is any.
 func (c *networkPolicies) Get(name string, options meta_v1.GetOptions) (result *v1.NetworkPolicy, err error) {
 	result = &v1.NetworkPolicy{}
@@ -186,8 +140,6 @@ func (c *networkPolicies) Watch(opts meta_v1.ListOptions) (watch.Interface, erro
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched networkPolicy.
 func (c *networkPolicies) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.NetworkPolicy, err error) {
 	result = &v1.NetworkPolicy{}

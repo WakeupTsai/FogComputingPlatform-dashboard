@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,11 +16,7 @@ package ingress
 
 import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-<<<<<<< HEAD
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
-	extensions "k8s.io/api/extensions/v1beta1"
->>>>>>> upstream/master
 )
 
 // The code below allows to perform complex data section on []extensions.Ingress

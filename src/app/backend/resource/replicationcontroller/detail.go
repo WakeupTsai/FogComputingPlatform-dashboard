@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,15 +26,9 @@ import (
 	hpa "github.com/kubernetes/dashboard/src/app/backend/resource/horizontalpodautoscaler"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/pod"
 	resourceService "github.com/kubernetes/dashboard/src/app/backend/resource/service"
-<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sClient "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
-=======
-	"k8s.io/api/core/v1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	k8sClient "k8s.io/client-go/kubernetes"
->>>>>>> upstream/master
 )
 
 // ReplicationControllerDetail represents detailed information about a Replication Controller.
@@ -52,12 +42,6 @@ type ReplicationControllerDetail struct {
 	// Container image list of the pod template specified by this Replication Controller.
 	ContainerImages []string `json:"containerImages"`
 
-<<<<<<< HEAD
-=======
-	// Init Container image list of the pod template specified by this Replication Controller.
-	InitContainerImages []string `json:"initContainerImages"`
-
->>>>>>> upstream/master
 	// Aggregate information about pods of this replication controller.
 	PodInfo common.PodInfo `json:"podInfo"`
 
@@ -170,10 +154,6 @@ func toReplicationControllerDetail(replicationController *v1.ReplicationControll
 		ServiceList:                 serviceList,
 		HorizontalPodAutoscalerList: hpas,
 		ContainerImages:             common.GetContainerImages(&replicationController.Spec.Template.Spec),
-<<<<<<< HEAD
-=======
-		InitContainerImages:         common.GetInitContainerImages(&replicationController.Spec.Template.Spec),
->>>>>>> upstream/master
 		Errors:                      nonCriticalErrors,
 	}
 }

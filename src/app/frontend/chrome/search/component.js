@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,42 +20,12 @@ import {stateName} from '../../search/state';
 export class SearchController {
   /**
    * @param {!ui.router.$state} $state
-<<<<<<< HEAD
    * @ngInject
    */
   constructor($state) {
     /** @private {!ui.router.$state} */
     this.state_ = $state;
 
-=======
-   * @param {!kdUiRouter.$transitions} $transitions
-   * @ngInject
-   */
-  constructor($state, $transitions) {
-    /** @private {!ui.router.$state} */
-    this.state_ = $state;
-
-    /** @private {!kdUiRouter.$transitions} */
-    this.transitions_ = $transitions;
-
-    /** @export {string} */
-    this.query = '';
-  }
-
-  /**
-   * Register state change listener to empty search bar with every state change.
-   */
-  $onInit() {
-    this.transitions_.onStart({}, () => {
-      this.clear();
-    });
-  }
-
-  /**
-   * @export
-   */
-  clear() {
->>>>>>> upstream/master
     this.query = '';
   }
 

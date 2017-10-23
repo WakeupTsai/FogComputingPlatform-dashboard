@@ -17,18 +17,11 @@ limitations under the License.
 package v1
 
 import (
-<<<<<<< HEAD
-=======
-	v1 "k8s.io/api/core/v1"
->>>>>>> upstream/master
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1 "k8s.io/client-go/pkg/api/v1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -65,44 +58,6 @@ func newConfigMaps(c *CoreV1Client, namespace string) *configMaps {
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the configMap, and returns the corresponding configMap object, and an error if there is any.
-func (c *configMaps) Get(name string, options meta_v1.GetOptions) (result *v1.ConfigMap, err error) {
-	result = &v1.ConfigMap{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("configmaps").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ConfigMaps that match those selectors.
-func (c *configMaps) List(opts meta_v1.ListOptions) (result *v1.ConfigMapList, err error) {
-	result = &v1.ConfigMapList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("configmaps").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested configMaps.
-func (c *configMaps) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("configmaps").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a configMap and creates it.  Returns the server's representation of the configMap, and an error, if there is any.
 func (c *configMaps) Create(configMap *v1.ConfigMap) (result *v1.ConfigMap, err error) {
 	result = &v1.ConfigMap{}
@@ -150,7 +105,6 @@ func (c *configMaps) DeleteCollection(options *meta_v1.DeleteOptions, listOption
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the configMap, and returns the corresponding configMap object, and an error if there is any.
 func (c *configMaps) Get(name string, options meta_v1.GetOptions) (result *v1.ConfigMap, err error) {
 	result = &v1.ConfigMap{}
@@ -186,8 +140,6 @@ func (c *configMaps) Watch(opts meta_v1.ListOptions) (watch.Interface, error) {
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched configMap.
 func (c *configMaps) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.ConfigMap, err error) {
 	result = &v1.ConfigMap{}

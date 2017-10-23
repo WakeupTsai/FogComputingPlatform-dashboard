@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,21 +18,14 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-<<<<<<< HEAD
-=======
-	"k8s.io/api/core/v1"
->>>>>>> upstream/master
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	client "k8s.io/client-go/kubernetes"
-<<<<<<< HEAD
 	kubeapi "k8s.io/client-go/pkg/api"
 	"k8s.io/client-go/pkg/api/v1"
-=======
->>>>>>> upstream/master
 )
 
 // EmptyEventList is a empty list of events.
@@ -49,11 +38,7 @@ var EmptyEventList = &common.EventList{
 
 // GetEvents gets events associated to resource with given name.
 func GetEvents(client client.Interface, namespace, resourceName string) ([]v1.Event, error) {
-<<<<<<< HEAD
 	fieldSelector, err := fields.ParseSelector(kubeapi.EventInvolvedNameField + "=" + resourceName)
-=======
-	fieldSelector, err := fields.ParseSelector("involvedObject.name" + "=" + resourceName)
->>>>>>> upstream/master
 
 	if err != nil {
 		return nil, err

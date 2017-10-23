@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,18 +23,11 @@ import {stateName} from '../../configmap/detail/state';
 class ConfigMapCardController {
   /**
    * @param {!ui.router.$state} $state
-<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    * @ngInject
    */
   constructor($state, $interpolate, kdNamespaceService) {
-=======
-   * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
-   * @ngInject
-   */
-  constructor($state, kdNamespaceService) {
->>>>>>> upstream/master
     /**
      * Initialized from the scope.
      * @export {!backendApi.ConfigMap}
@@ -48,12 +37,9 @@ class ConfigMapCardController {
     /** @private {!ui.router.$state} */
     this.state_ = $state;
 
-<<<<<<< HEAD
     /** @private */
     this.interpolate_ = $interpolate;
 
-=======
->>>>>>> upstream/master
     /** @private {!../../common/namespace/service.NamespaceService} */
     this.kdNamespaceService_ = kdNamespaceService;
   }
@@ -75,7 +61,6 @@ class ConfigMapCardController {
         stateName,
         new StateParams(this.configMap.objectMeta.namespace, this.configMap.objectMeta.name));
   }
-<<<<<<< HEAD
 
   /**
    * @export
@@ -92,8 +77,6 @@ class ConfigMapCardController {
         goog.getMsg('Created at {$creationDate}', {'creationDate': filter({'date': creationDate})});
     return MSG_CONFIG_MAP_LIST_CREATED_AT_TOOLTIP;
   }
-=======
->>>>>>> upstream/master
 }
 
 /**

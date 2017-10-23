@@ -84,16 +84,6 @@ type functionFakeRuntimeObject func()
 func (obj functionFakeRuntimeObject) GetObjectKind() schema.ObjectKind {
 	return schema.EmptyObjectKind
 }
-<<<<<<< HEAD
-=======
-func (obj functionFakeRuntimeObject) DeepCopyObject() runtime.Object {
-	if obj == nil {
-		return nil
-	}
-	// funcs are immutable. Hence, just return the original func.
-	return obj
-}
->>>>>>> upstream/master
 
 // Execute f, blocking the incoming queue (and waiting for it to drain first).
 // The purpose of this terrible hack is so that watchers added after an event

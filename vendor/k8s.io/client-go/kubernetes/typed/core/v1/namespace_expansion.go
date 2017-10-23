@@ -16,11 +16,7 @@ limitations under the License.
 
 package v1
 
-<<<<<<< HEAD
 import "k8s.io/client-go/pkg/api/v1"
-=======
-import "k8s.io/api/core/v1"
->>>>>>> upstream/master
 
 // The NamespaceExpansion interface allows manually adding extra methods to the NamespaceInterface.
 type NamespaceExpansion interface {

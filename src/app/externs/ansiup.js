@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,17 +13,14 @@
 // limitations under the License.
 
 /**
- * @fileoverview Externs for https://github.com/mariusstaicu/ansi-up
+ * @fileoverview Externs for https://github.com/drudru/ansi_up
  *
  * @externs
  */
 
-/**
- * @constructor
- */
-const AnsiUp = function() {};
+const ansi_up = {};
 
 /**
  * @param {string} ansi
  */
-AnsiUp.prototype.ansi_to_html = function(ansi) {};
+ansi_up.ansi_to_html = function(ansi) {};

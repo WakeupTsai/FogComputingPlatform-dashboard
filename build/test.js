@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 import childProcess from 'child_process';
 import gulp from 'gulp';
+import codecov from 'gulp-codecov.io';
 import gulpProtractor from 'gulp-protractor';
 import karma from 'karma';
 import path from 'path';
@@ -71,7 +72,6 @@ function runProtractorTests(doneFn) {
  * Runs once all unit tests of the application.
  */
 gulp.task('test', ['frontend-test', 'backend-test-with-coverage']);
-<<<<<<< HEAD
 
 /**
  * Execute gulp-codecov task and uploads generated
@@ -83,8 +83,6 @@ gulp.task('coverage-codecov-upload', function() {
   gulp.src(conf.paths.coverageFrontend).pipe(codecov());
   gulp.src(conf.paths.coverageBackend).pipe(codecov());
 });
-=======
->>>>>>> upstream/master
 
 /**
  * Runs once all unit tests of the frontend application.
@@ -150,6 +148,13 @@ gulp.task('integration-test', ['serve:nowatch', 'webdriver-update'], runProtract
  * Runs application integration tests. Uses production version of the application.
  */
 gulp.task('integration-test:prod', ['serve:prod', 'webdriver-update'], runProtractorTests);
+
+/**
+ * Runs application integration tests. Uses production version of the application.
+ */
+gulp.task(
+    'local-cluster-integration-test:prod', ['serve:prod', 'local-up-cluster', 'webdriver-update'],
+    runProtractorTests);
 
 /**
  * Downloads and updates webdriver. Required to keep it up to date.

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +17,7 @@ import Breadcrumb from './breadcrumb';
 /**
  * @final
  */
-<<<<<<< HEAD
 export default class BreadcrumbsController {
-=======
-class BreadcrumbsController {
->>>>>>> upstream/master
   /**
    * Constructs breadcrumbs controller.
    *

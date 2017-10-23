@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,10 +83,7 @@ func (handler *LocaleHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		// we want a different index.html (for the right locale) to be served when the page refreshes.
 		w.Header().Add("Cache-Control", "no-store")
 	}
-	acceptLanguage := os.Getenv("ACCEPT_LANGUAGE")
-	if acceptLanguage == "" {
-		acceptLanguage = r.Header.Get("Accept-Language")
-	}
+	acceptLanguage := r.Header.Get("Accept-Language")
 	dirName := handler.determineLocalizedDir(acceptLanguage)
 	http.FileServer(http.Dir(dirName)).ServeHTTP(w, r)
 }

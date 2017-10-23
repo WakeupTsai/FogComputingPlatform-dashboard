@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +21,10 @@ import validatorsModule from '../common/validators/module';
 import {deployComponent} from './component';
 import {deployFromFileComponent} from './deployfromfile_component';
 import {deployFromSettingsComponent} from './deployfromsettings_component';
-<<<<<<< HEAD
 /** phstsai **/
 import {deployMyServiceComponent} from './deploymyservice_component';
 import {showMapComponent} from './showmap_component';
 
-=======
->>>>>>> upstream/master
 import {deployLabelComponent} from './deploylabel_component';
 import {environmentVariablesComponent} from './environmentvariables_component';
 import fileReaderDirective from './filereader_directive';
@@ -75,11 +68,7 @@ export default angular
     .component('kdDeployLabel', deployLabelComponent)
     .component('kdDeploy', deployComponent)
     .component('kdDeployFromFile', deployFromFileComponent)
-<<<<<<< HEAD
     .component('kdDeployFromSettings', deployFromSettingsComponent)
     /** phstsai **/
     .component('kdDeployMyService', deployMyServiceComponent)
     .component('kdShowMap', showMapComponent);
-=======
-    .component('kdDeployFromSettings', deployFromSettingsComponent);
->>>>>>> upstream/master

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,15 +25,9 @@ import (
 
 	restful "github.com/emicklei/go-restful"
 	"gopkg.in/igm/sockjs-go.v2/sockjs"
-<<<<<<< HEAD
 	remotecommandconsts "k8s.io/apimachinery/pkg/util/remotecommand"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api"
-=======
-	"k8s.io/api/core/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/kubernetes/scheme"
->>>>>>> upstream/master
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/remotecommand"
 )
@@ -202,45 +192,27 @@ func startProcess(k8sClient kubernetes.Interface, cfg *rest.Config, request *res
 		Namespace(namespace).
 		SubResource("exec")
 
-<<<<<<< HEAD
 	req.VersionedParams(&api.PodExecOptions{
-=======
-	req.VersionedParams(&v1.PodExecOptions{
->>>>>>> upstream/master
 		Container: containerName,
 		Command:   cmd,
 		Stdin:     true,
 		Stdout:    true,
 		Stderr:    true,
 		TTY:       true,
-<<<<<<< HEAD
 	}, api.ParameterCodec)
 
 	exec, err := remotecommand.NewExecutor(cfg, "POST", req.URL())
-=======
-	}, scheme.ParameterCodec)
-
-	exec, err := remotecommand.NewSPDYExecutor(cfg, "POST", req.URL())
->>>>>>> upstream/master
 	if err != nil {
 		return err
 	}
 
 	err = exec.Stream(remotecommand.StreamOptions{
-<<<<<<< HEAD
 		SupportedProtocols: remotecommandconsts.SupportedStreamingProtocols,
 		Stdin:              ptyHandler,
 		Stdout:             ptyHandler,
 		Stderr:             ptyHandler,
 		TerminalSizeQueue:  ptyHandler,
 		Tty:                true,
-=======
-		Stdin:             ptyHandler,
-		Stdout:            ptyHandler,
-		Stderr:            ptyHandler,
-		TerminalSizeQueue: ptyHandler,
-		Tty:               true,
->>>>>>> upstream/master
 	})
 	if err != nil {
 		return err

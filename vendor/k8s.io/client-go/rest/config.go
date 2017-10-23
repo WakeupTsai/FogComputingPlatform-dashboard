@@ -29,17 +29,10 @@ import (
 
 	"github.com/golang/glog"
 
-<<<<<<< HEAD
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/pkg/api/v1"
-=======
-	"k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
->>>>>>> upstream/master
 	"k8s.io/client-go/pkg/version"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	certutil "k8s.io/client-go/util/cert"
@@ -78,13 +71,6 @@ type Config struct {
 	// TODO: demonstrate an OAuth2 compatible client.
 	BearerToken string
 
-<<<<<<< HEAD
-=======
-	// CacheDir is the directory where we'll store HTTP cached responses.
-	// If set to empty string, no caching mechanism will be used.
-	CacheDir string
-
->>>>>>> upstream/master
 	// Impersonate is the configuration that RESTClient will use for impersonation.
 	Impersonate ImpersonationConfig
 
@@ -124,12 +110,6 @@ type Config struct {
 	// The maximum length of time to wait before giving up on a server request. A value of zero means no timeout.
 	Timeout time.Duration
 
-<<<<<<< HEAD
-=======
-	// Dial specifies the dial function for creating unencrypted TCP connections.
-	Dial func(network, addr string) (net.Conn, error)
-
->>>>>>> upstream/master
 	// Version forces a specific version to be used (if registered)
 	// Do we need this?
 	// Version string
@@ -146,10 +126,6 @@ type ImpersonationConfig struct {
 	Extra map[string][]string
 }
 
-<<<<<<< HEAD
-=======
-// +k8s:deepcopy-gen=true
->>>>>>> upstream/master
 // TLSClientConfig contains settings to enable transport layer security
 type TLSClientConfig struct {
 	// Server should be accessed without verifying the TLS certificate. For testing only.

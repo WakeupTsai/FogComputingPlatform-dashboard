@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,12 +60,7 @@ kd-chrome {
 
     .kd-global-action-icon {
       color: $primary;
-<<<<<<< HEAD
       margin-right: .25 * $baseline-grid;
-=======
-      margin-right: $baseline-grid / 4;
-      margin-top: .6 * $baseline-grid;
->>>>>>> upstream/master
     }
   }
 }
@@ -193,13 +184,8 @@ $chip-margin: 0 $baseline-grid ($baseline-grid / 2) 0;
 }
 
 .kd-chip {
-  display: inline;
-  float: left;
-  max-width: 99%;
-  overflow: hidden;
+  display: block;
   padding: ($baseline-grid / 4) $baseline-grid;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .kd-chips-switch {

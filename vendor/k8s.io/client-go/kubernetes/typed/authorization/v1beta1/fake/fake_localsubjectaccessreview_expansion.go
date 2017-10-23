@@ -17,11 +17,7 @@ limitations under the License.
 package fake
 
 import (
-<<<<<<< HEAD
 	authorizationapi "k8s.io/client-go/pkg/apis/authorization/v1beta1"
-=======
-	authorizationapi "k8s.io/api/authorization/v1beta1"
->>>>>>> upstream/master
 	core "k8s.io/client-go/testing"
 )
 

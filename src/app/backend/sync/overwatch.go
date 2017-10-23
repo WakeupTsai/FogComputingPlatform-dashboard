@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,13 +92,8 @@ func (self *overwatch) monitorRegistrationEvents() {
 		case name := <-self.registrationSignal:
 			synchronizer := self.syncMap[name]
 			log.Printf("New synchronizer has been registered: %s. Starting", name)
-<<<<<<< HEAD
 			synchronizer.Start()
 			self.monitorSynchronizerStatus(synchronizer)
-=======
-			self.monitorSynchronizerStatus(synchronizer)
-			synchronizer.Start()
->>>>>>> upstream/master
 		}
 	}, 0)
 }

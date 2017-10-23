@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,19 +19,12 @@ import (
 
 	"github.com/kubernetes/dashboard/src/app/backend/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
-<<<<<<< HEAD
-=======
-	"k8s.io/api/core/v1"
->>>>>>> upstream/master
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	k8sClient "k8s.io/client-go/kubernetes"
-<<<<<<< HEAD
 	kubeapi "k8s.io/client-go/pkg/api"
 	"k8s.io/client-go/pkg/api/v1"
-=======
->>>>>>> upstream/master
 )
 
 type Endpoint struct {
@@ -74,11 +63,7 @@ func GetServiceEndpoints(client k8sClient.Interface, namespace, name string) (*E
 
 // GetEndpoints gets endpoints associated to resource with given name.
 func GetEndpoints(client k8sClient.Interface, namespace, name string) ([]v1.Endpoints, error) {
-<<<<<<< HEAD
 	fieldSelector, err := fields.ParseSelector(kubeapi.ObjectNameField + "=" + name)
-=======
-	fieldSelector, err := fields.ParseSelector("metadata.name" + "=" + name)
->>>>>>> upstream/master
 	if err != nil {
 		return nil, err
 	}

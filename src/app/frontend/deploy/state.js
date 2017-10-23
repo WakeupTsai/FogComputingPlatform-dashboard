@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,10 +18,7 @@ export const baseStateName = 'deploy';
 export const deployAppStateName = 'deployApp';
 
 export const deployFileStateName = 'deployFile';
-<<<<<<< HEAD
 
 /** phstsai **/
 export const deployMyServiceStateName = 'deployMyService';
 export const showMapStateName = 'showMapService';
-=======
->>>>>>> upstream/master

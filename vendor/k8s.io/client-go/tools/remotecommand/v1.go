@@ -23,13 +23,8 @@ import (
 	"net/http"
 
 	"github.com/golang/glog"
-<<<<<<< HEAD
 	"k8s.io/apimachinery/pkg/util/httpstream"
 	"k8s.io/client-go/pkg/api/v1"
-=======
-	"k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/util/httpstream"
->>>>>>> upstream/master
 )
 
 // streamProtocolV1 implements the first version of the streaming exec & attach

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +14,6 @@
 
 
 // Copyright 2015 Google Inc. All Rights Reserved.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,10 +27,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 import stateModule from '../../common/state/module';
 
 import {hamburgerComponent} from './hamburger_component';
@@ -42,10 +34,7 @@ import {navComponent} from './nav_component';
 import {NavService} from './nav_service';
 import {navItemComponent} from './navitem_component';
 import {roleNavComponent} from './rolenav_component';
-<<<<<<< HEAD
 import {thirdPartyResourceNavComponent} from './thirdpartyresourcenav_component';
-=======
->>>>>>> upstream/master
 
 
 /**
@@ -64,9 +53,5 @@ export default angular
     .component('kdNavHamburger', hamburgerComponent)
     .component('kdNavItem', navItemComponent)
     .component('kdNav', navComponent)
-<<<<<<< HEAD
     .component('kdRoleNav', roleNavComponent)
     .component('kdThirdPartyResourceNav', thirdPartyResourceNavComponent);
-=======
-    .component('kdRoleNav', roleNavComponent);
->>>>>>> upstream/master

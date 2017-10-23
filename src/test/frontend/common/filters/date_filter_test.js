@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,11 +27,7 @@ describe('Items per page filter', () => {
   });
 
   it('should format date with a default format', () => {
-<<<<<<< HEAD
     expect(dateFilter('2016-06-06T19:13:12Z')).toEqual('2016-06-06T19:13');
-=======
-    expect(dateFilter('2016-06-06T19:13:12Z')).toEqual('2016-06-06T19:13 UTC');
->>>>>>> upstream/master
   });
   it('should format date with an explicit format', () => {
     expect(dateFilter('2016-06-06T19:13:12Z', 'yyyy-MM-ddThh:mm:ss'))

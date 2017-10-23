@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 
 import gulp from 'gulp';
 import gulputil from 'gulp-util';
@@ -36,7 +35,21 @@ gulp.task('check-npm-dependencies', function() {
 });
 
 /**
- * Updates dependencies of given package manager by updating related package json file.
+ * Updates bower dependencies.
+ */
+gulp.task('update-bower-dependencies', function() {
+  return gulp.src([path.join(conf.paths.base, 'bower.json')]).pipe(updateDependencies('bower'));
+});
+
+/**
+ * Checks bower dependencies which need to be updated.
+ */
+gulp.task('check-bower-dependencies', function() {
+  return gulp.src([path.join(conf.paths.base, 'bower.json')]).pipe(checkDependencies('bower'));
+});
+
+/**
+ * Updates dependencies of given package manager by updating related package/bower json file.
  *
  * @param {string} packageManager
  * @return {stream}

@@ -17,19 +17,12 @@ limitations under the License.
 package fake
 
 import (
-<<<<<<< HEAD
-=======
-	v1beta1 "k8s.io/api/certificates/v1beta1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/certificates/v1beta1"
-=======
->>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -42,47 +35,6 @@ var certificatesigningrequestsResource = schema.GroupVersionResource{Group: "cer
 
 var certificatesigningrequestsKind = schema.GroupVersionKind{Group: "certificates.k8s.io", Version: "v1beta1", Kind: "CertificateSigningRequest"}
 
-<<<<<<< HEAD
-=======
-// Get takes name of the certificateSigningRequest, and returns the corresponding certificateSigningRequest object, and an error if there is any.
-func (c *FakeCertificateSigningRequests) Get(name string, options v1.GetOptions) (result *v1beta1.CertificateSigningRequest, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewRootGetAction(certificatesigningrequestsResource, name), &v1beta1.CertificateSigningRequest{})
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.CertificateSigningRequest), err
-}
-
-// List takes label and field selectors, and returns the list of CertificateSigningRequests that match those selectors.
-func (c *FakeCertificateSigningRequests) List(opts v1.ListOptions) (result *v1beta1.CertificateSigningRequestList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewRootListAction(certificatesigningrequestsResource, certificatesigningrequestsKind, opts), &v1beta1.CertificateSigningRequestList{})
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.CertificateSigningRequestList{}
-	for _, item := range obj.(*v1beta1.CertificateSigningRequestList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested certificateSigningRequests.
-func (c *FakeCertificateSigningRequests) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewRootWatchAction(certificatesigningrequestsResource, opts))
-}
-
-// Create takes the representation of a certificateSigningRequest and creates it.  Returns the server's representation of the certificateSigningRequest, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeCertificateSigningRequests) Create(certificateSigningRequest *v1beta1.CertificateSigningRequest) (result *v1beta1.CertificateSigningRequest, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootCreateAction(certificatesigningrequestsResource, certificateSigningRequest), &v1beta1.CertificateSigningRequest{})
@@ -92,10 +44,6 @@ func (c *FakeCertificateSigningRequests) Create(certificateSigningRequest *v1bet
 	return obj.(*v1beta1.CertificateSigningRequest), err
 }
 
-<<<<<<< HEAD
-=======
-// Update takes the representation of a certificateSigningRequest and updates it. Returns the server's representation of the certificateSigningRequest, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeCertificateSigningRequests) Update(certificateSigningRequest *v1beta1.CertificateSigningRequest) (result *v1beta1.CertificateSigningRequest, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootUpdateAction(certificatesigningrequestsResource, certificateSigningRequest), &v1beta1.CertificateSigningRequest{})
@@ -105,11 +53,6 @@ func (c *FakeCertificateSigningRequests) Update(certificateSigningRequest *v1bet
 	return obj.(*v1beta1.CertificateSigningRequest), err
 }
 
-<<<<<<< HEAD
-=======
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
->>>>>>> upstream/master
 func (c *FakeCertificateSigningRequests) UpdateStatus(certificateSigningRequest *v1beta1.CertificateSigningRequest) (*v1beta1.CertificateSigningRequest, error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootUpdateSubresourceAction(certificatesigningrequestsResource, "status", certificateSigningRequest), &v1beta1.CertificateSigningRequest{})
@@ -119,20 +62,12 @@ func (c *FakeCertificateSigningRequests) UpdateStatus(certificateSigningRequest 
 	return obj.(*v1beta1.CertificateSigningRequest), err
 }
 
-<<<<<<< HEAD
-=======
-// Delete takes name of the certificateSigningRequest and deletes it. Returns an error if one occurs.
->>>>>>> upstream/master
 func (c *FakeCertificateSigningRequests) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewRootDeleteAction(certificatesigningrequestsResource, name), &v1beta1.CertificateSigningRequest{})
 	return err
 }
 
-<<<<<<< HEAD
-=======
-// DeleteCollection deletes a collection of objects.
->>>>>>> upstream/master
 func (c *FakeCertificateSigningRequests) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewRootDeleteCollectionAction(certificatesigningrequestsResource, listOptions)
 
@@ -140,7 +75,6 @@ func (c *FakeCertificateSigningRequests) DeleteCollection(options *v1.DeleteOpti
 	return err
 }
 
-<<<<<<< HEAD
 func (c *FakeCertificateSigningRequests) Get(name string, options v1.GetOptions) (result *v1beta1.CertificateSigningRequest, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootGetAction(certificatesigningrequestsResource, name), &v1beta1.CertificateSigningRequest{})
@@ -176,8 +110,6 @@ func (c *FakeCertificateSigningRequests) Watch(opts v1.ListOptions) (watch.Inter
 		InvokesWatch(testing.NewRootWatchAction(certificatesigningrequestsResource, opts))
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched certificateSigningRequest.
 func (c *FakeCertificateSigningRequests) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.CertificateSigningRequest, err error) {
 	obj, err := c.Fake.

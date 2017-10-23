@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,15 +22,9 @@ import (
 	metricapi "github.com/kubernetes/dashboard/src/app/backend/integration/metric/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/pkg/api/v1"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
-	"k8s.io/api/core/v1"
-	extensions "k8s.io/api/extensions/v1beta1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
->>>>>>> upstream/master
 )
 
 func TestToDaemonSetList(t *testing.T) {
@@ -91,12 +81,7 @@ func TestToDaemonSetList(t *testing.T) {
 							MatchLabels: map[string]string{"app": "my-name-1"},
 						},
 						Template: v1.PodTemplateSpec{
-<<<<<<< HEAD
 							Spec: v1.PodSpec{Containers: []v1.Container{{Image: "my-container-image-1"}}},
-=======
-							Spec: v1.PodSpec{Containers: []v1.Container{{Image: "my-container-image-1"}},
-								InitContainers: []v1.Container{{Image: "my-init-container-image-1"}}},
->>>>>>> upstream/master
 						},
 					},
 					Status: extensions.DaemonSetStatus{
@@ -113,12 +98,7 @@ func TestToDaemonSetList(t *testing.T) {
 							MatchLabels: map[string]string{"app": "my-name-2", "ver": "2"},
 						},
 						Template: v1.PodTemplateSpec{
-<<<<<<< HEAD
 							Spec: v1.PodSpec{Containers: []v1.Container{{Image: "my-container-image-2"}}},
-=======
-							Spec: v1.PodSpec{Containers: []v1.Container{{Image: "my-container-image-2"}},
-								InitContainers: []v1.Container{{Image: "my-init-container-image-2"}}},
->>>>>>> upstream/master
 						},
 					},
 					Status: extensions.DaemonSetStatus{
@@ -206,14 +186,8 @@ func TestToDaemonSetList(t *testing.T) {
 							Name:      "my-app-1",
 							Namespace: "namespace-1",
 						},
-<<<<<<< HEAD
 						TypeMeta:        api.TypeMeta{Kind: api.ResourceKindDaemonSet},
 						ContainerImages: []string{"my-container-image-1"},
-=======
-						TypeMeta:            api.TypeMeta{Kind: api.ResourceKindDaemonSet},
-						ContainerImages:     []string{"my-container-image-1"},
-						InitContainerImages: []string{"my-init-container-image-1"},
->>>>>>> upstream/master
 						Pods: common.PodInfo{
 							Desired:   &desired,
 							Failed:    2,
@@ -227,14 +201,8 @@ func TestToDaemonSetList(t *testing.T) {
 							Name:      "my-app-2",
 							Namespace: "namespace-2",
 						},
-<<<<<<< HEAD
 						TypeMeta:        api.TypeMeta{Kind: api.ResourceKindDaemonSet},
 						ContainerImages: []string{"my-container-image-2"},
-=======
-						TypeMeta:            api.TypeMeta{Kind: api.ResourceKindDaemonSet},
-						ContainerImages:     []string{"my-container-image-2"},
-						InitContainerImages: []string{"my-init-container-image-2"},
->>>>>>> upstream/master
 						Pods: common.PodInfo{
 							Desired:  &desired,
 							Warnings: []common.Event{},

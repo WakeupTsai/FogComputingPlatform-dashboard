@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +13,7 @@
 // limitations under the License.
 
 import {StateParams} from '../../common/resource/resourcedetail';
-<<<<<<< HEAD
 import {stateName as logsStateName, StateParams as LogsStateParams} from '../../logs/state';
-=======
->>>>>>> upstream/master
 import {stateName} from '../../pod/detail/state';
 
 /**
@@ -30,28 +23,19 @@ export class PodCardController {
   /**
    * @ngInject,
    * @param {!ui.router.$state} $state
-<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    */
   constructor($state, $interpolate, kdNamespaceService) {
-=======
-   * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
-   */
-  constructor($state, kdNamespaceService) {
->>>>>>> upstream/master
     /** @private {!../../common/namespace/service.NamespaceService} */
     this.kdNamespaceService_ = kdNamespaceService;
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
 
-<<<<<<< HEAD
     /** @private {!angular.$interpolate} */
     this.interpolate_ = $interpolate;
 
-=======
->>>>>>> upstream/master
     /**
      * Initialized from the scope.
      * @export {!backendApi.Pod}
@@ -106,7 +90,6 @@ export class PodCardController {
    * @return {string}
    * @export
    */
-<<<<<<< HEAD
   getPodLogsHref() {
     return this.state_.href(
         logsStateName,
@@ -117,8 +100,6 @@ export class PodCardController {
    * @return {string}
    * @export
    */
-=======
->>>>>>> upstream/master
   getPodDetailHref() {
     return this.state_.href(
         stateName, new StateParams(this.pod.objectMeta.namespace, this.pod.objectMeta.name));
@@ -180,7 +161,6 @@ export class PodCardController {
   }
 
   /**
-<<<<<<< HEAD
    * @export
    * @param  {string} startDate - start date of the pod
    * @return {string} localized tooltip with the formated start date
@@ -197,8 +177,6 @@ export class PodCardController {
   }
 
   /**
-=======
->>>>>>> upstream/master
    * @return {boolean}
    * @export
    */

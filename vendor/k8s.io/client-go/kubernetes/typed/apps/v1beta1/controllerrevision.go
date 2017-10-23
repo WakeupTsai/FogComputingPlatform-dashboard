@@ -17,18 +17,11 @@ limitations under the License.
 package v1beta1
 
 import (
-<<<<<<< HEAD
-=======
-	v1beta1 "k8s.io/api/apps/v1beta1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/apps/v1beta1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -65,44 +58,6 @@ func newControllerRevisions(c *AppsV1beta1Client, namespace string) *controllerR
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the controllerRevision, and returns the corresponding controllerRevision object, and an error if there is any.
-func (c *controllerRevisions) Get(name string, options v1.GetOptions) (result *v1beta1.ControllerRevision, err error) {
-	result = &v1beta1.ControllerRevision{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("controllerrevisions").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ControllerRevisions that match those selectors.
-func (c *controllerRevisions) List(opts v1.ListOptions) (result *v1beta1.ControllerRevisionList, err error) {
-	result = &v1beta1.ControllerRevisionList{}
-	err = c.client.Get().
-		Namespace(c.ns).
-		Resource("controllerrevisions").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested controllerRevisions.
-func (c *controllerRevisions) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Namespace(c.ns).
-		Resource("controllerrevisions").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a controllerRevision and creates it.  Returns the server's representation of the controllerRevision, and an error, if there is any.
 func (c *controllerRevisions) Create(controllerRevision *v1beta1.ControllerRevision) (result *v1beta1.ControllerRevision, err error) {
 	result = &v1beta1.ControllerRevision{}
@@ -150,7 +105,6 @@ func (c *controllerRevisions) DeleteCollection(options *v1.DeleteOptions, listOp
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the controllerRevision, and returns the corresponding controllerRevision object, and an error if there is any.
 func (c *controllerRevisions) Get(name string, options v1.GetOptions) (result *v1beta1.ControllerRevision, err error) {
 	result = &v1beta1.ControllerRevision{}
@@ -186,8 +140,6 @@ func (c *controllerRevisions) Watch(opts v1.ListOptions) (watch.Interface, error
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched controllerRevision.
 func (c *controllerRevisions) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.ControllerRevision, err error) {
 	result = &v1beta1.ControllerRevision{}

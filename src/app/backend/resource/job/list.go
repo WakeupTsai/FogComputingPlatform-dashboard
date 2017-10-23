@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,15 +23,9 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/event"
-<<<<<<< HEAD
 	client "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/pkg/api/v1"
 	batch "k8s.io/client-go/pkg/apis/batch/v1"
-=======
-	batch "k8s.io/api/batch/v1"
-	"k8s.io/api/core/v1"
-	client "k8s.io/client-go/kubernetes"
->>>>>>> upstream/master
 )
 
 // JobList contains a list of Jobs in the cluster.
@@ -62,12 +52,6 @@ type Job struct {
 	// Container images of the Job.
 	ContainerImages []string `json:"containerImages"`
 
-<<<<<<< HEAD
-=======
-	// Init Container images of the Job.
-	InitContainerImages []string `json:"initContainerImages"`
-
->>>>>>> upstream/master
 	// number of parallel jobs defined.
 	Parallelism *int32 `json:"parallelism"`
 }
@@ -149,19 +133,10 @@ func toJobList(jobs []batch.Job, pods []v1.Pod, events []v1.Event, nonCriticalEr
 
 func toJob(job *batch.Job, podInfo *common.PodInfo) Job {
 	return Job{
-<<<<<<< HEAD
 		ObjectMeta:      api.NewObjectMeta(job.ObjectMeta),
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindJob),
 		ContainerImages: common.GetContainerImages(&job.Spec.Template.Spec),
 		Pods:            *podInfo,
 		Parallelism:     job.Spec.Parallelism,
-=======
-		ObjectMeta:          api.NewObjectMeta(job.ObjectMeta),
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindJob),
-		ContainerImages:     common.GetContainerImages(&job.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&job.Spec.Template.Spec),
-		Pods:                *podInfo,
-		Parallelism:         job.Spec.Parallelism,
->>>>>>> upstream/master
 	}
 }

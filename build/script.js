@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 /**
  * Gulp tasks for processing and compiling frontend JavaScript files.
  */
@@ -30,7 +31,6 @@ import {processI18nMessages} from './i18n';
 
 const gulpClosureCompiler = closureCompiler.gulp();
 
-<<<<<<< HEAD
 /**
  * Tasks used to set node process env variables. They are used by our compile tasks. Based on them
  * different preset configs defined in '.babelrc' are used.
@@ -44,21 +44,6 @@ gulp.task('set-prod-node-env', () => {
 });
 
 /**
-=======
-/**
- * Tasks used to set node process env variables. They are used by our compile tasks. Based on them
- * different preset configs defined in '.babelrc' are used.
- */
-gulp.task('set-dev-node-env', () => {
-  return process.env.NODE_ENV = conf.build.development;
-});
-
-gulp.task('set-prod-node-env', () => {
-  return process.env.NODE_ENV = conf.build.production;
-});
-
-/**
->>>>>>> upstream/master
  * Returns function creating a stream that compiles frontend JavaScript files into development
  * bundle located in {conf.paths.serve} directory. This has to be done because currently browsers do
  * not handle ES2017 syntax and modules correctly.
@@ -102,7 +87,6 @@ function createScriptsStream(throwError) {
     return compiled.pipe(gulp.dest(conf.paths.serve));
   };
 }
-
 /**
  * Compiles frontend JavaScript files into development bundle located in
  * {conf.paths.serve} directory. This has to be done because currently browsers do not handle ES2017
@@ -148,7 +132,8 @@ function createCompileTask(translation) {
                 path.join(conf.paths.partials, '**/*.js'),
                 // Include base.js to enable some compiler functions, e.g., @export annotation
                 // handling and getMsg() translations.
-                path.join(conf.paths.nodeModules, 'google-closure-library/closure/goog/base.js'),
+                path.join(
+                    conf.paths.bowerComponents, 'google-closure-library/closure/goog/base.js'),
               ])
               .pipe(patchBuildInformation())
               .pipe(compileES6(translation))
@@ -180,16 +165,10 @@ function compileES6(translation) {
     path.join(
         conf.paths.nodeModules, 'google-closure-compiler/contrib/externs/angular-1.6-resource.js'),
     path.join(
-<<<<<<< HEAD
         conf.paths.bowerComponents,
         'cljsjs-packages-externs/d3/resources/cljsjs/d3/common/d3.ext.js'),
     path.join(
         conf.paths.bowerComponents,
-=======
-        conf.paths.nodeModules, 'cljsjs-packages-externs/d3/resources/cljsjs/d3/common/d3.ext.js'),
-    path.join(
-        conf.paths.nodeModules,
->>>>>>> upstream/master
         'cljsjs-packages-externs/nvd3/resources/cljsjs/nvd3/common/nvd3.ext.js'),
     // Dashboard externs
     path.join(conf.paths.externs, 'appconfig.js'),

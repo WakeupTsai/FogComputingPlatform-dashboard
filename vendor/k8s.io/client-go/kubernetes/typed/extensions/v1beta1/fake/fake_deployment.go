@@ -17,19 +17,12 @@ limitations under the License.
 package fake
 
 import (
-<<<<<<< HEAD
-=======
-	v1beta1 "k8s.io/api/extensions/v1beta1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
->>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -43,50 +36,6 @@ var deploymentsResource = schema.GroupVersionResource{Group: "extensions", Versi
 
 var deploymentsKind = schema.GroupVersionKind{Group: "extensions", Version: "v1beta1", Kind: "Deployment"}
 
-<<<<<<< HEAD
-=======
-// Get takes name of the deployment, and returns the corresponding deployment object, and an error if there is any.
-func (c *FakeDeployments) Get(name string, options v1.GetOptions) (result *v1beta1.Deployment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(deploymentsResource, c.ns, name), &v1beta1.Deployment{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.Deployment), err
-}
-
-// List takes label and field selectors, and returns the list of Deployments that match those selectors.
-func (c *FakeDeployments) List(opts v1.ListOptions) (result *v1beta1.DeploymentList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(deploymentsResource, deploymentsKind, c.ns, opts), &v1beta1.DeploymentList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.DeploymentList{}
-	for _, item := range obj.(*v1beta1.DeploymentList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested deployments.
-func (c *FakeDeployments) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(deploymentsResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a deployment and creates it.  Returns the server's representation of the deployment, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeDeployments) Create(deployment *v1beta1.Deployment) (result *v1beta1.Deployment, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(deploymentsResource, c.ns, deployment), &v1beta1.Deployment{})
@@ -97,10 +46,6 @@ func (c *FakeDeployments) Create(deployment *v1beta1.Deployment) (result *v1beta
 	return obj.(*v1beta1.Deployment), err
 }
 
-<<<<<<< HEAD
-=======
-// Update takes the representation of a deployment and updates it. Returns the server's representation of the deployment, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeDeployments) Update(deployment *v1beta1.Deployment) (result *v1beta1.Deployment, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(deploymentsResource, c.ns, deployment), &v1beta1.Deployment{})
@@ -111,11 +56,6 @@ func (c *FakeDeployments) Update(deployment *v1beta1.Deployment) (result *v1beta
 	return obj.(*v1beta1.Deployment), err
 }
 
-<<<<<<< HEAD
-=======
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
->>>>>>> upstream/master
 func (c *FakeDeployments) UpdateStatus(deployment *v1beta1.Deployment) (*v1beta1.Deployment, error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateSubresourceAction(deploymentsResource, "status", c.ns, deployment), &v1beta1.Deployment{})
@@ -126,10 +66,6 @@ func (c *FakeDeployments) UpdateStatus(deployment *v1beta1.Deployment) (*v1beta1
 	return obj.(*v1beta1.Deployment), err
 }
 
-<<<<<<< HEAD
-=======
-// Delete takes name of the deployment and deletes it. Returns an error if one occurs.
->>>>>>> upstream/master
 func (c *FakeDeployments) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(deploymentsResource, c.ns, name), &v1beta1.Deployment{})
@@ -137,10 +73,6 @@ func (c *FakeDeployments) Delete(name string, options *v1.DeleteOptions) error {
 	return err
 }
 
-<<<<<<< HEAD
-=======
-// DeleteCollection deletes a collection of objects.
->>>>>>> upstream/master
 func (c *FakeDeployments) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(deploymentsResource, c.ns, listOptions)
 
@@ -148,16 +80,9 @@ func (c *FakeDeployments) DeleteCollection(options *v1.DeleteOptions, listOption
 	return err
 }
 
-<<<<<<< HEAD
 func (c *FakeDeployments) Get(name string, options v1.GetOptions) (result *v1beta1.Deployment, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(deploymentsResource, c.ns, name), &v1beta1.Deployment{})
-=======
-// Patch applies the patch and returns the patched deployment.
-func (c *FakeDeployments) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.Deployment, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(deploymentsResource, c.ns, name, data, subresources...), &v1beta1.Deployment{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
@@ -165,21 +90,13 @@ func (c *FakeDeployments) Patch(name string, pt types.PatchType, data []byte, su
 	return obj.(*v1beta1.Deployment), err
 }
 
-<<<<<<< HEAD
 func (c *FakeDeployments) List(opts v1.ListOptions) (result *v1beta1.DeploymentList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(deploymentsResource, deploymentsKind, c.ns, opts), &v1beta1.DeploymentList{})
-=======
-// GetScale takes name of the deployment, and returns the corresponding scale object, and an error if there is any.
-func (c *FakeDeployments) GetScale(deploymentName string, options v1.GetOptions) (result *v1beta1.Scale, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetSubresourceAction(deploymentsResource, c.ns, "scale", deploymentName), &v1beta1.Scale{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
 	if label == nil {
@@ -205,22 +122,9 @@ func (c *FakeDeployments) Watch(opts v1.ListOptions) (watch.Interface, error) {
 func (c *FakeDeployments) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.Deployment, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(deploymentsResource, c.ns, name, data, subresources...), &v1beta1.Deployment{})
-=======
-	return obj.(*v1beta1.Scale), err
-}
-
-// UpdateScale takes the representation of a scale and updates it. Returns the server's representation of the scale, and an error, if there is any.
-func (c *FakeDeployments) UpdateScale(deploymentName string, scale *v1beta1.Scale) (result *v1beta1.Scale, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(deploymentsResource, "scale", c.ns, scale), &v1beta1.Scale{})
->>>>>>> upstream/master
 
 	if obj == nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	return obj.(*v1beta1.Deployment), err
-=======
-	return obj.(*v1beta1.Scale), err
->>>>>>> upstream/master
 }

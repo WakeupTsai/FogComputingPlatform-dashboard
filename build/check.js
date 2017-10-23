@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 
 /**
  * @fileoverview Gulp tasks for checking and validating the code or a commit.
@@ -47,12 +46,6 @@ const ignoredLicenseCheckFiles = ['fieldpath'];
 function getLicenseFileFilter(...ext) {
   let ignorePattern =
       ignoredLicenseCheckFiles.length > 0 ? `!(${ignoredLicenseCheckFiles.join()})` : '';
-<<<<<<< HEAD
-=======
-  if (ext.length === 1) {
-    return `**/${ignorePattern}*.${ext}`;
-  }
->>>>>>> upstream/master
   return `**/${ignorePattern}*.{${ext.join()}}`;
 }
 
@@ -68,7 +61,6 @@ function getLicenseFileFilter(...ext) {
 gulp.task('check', ['check-license-headers', 'lint', 'test', 'integration-test:prod']);
 
 /**
-<<<<<<< HEAD
  * Checks the code quality (integration tests only) of Dashboard. In addition a local kubernetes
  * cluster is spawned. NOTE: This is meant as an entry point for CI jobs.
  */
@@ -78,11 +70,6 @@ gulp.task('check:local-cluster', ['check-license-headers', 'local-cluster-integr
  * Checks the code quality (frontend + backend tests) of Dashboard. In addition lints the code and
  * checks if it is correctly formatted. This is meant as an entry point for CI jobs.
  */
-=======
- * Checks the code quality (frontend + backend tests) of Dashboard. In addition lints the code and
- * checks if it is correctly formatted. This is meant as an entry point for CI jobs.
- */
->>>>>>> upstream/master
 gulp.task('check:code-quality', ['lint', 'test']);
 
 /**

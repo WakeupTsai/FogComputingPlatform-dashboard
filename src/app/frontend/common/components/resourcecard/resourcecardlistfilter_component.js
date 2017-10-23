@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -95,11 +91,7 @@ class ResourceCardListFilterController {
     // clicking on filter button.
     this.timeout_(() => {
       this.element_.find('input')[0].focus();
-<<<<<<< HEAD
     }, 250);
-=======
-    }, 150);
->>>>>>> upstream/master
   }
 
   /** @export */

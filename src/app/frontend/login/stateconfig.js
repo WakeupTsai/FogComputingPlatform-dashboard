@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,13 +20,8 @@ import {stateName, StateParams, stateUrl} from './state';
  * I18n object that defines strings for translation used in this file.
  */
 const i18n = {
-<<<<<<< HEAD
   /** @type {string} @desc Label 'Log in' that appears as a breadcrumbs on the action bar. */
   MSG_BREADCRUMBS_LOGIN_LABEL: goog.getMsg('Login'),
-=======
-  /** @type {string} @desc Label 'Sign in' that appears as a breadcrumbs on the action bar. */
-  MSG_BREADCRUMBS_LOGIN_LABEL: goog.getMsg('Sign in'),
->>>>>>> upstream/master
 };
 
 /**

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-<<<<<<< HEAD
 import {stateName as overview} from '../overview/state';
-=======
-import {namespaceParam} from '../chrome/state';
-import {stateName as overview} from '../overview/state';
-
->>>>>>> upstream/master
 import showNamespaceDialog from './createnamespace_dialog';
 import showCreateSecretDialog from './createsecret_dialog';
 import DeployLabel from './deploylabel';
@@ -39,10 +29,6 @@ const APP_LABEL_KEY = 'app';
 export default class DeployFromSettingsController {
   /**
    * @param {!angular.$log} $log
-<<<<<<< HEAD
-=======
-   * @param {!ui.router.$state} $state
->>>>>>> upstream/master
    * @param {!angular.$resource} $resource
    * @param {!angular.$q} $q
    * @param {!md.$dialog} $mdDialog
@@ -53,13 +39,8 @@ export default class DeployFromSettingsController {
    * @ngInject
    */
   constructor(
-<<<<<<< HEAD
       $log, $resource, $q, $mdDialog, kdHistoryService, kdNamespaceService, kdCsrfTokenService,
       kdCsrfTokenHeader) {
-=======
-      $log, $state, $resource, $q, $mdDialog, kdHistoryService, kdNamespaceService,
-      kdCsrfTokenService, kdCsrfTokenHeader) {
->>>>>>> upstream/master
     /**
      * Initialized from the template.
      * @export {!angular.FormController}
@@ -165,12 +146,6 @@ export default class DeployFromSettingsController {
     /** @private {!angular.$log} */
     this.log_ = $log;
 
-<<<<<<< HEAD
-=======
-    /** @private {!ui.router.$state} */
-    this.state_ = $state;
-
->>>>>>> upstream/master
     /** @private {!md.$dialog} */
     this.mdDialog_ = $mdDialog;
 
@@ -278,11 +253,7 @@ export default class DeployFromSettingsController {
                 (savedConfig) => {
                   defer.resolve(savedConfig);  // Progress ends
                   this.log_.info('Successfully deployed application: ', savedConfig);
-<<<<<<< HEAD
                   this.cancel();
-=======
-                  this.state_.go(overview, {[namespaceParam]: appDeploymentSpec.namespace});
->>>>>>> upstream/master
                 },
                 (err) => {
                   defer.reject(err);  // Progress ends

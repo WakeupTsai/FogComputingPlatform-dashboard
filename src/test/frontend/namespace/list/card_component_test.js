@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,12 +39,9 @@ describe('Namespace card', () => {
     // then
     expect(ctrl.getNamespaceDetailHref()).toEqual('#!/namespace/foo-name');
   });
-<<<<<<< HEAD
 
   it('should format the "created at" tooltip correctly', () => {
     expect(ctrl.getCreatedAtTooltip('2016-06-06T09:13:12Z'))
         .toMatch('Created at 2016-06-06T09:13.*');
   });
-=======
->>>>>>> upstream/master
 });

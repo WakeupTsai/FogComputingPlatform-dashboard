@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 
 /**
  * @fileoverview Gulp tasks for building the project.
@@ -217,7 +216,7 @@ function createFrontendCopies(outputDirs) {
   let searchPath = [
     // To resolve local paths.
     path.relative(conf.paths.base, conf.paths.prodTmp),
-    // To resolve node_modules/... paths.
+    // To resolve bower_components/... paths.
     path.relative(conf.paths.base, conf.paths.base),
   ];
 

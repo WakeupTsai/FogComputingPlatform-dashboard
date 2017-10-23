@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,15 +24,9 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/controller"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-<<<<<<< HEAD
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/pkg/api/v1"
-=======
-	"k8s.io/api/core/v1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes/fake"
->>>>>>> upstream/master
 )
 
 func TestGetPodDetail(t *testing.T) {
@@ -154,97 +144,3 @@ func TestEvalValueFrom(t *testing.T) {
 		}
 	}
 }
-<<<<<<< HEAD
-=======
-
-func TestEvalEnvFrom(t *testing.T) {
-	cases := []struct {
-		container  v1.Container
-		configMaps *v1.ConfigMapList
-		secrets    *v1.SecretList
-		expected   []EnvVar
-	}{
-		{
-			container: v1.Container{
-				Name:  "echoserver",
-				Image: "gcr.io/google_containers/echoserver",
-				EnvFrom: []v1.EnvFromSource{
-					v1.EnvFromSource{
-						SecretRef: &v1.SecretEnvSource{
-							LocalObjectReference: v1.LocalObjectReference{
-								Name: "secret-env",
-							},
-						},
-					}, v1.EnvFromSource{
-						Prefix: "test_",
-						ConfigMapRef: &v1.ConfigMapEnvSource{
-							LocalObjectReference: v1.LocalObjectReference{
-								Name: "config-map-env",
-							},
-						},
-					},
-				},
-			},
-			configMaps: &v1.ConfigMapList{
-				Items: []v1.ConfigMap{
-					{
-						ObjectMeta: metaV1.ObjectMeta{
-							Name: "config-map-env",
-						},
-						Data: map[string]string{
-							"username": "joey",
-						},
-					},
-				},
-			},
-			secrets: &v1.SecretList{
-				Items: []v1.Secret{
-					{
-						ObjectMeta: metaV1.ObjectMeta{
-							Name: "secret-env",
-						},
-						Data: map[string][]byte{
-							"username": []byte("top-secret"),
-						},
-					},
-				},
-			},
-			expected: []EnvVar{
-				{
-					Name:  "username",
-					Value: base64.StdEncoding.EncodeToString([]byte("top-secret")),
-					ValueFrom: &v1.EnvVarSource{
-						SecretKeyRef: &v1.SecretKeySelector{
-							LocalObjectReference: v1.LocalObjectReference{
-								Name: "secret-env",
-							},
-							Key: "username",
-						},
-					},
-				},
-				{
-					Name:  "test_username",
-					Value: "joey",
-					ValueFrom: &v1.EnvVarSource{
-						ConfigMapKeyRef: &v1.ConfigMapKeySelector{
-							LocalObjectReference: v1.LocalObjectReference{
-								Name: "config-map-env",
-							},
-							Key: "username",
-						},
-					},
-				},
-			},
-		},
-	}
-
-	for _, c := range cases {
-		dataselect.DefaultDataSelectWithMetrics.MetricQuery = dataselect.NoMetrics
-		actual := evalEnvFrom(c.container, c.configMaps, c.secrets)
-		if !reflect.DeepEqual(actual, c.expected) {
-			t.Errorf("evalEnvFrom(%#v, %#v, %#v) == \ngot %#v, \nexpected %#v",
-				c.container, c.configMaps, c.secrets, actual, c.expected)
-		}
-	}
-}
->>>>>>> upstream/master

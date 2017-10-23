@@ -17,18 +17,11 @@ limitations under the License.
 package v1alpha1
 
 import (
-<<<<<<< HEAD
-=======
-	v1alpha1 "k8s.io/api/admissionregistration/v1alpha1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	scheme "k8s.io/client-go/kubernetes/scheme"
-<<<<<<< HEAD
 	v1alpha1 "k8s.io/client-go/pkg/apis/admissionregistration/v1alpha1"
-=======
->>>>>>> upstream/master
 	rest "k8s.io/client-go/rest"
 )
 
@@ -63,41 +56,6 @@ func newExternalAdmissionHookConfigurations(c *AdmissionregistrationV1alpha1Clie
 	}
 }
 
-<<<<<<< HEAD
-=======
-// Get takes name of the externalAdmissionHookConfiguration, and returns the corresponding externalAdmissionHookConfiguration object, and an error if there is any.
-func (c *externalAdmissionHookConfigurations) Get(name string, options v1.GetOptions) (result *v1alpha1.ExternalAdmissionHookConfiguration, err error) {
-	result = &v1alpha1.ExternalAdmissionHookConfiguration{}
-	err = c.client.Get().
-		Resource("externaladmissionhookconfigurations").
-		Name(name).
-		VersionedParams(&options, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// List takes label and field selectors, and returns the list of ExternalAdmissionHookConfigurations that match those selectors.
-func (c *externalAdmissionHookConfigurations) List(opts v1.ListOptions) (result *v1alpha1.ExternalAdmissionHookConfigurationList, err error) {
-	result = &v1alpha1.ExternalAdmissionHookConfigurationList{}
-	err = c.client.Get().
-		Resource("externaladmissionhookconfigurations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Do().
-		Into(result)
-	return
-}
-
-// Watch returns a watch.Interface that watches the requested externalAdmissionHookConfigurations.
-func (c *externalAdmissionHookConfigurations) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	opts.Watch = true
-	return c.client.Get().
-		Resource("externaladmissionhookconfigurations").
-		VersionedParams(&opts, scheme.ParameterCodec).
-		Watch()
-}
-
->>>>>>> upstream/master
 // Create takes the representation of a externalAdmissionHookConfiguration and creates it.  Returns the server's representation of the externalAdmissionHookConfiguration, and an error, if there is any.
 func (c *externalAdmissionHookConfigurations) Create(externalAdmissionHookConfiguration *v1alpha1.ExternalAdmissionHookConfiguration) (result *v1alpha1.ExternalAdmissionHookConfiguration, err error) {
 	result = &v1alpha1.ExternalAdmissionHookConfiguration{}
@@ -141,7 +99,6 @@ func (c *externalAdmissionHookConfigurations) DeleteCollection(options *v1.Delet
 		Error()
 }
 
-<<<<<<< HEAD
 // Get takes name of the externalAdmissionHookConfiguration, and returns the corresponding externalAdmissionHookConfiguration object, and an error if there is any.
 func (c *externalAdmissionHookConfigurations) Get(name string, options v1.GetOptions) (result *v1alpha1.ExternalAdmissionHookConfiguration, err error) {
 	result = &v1alpha1.ExternalAdmissionHookConfiguration{}
@@ -174,8 +131,6 @@ func (c *externalAdmissionHookConfigurations) Watch(opts v1.ListOptions) (watch.
 		Watch()
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched externalAdmissionHookConfiguration.
 func (c *externalAdmissionHookConfigurations) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha1.ExternalAdmissionHookConfiguration, err error) {
 	result = &v1alpha1.ExternalAdmissionHookConfiguration{}

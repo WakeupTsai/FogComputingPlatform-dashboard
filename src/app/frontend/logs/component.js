@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> upstream/master
 const logsPerView = 100;
 const maxLogSize = 2e9;
 // Load logs from the beginning of the log file. This matters only if the log file is too large to
@@ -42,19 +35,10 @@ export class LogsController {
    * @param {!angular.$sce} $sce
    * @param {!angular.$document} $document
    * @param {!angular.$resource} $resource
-<<<<<<< HEAD
    * @param {!../common/errorhandling/dialog.ErrorDialog} errorDialog
    * @ngInject
    */
   constructor(logsService, $sce, $document, $resource, errorDialog) {
-=======
-   * @param {!angular.$interval} $interval
-   * @param {!angular.$log} $log
-   * @param {!../common/errorhandling/dialog.ErrorDialog} errorDialog
-   * @ngInject
-   */
-  constructor(logsService, $sce, $document, $resource, $interval, $log, errorDialog) {
->>>>>>> upstream/master
     /** @private {!angular.$sce} */
     this.sce_ = $sce;
 
@@ -64,15 +48,6 @@ export class LogsController {
     /** @private {!angular.$resource} */
     this.resource_ = $resource;
 
-<<<<<<< HEAD
-=======
-    /** @private {!angular.$interval} */
-    this.interval_ = $interval;
-
-    /** @private {!angular.$log} */
-    this.log_ = $log;
-
->>>>>>> upstream/master
     /** @export {!./service.LogsService} */
     this.logsService = logsService;
 
@@ -118,16 +93,8 @@ export class LogsController {
     /** @private {!ui.router.$stateParams} */
     this.stateParams_;
 
-<<<<<<< HEAD
     /** @export {!kdUiRouter.$transition$} - initialized from resolve */
     this.$transition$;
-=======
-    /** @export {!kdUiRouter.$transition$} */
-    this.$transition$;
-
-    /** @export {number} Refresh interval in miliseconds. */
-    this.refreshInterval = 5000;
->>>>>>> upstream/master
   }
 
 
@@ -137,24 +104,6 @@ export class LogsController {
     this.stateParams_ = this.$transition$.params();
     this.updateUiModel(this.podLogs);
     this.topIndex = this.podLogs.logs.length;
-<<<<<<< HEAD
-=======
-    this.registerIntervalFunction_();
-  }
-
-  /**
-   * Registers interval function used to automatically refresh logs.
-   *
-   * @private
-   */
-  registerIntervalFunction_() {
-    this.interval_(() => {
-      if (this.logsService.getFollowing()) {
-        this.loadNewest();
-        this.log_.info('Automatically refreshed logs');
-      }
-    }, this.refreshInterval);
->>>>>>> upstream/master
   }
 
 
@@ -197,21 +146,6 @@ export class LogsController {
   }
 
   /**
-<<<<<<< HEAD
-=======
-   * Toggles log follow mechanism.
-   *
-   * @export
-   */
-  toggleLogFollow() {
-    this.logsService.setFollowing();
-    if (this.logsService.getFollowing()) {
-      this.loadNewest();
-    }
-  }
-
-  /**
->>>>>>> upstream/master
    * Downloads and loads slice of logs as specified by offsetFrom and offsetTo.
    * It works just like normal slicing, but indices are referenced relatively to certain reference
    * line.
@@ -227,10 +161,7 @@ export class LogsController {
    */
   loadView(logFilePosition, referenceTimestamp, referenceLinenum, offsetFrom, offsetTo) {
     let namespace = this.stateParams_.objectNamespace;
-<<<<<<< HEAD
 
-=======
->>>>>>> upstream/master
     this.resource_(`api/v1/log/${namespace}/${this.pod}/${this.container}`)
         .get(
             {
@@ -239,10 +170,6 @@ export class LogsController {
               'referenceLineNum': referenceLinenum,
               'offsetFrom': offsetFrom,
               'offsetTo': offsetTo,
-<<<<<<< HEAD
-=======
-              'previous': this.logsService.getPrevious(),
->>>>>>> upstream/master
             },
             (podLogs) => {
               this.updateUiModel(podLogs);
@@ -291,11 +218,7 @@ export class LogsController {
     // not contain any HTML markup, and formattedLine is the result of passing
     // ecapedLine to ansi_to_html, which is known to only add span tags.
     let escapedContent =
-<<<<<<< HEAD
         this.sce_.trustAsHtml(ansi_up.ansi_to_html(this.escapeHtml_(line.content)));
-=======
-        this.sce_.trustAsHtml(new AnsiUp().ansi_to_html(this.escapeHtml_(line.content)));
->>>>>>> upstream/master
 
     // add timestamp if needed
     let showTimestamp = this.logsService.getShowTimestamp();
@@ -317,7 +240,6 @@ export class LogsController {
     return div.innerHTML;
   }
 
-<<<<<<< HEAD
 
   /**
    * Indicates log area font size.
@@ -400,17 +322,6 @@ export class LogsController {
    */
   onPodChange() {
     this.loadNewest();
-=======
-  /**
-   * Return the link to download the log file
-   * @export
-   * @return {string}
-   */
-  getDownloadLink() {
-    let namespace = this.stateParams_.objectNamespace;
-    return `api/v1/log/file/${namespace}/${this.pod}/${this.container}?previous=${
-        this.logsService.getPrevious()}`;
->>>>>>> upstream/master
   }
 
   /**
@@ -437,18 +348,6 @@ export class LogsController {
     this.logsService.setShowTimestamp();
     this.logsSet = this.formatAllLogs_(this.podLogs.logs);
   }
-<<<<<<< HEAD
-=======
-
-  /**
-   * Execute when a user changes the selected option for show previous container logs.
-   * @export
-   */
-  onPreviousChange() {
-    this.logsService.setPrevious();
-    this.loadNewest();
-  }
->>>>>>> upstream/master
 }
 
 /**

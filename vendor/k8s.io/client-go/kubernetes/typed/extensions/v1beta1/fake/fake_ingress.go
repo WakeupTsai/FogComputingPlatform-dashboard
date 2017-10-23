@@ -17,19 +17,12 @@ limitations under the License.
 package fake
 
 import (
-<<<<<<< HEAD
-=======
-	v1beta1 "k8s.io/api/extensions/v1beta1"
->>>>>>> upstream/master
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
-<<<<<<< HEAD
 	v1beta1 "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
->>>>>>> upstream/master
 	testing "k8s.io/client-go/testing"
 )
 
@@ -43,50 +36,6 @@ var ingressesResource = schema.GroupVersionResource{Group: "extensions", Version
 
 var ingressesKind = schema.GroupVersionKind{Group: "extensions", Version: "v1beta1", Kind: "Ingress"}
 
-<<<<<<< HEAD
-=======
-// Get takes name of the ingress, and returns the corresponding ingress object, and an error if there is any.
-func (c *FakeIngresses) Get(name string, options v1.GetOptions) (result *v1beta1.Ingress, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(ingressesResource, c.ns, name), &v1beta1.Ingress{})
-
-	if obj == nil {
-		return nil, err
-	}
-	return obj.(*v1beta1.Ingress), err
-}
-
-// List takes label and field selectors, and returns the list of Ingresses that match those selectors.
-func (c *FakeIngresses) List(opts v1.ListOptions) (result *v1beta1.IngressList, err error) {
-	obj, err := c.Fake.
-		Invokes(testing.NewListAction(ingressesResource, ingressesKind, c.ns, opts), &v1beta1.IngressList{})
-
-	if obj == nil {
-		return nil, err
-	}
-
-	label, _, _ := testing.ExtractFromListOptions(opts)
-	if label == nil {
-		label = labels.Everything()
-	}
-	list := &v1beta1.IngressList{}
-	for _, item := range obj.(*v1beta1.IngressList).Items {
-		if label.Matches(labels.Set(item.Labels)) {
-			list.Items = append(list.Items, item)
-		}
-	}
-	return list, err
-}
-
-// Watch returns a watch.Interface that watches the requested ingresses.
-func (c *FakeIngresses) Watch(opts v1.ListOptions) (watch.Interface, error) {
-	return c.Fake.
-		InvokesWatch(testing.NewWatchAction(ingressesResource, c.ns, opts))
-
-}
-
-// Create takes the representation of a ingress and creates it.  Returns the server's representation of the ingress, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeIngresses) Create(ingress *v1beta1.Ingress) (result *v1beta1.Ingress, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(ingressesResource, c.ns, ingress), &v1beta1.Ingress{})
@@ -97,10 +46,6 @@ func (c *FakeIngresses) Create(ingress *v1beta1.Ingress) (result *v1beta1.Ingres
 	return obj.(*v1beta1.Ingress), err
 }
 
-<<<<<<< HEAD
-=======
-// Update takes the representation of a ingress and updates it. Returns the server's representation of the ingress, and an error, if there is any.
->>>>>>> upstream/master
 func (c *FakeIngresses) Update(ingress *v1beta1.Ingress) (result *v1beta1.Ingress, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(ingressesResource, c.ns, ingress), &v1beta1.Ingress{})
@@ -111,11 +56,6 @@ func (c *FakeIngresses) Update(ingress *v1beta1.Ingress) (result *v1beta1.Ingres
 	return obj.(*v1beta1.Ingress), err
 }
 
-<<<<<<< HEAD
-=======
-// UpdateStatus was generated because the type contains a Status member.
-// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
->>>>>>> upstream/master
 func (c *FakeIngresses) UpdateStatus(ingress *v1beta1.Ingress) (*v1beta1.Ingress, error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateSubresourceAction(ingressesResource, "status", c.ns, ingress), &v1beta1.Ingress{})
@@ -126,10 +66,6 @@ func (c *FakeIngresses) UpdateStatus(ingress *v1beta1.Ingress) (*v1beta1.Ingress
 	return obj.(*v1beta1.Ingress), err
 }
 
-<<<<<<< HEAD
-=======
-// Delete takes name of the ingress and deletes it. Returns an error if one occurs.
->>>>>>> upstream/master
 func (c *FakeIngresses) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(ingressesResource, c.ns, name), &v1beta1.Ingress{})
@@ -137,10 +73,6 @@ func (c *FakeIngresses) Delete(name string, options *v1.DeleteOptions) error {
 	return err
 }
 
-<<<<<<< HEAD
-=======
-// DeleteCollection deletes a collection of objects.
->>>>>>> upstream/master
 func (c *FakeIngresses) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(ingressesResource, c.ns, listOptions)
 
@@ -148,7 +80,6 @@ func (c *FakeIngresses) DeleteCollection(options *v1.DeleteOptions, listOptions 
 	return err
 }
 
-<<<<<<< HEAD
 func (c *FakeIngresses) Get(name string, options v1.GetOptions) (result *v1beta1.Ingress, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(ingressesResource, c.ns, name), &v1beta1.Ingress{})
@@ -187,8 +118,6 @@ func (c *FakeIngresses) Watch(opts v1.ListOptions) (watch.Interface, error) {
 
 }
 
-=======
->>>>>>> upstream/master
 // Patch applies the patch and returns the patched ingress.
 func (c *FakeIngresses) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1beta1.Ingress, err error) {
 	obj, err := c.Fake.

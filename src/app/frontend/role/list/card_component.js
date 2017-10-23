@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,22 +19,15 @@
  */
 class RoleCardController {
   /**
-<<<<<<< HEAD
    * @param {!angular.$interpolate} $interpolate
    * @ngInject
    */
   constructor($interpolate) {
-=======
-   * @ngInject
-   */
-  constructor() {
->>>>>>> upstream/master
     /**
      * Initialized from the scope.
      * @export {!backendApi.Role}
      */
     this.role;
-<<<<<<< HEAD
 
     /** @private */
     this.interpolate_ = $interpolate;
@@ -58,8 +47,6 @@ class RoleCardController {
     let MSG_ROLE_LIST_STARTED_AT_TOOLTIP =
         goog.getMsg('Created at {$startDate} UTC', {'startDate': filter({'date': startDate})});
     return MSG_ROLE_LIST_STARTED_AT_TOOLTIP;
-=======
->>>>>>> upstream/master
   }
 }
 

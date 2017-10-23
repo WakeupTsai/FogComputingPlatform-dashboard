@@ -19,8 +19,4 @@ limitations under the License.
 // +k8s:defaulter-gen=TypeMeta
 
 // +groupName=meta.k8s.io
-<<<<<<< HEAD
 package v1
-=======
-package v1 // import "k8s.io/apimachinery/pkg/apis/meta/v1"
->>>>>>> upstream/master

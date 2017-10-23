@@ -46,15 +46,6 @@ func init() {
 		&PartialObjectMetadataList{},
 	)
 
-<<<<<<< HEAD
-=======
-	if err := scheme.AddConversionFuncs(
-		Convert_Slice_string_To_v1alpha1_IncludeObjectPolicy,
-	); err != nil {
-		panic(err)
-	}
-
->>>>>>> upstream/master
 	// register manually. This usually goes through the SchemeBuilder, which we cannot use here.
 	//scheme.AddGeneratedDeepCopyFuncs(GetGeneratedDeepCopyFuncs()...)
 }

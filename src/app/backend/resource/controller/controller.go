@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +22,6 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/event"
-<<<<<<< HEAD
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	client "k8s.io/client-go/kubernetes"
@@ -34,45 +29,22 @@ import (
 	apps "k8s.io/client-go/pkg/apis/apps/v1beta1"
 	batch "k8s.io/client-go/pkg/apis/batch/v1"
 	extensions "k8s.io/client-go/pkg/apis/extensions/v1beta1"
-=======
-	apps "k8s.io/api/apps/v1beta1"
-	batch "k8s.io/api/batch/v1"
-	"k8s.io/api/core/v1"
-	extensions "k8s.io/api/extensions/v1beta1"
-	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/types"
-	client "k8s.io/client-go/kubernetes"
->>>>>>> upstream/master
 )
 
 // ResourceOwner is an structure representing resource owner, it may be Replication Controller,
 // Daemon Set, Job etc.
 type ResourceOwner struct {
-<<<<<<< HEAD
 	ObjectMeta      api.ObjectMeta `json:"objectMeta"`
 	TypeMeta        api.TypeMeta   `json:"typeMeta"`
 	Pods            common.PodInfo `json:"pods"`
 	ContainerImages []string       `json:"containerImages"`
-=======
-	ObjectMeta          api.ObjectMeta `json:"objectMeta"`
-	TypeMeta            api.TypeMeta   `json:"typeMeta"`
-	Pods                common.PodInfo `json:"pods"`
-	ContainerImages     []string       `json:"containerImages"`
-	InitContainerImages []string       `json:"initContainerImages"`
->>>>>>> upstream/master
 }
 
 // LogSources is a structure that represents all log files (all combinations of pods and container)
 // from a higher level controller (such as ReplicaSet).
 type LogSources struct {
-<<<<<<< HEAD
 	ContainerNames []string `json:"containerNames"`
 	PodNames       []string `json:"podNames"`
-=======
-	ContainerNames     []string `json:"containerNames"`
-	InitContainerNames []string `json:"initContainerNames"`
-	PodNames           []string `json:"podNames"`
->>>>>>> upstream/master
 }
 
 // ResourceController is an interface, that allows to perform operations on resource controller. To
@@ -138,18 +110,10 @@ func (self JobController) Get(allPods []v1.Pod, allEvents []v1.Event) ResourceOw
 	podInfo.Warnings = event.GetPodsEventWarnings(allEvents, matchingPods)
 
 	return ResourceOwner{
-<<<<<<< HEAD
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindJob),
 		ObjectMeta:      api.NewObjectMeta(self.ObjectMeta),
 		Pods:            podInfo,
 		ContainerImages: common.GetContainerImages(&self.Spec.Template.Spec),
-=======
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindJob),
-		ObjectMeta:          api.NewObjectMeta(self.ObjectMeta),
-		Pods:                podInfo,
-		ContainerImages:     common.GetContainerImages(&self.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -162,14 +126,8 @@ func (self JobController) UID() types.UID {
 func (self JobController) GetLogSources(allPods []v1.Pod) LogSources {
 	controlledPods := common.FilterPodsForJob(batch.Job(self), allPods)
 	return LogSources{
-<<<<<<< HEAD
 		PodNames:       getPodNames(controlledPods),
 		ContainerNames: common.GetContainerNames(&self.Spec.Template.Spec),
-=======
-		PodNames:           getPodNames(controlledPods),
-		ContainerNames:     common.GetContainerNames(&self.Spec.Template.Spec),
-		InitContainerNames: common.GetInitContainerNames(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -184,18 +142,10 @@ func (self ReplicaSetController) Get(allPods []v1.Pod, allEvents []v1.Event) Res
 	podInfo.Warnings = event.GetPodsEventWarnings(allEvents, matchingPods)
 
 	return ResourceOwner{
-<<<<<<< HEAD
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindReplicaSet),
 		ObjectMeta:      api.NewObjectMeta(self.ObjectMeta),
 		Pods:            podInfo,
 		ContainerImages: common.GetContainerImages(&self.Spec.Template.Spec),
-=======
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindReplicaSet),
-		ObjectMeta:          api.NewObjectMeta(self.ObjectMeta),
-		Pods:                podInfo,
-		ContainerImages:     common.GetContainerImages(&self.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -208,14 +158,8 @@ func (self ReplicaSetController) UID() types.UID {
 func (self ReplicaSetController) GetLogSources(allPods []v1.Pod) LogSources {
 	controlledPods := common.FilterPodsByControllerRef(&self, allPods)
 	return LogSources{
-<<<<<<< HEAD
 		PodNames:       getPodNames(controlledPods),
 		ContainerNames: common.GetContainerNames(&self.Spec.Template.Spec),
-=======
-		PodNames:           getPodNames(controlledPods),
-		ContainerNames:     common.GetContainerNames(&self.Spec.Template.Spec),
-		InitContainerNames: common.GetInitContainerNames(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -231,18 +175,10 @@ func (self ReplicationControllerController) Get(allPods []v1.Pod,
 	podInfo.Warnings = event.GetPodsEventWarnings(allEvents, matchingPods)
 
 	return ResourceOwner{
-<<<<<<< HEAD
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindReplicationController),
 		ObjectMeta:      api.NewObjectMeta(self.ObjectMeta),
 		Pods:            podInfo,
 		ContainerImages: common.GetContainerImages(&self.Spec.Template.Spec),
-=======
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindReplicationController),
-		ObjectMeta:          api.NewObjectMeta(self.ObjectMeta),
-		Pods:                podInfo,
-		ContainerImages:     common.GetContainerImages(&self.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -255,14 +191,8 @@ func (self ReplicationControllerController) UID() types.UID {
 func (self ReplicationControllerController) GetLogSources(allPods []v1.Pod) LogSources {
 	controlledPods := common.FilterPodsByControllerRef(&self, allPods)
 	return LogSources{
-<<<<<<< HEAD
 		PodNames:       getPodNames(controlledPods),
 		ContainerNames: common.GetContainerNames(&self.Spec.Template.Spec),
-=======
-		PodNames:           getPodNames(controlledPods),
-		ContainerNames:     common.GetContainerNames(&self.Spec.Template.Spec),
-		InitContainerNames: common.GetInitContainerNames(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -278,18 +208,10 @@ func (self DaemonSetController) Get(allPods []v1.Pod, allEvents []v1.Event) Reso
 	podInfo.Warnings = event.GetPodsEventWarnings(allEvents, matchingPods)
 
 	return ResourceOwner{
-<<<<<<< HEAD
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindDaemonSet),
 		ObjectMeta:      api.NewObjectMeta(self.ObjectMeta),
 		Pods:            podInfo,
 		ContainerImages: common.GetContainerImages(&self.Spec.Template.Spec),
-=======
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindDaemonSet),
-		ObjectMeta:          api.NewObjectMeta(self.ObjectMeta),
-		Pods:                podInfo,
-		ContainerImages:     common.GetContainerImages(&self.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -302,14 +224,8 @@ func (self DaemonSetController) UID() types.UID {
 func (self DaemonSetController) GetLogSources(allPods []v1.Pod) LogSources {
 	controlledPods := common.FilterPodsByControllerRef(&self, allPods)
 	return LogSources{
-<<<<<<< HEAD
 		PodNames:       getPodNames(controlledPods),
 		ContainerNames: common.GetContainerNames(&self.Spec.Template.Spec),
-=======
-		PodNames:           getPodNames(controlledPods),
-		ContainerNames:     common.GetContainerNames(&self.Spec.Template.Spec),
-		InitContainerNames: common.GetInitContainerNames(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -324,18 +240,10 @@ func (self StatefulSetController) Get(allPods []v1.Pod, allEvents []v1.Event) Re
 	podInfo.Warnings = event.GetPodsEventWarnings(allEvents, matchingPods)
 
 	return ResourceOwner{
-<<<<<<< HEAD
 		TypeMeta:        api.NewTypeMeta(api.ResourceKindStatefulSet),
 		ObjectMeta:      api.NewObjectMeta(self.ObjectMeta),
 		Pods:            podInfo,
 		ContainerImages: common.GetContainerImages(&self.Spec.Template.Spec),
-=======
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindStatefulSet),
-		ObjectMeta:          api.NewObjectMeta(self.ObjectMeta),
-		Pods:                podInfo,
-		ContainerImages:     common.GetContainerImages(&self.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 
@@ -348,14 +256,8 @@ func (self StatefulSetController) UID() types.UID {
 func (self StatefulSetController) GetLogSources(allPods []v1.Pod) LogSources {
 	controlledPods := common.FilterPodsByControllerRef(&self, allPods)
 	return LogSources{
-<<<<<<< HEAD
 		PodNames:       getPodNames(controlledPods),
 		ContainerNames: common.GetContainerNames(&self.Spec.Template.Spec),
-=======
-		PodNames:           getPodNames(controlledPods),
-		ContainerNames:     common.GetContainerNames(&self.Spec.Template.Spec),
-		InitContainerNames: common.GetInitContainerNames(&self.Spec.Template.Spec),
->>>>>>> upstream/master
 	}
 }
 

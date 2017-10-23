@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 // Copyright 2017 The Kubernetes Dashboard Authors.
-=======
-// Copyright 2017 The Kubernetes Authors.
->>>>>>> upstream/master
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,14 +41,11 @@ describe('Ingress card', () => {
     expect(ctrl.areMultipleNamespacesSelected()).toBe(true);
   });
 
-<<<<<<< HEAD
   it('should format the "ingress start date" tooltip correctly', () => {
     expect(ctrl.getStartedAtTooltip('2016-06-06T09:13:12Z'))
         .toBe('Created at 2016-06-06T09:13 UTC');
   });
 
-=======
->>>>>>> upstream/master
   it('should return details href', () => {
     expect(ctrl.getIngressDetailHref()).toBe('#!/ingress/foo/bar');
   });
