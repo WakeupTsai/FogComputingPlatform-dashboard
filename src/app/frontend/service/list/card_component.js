@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import {stateName} from '../../service/detail/state';
 export class ServiceCardController {
   /**
    * @param {!ui.router.$state} $state
+   * @param {!angular.$interpolate} $interpolate
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    * @ngInject
    */
@@ -33,6 +34,9 @@ export class ServiceCardController {
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+
+    /** @private {!angular.$interpolate} */
+    this.interpolate_ = $interpolate;
   }
 
   /**
@@ -82,6 +86,22 @@ export class ServiceCardController {
    */
   getServiceClusterIP() {
     return this.service.clusterIP ? this.service.clusterIP : '-';
+  }
+
+  /**
+   * @export
+   * @param  {string} startDate - start date of the service
+   * @return {string} localized tooltip with the formatted start date
+   */
+  getStartedAtTooltip(startDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Started at [some date]' showing the exact start time of
+     * the service.
+     */
+    let MSG_SERVICE_LIST_STARTED_AT_TOOLTIP =
+        goog.getMsg('Created at {$startDate} UTC', {'startDate': filter({'date': startDate})});
+    return MSG_SERVICE_LIST_STARTED_AT_TOOLTIP;
   }
 }
 

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -174,6 +174,11 @@ describe('Pod card controller', () => {
   it('should check pod status correctly (success isn\'t failed)', () => {
     ctrl.pod = {name: 'test-pod', podStatus: {podPhase: 'success'}, warnings: []};
     expect(ctrl.isFailed()).toBeFalsy();
+  });
+
+  it('should format the "pod start date" tooltip correctly', () => {
+    expect(ctrl.getStartedAtTooltip('2016-06-06T09:13:12Z'))
+        .toBe('Started at 2016-06-06T09:13 UTC');
   });
 
   it('should show and hide cpu metrics', () => {

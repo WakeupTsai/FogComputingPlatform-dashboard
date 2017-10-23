@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ import (
 	resourceService "github.com/kubernetes/dashboard/src/app/backend/resource/service"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/statefulset"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/storageclass"
+	"github.com/kubernetes/dashboard/src/app/backend/resource/thirdpartyresource"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/workload"
 	"github.com/kubernetes/dashboard/src/app/backend/scaling"
 	"github.com/kubernetes/dashboard/src/app/backend/search"
@@ -519,6 +520,19 @@ func CreateHTTPAPIHandler(iManager integration.IntegrationManager, cManager clie
 			Writes(persistentvolumeclaim.PersistentVolumeClaimDetail{}))
 
 	apiV1Ws.Route(
+		apiV1Ws.GET("/thirdpartyresource").
+			To(apiHandler.handleGetThirdPartyResource).
+			Writes(thirdpartyresource.ThirdPartyResourceList{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/thirdpartyresource/{thirdpartyresource}").
+			To(apiHandler.handleGetThirdPartyResourceDetail).
+			Writes(thirdpartyresource.ThirdPartyResourceDetail{}))
+	apiV1Ws.Route(
+		apiV1Ws.GET("/thirdpartyresource/{thirdpartyresource}/object").
+			To(apiHandler.handleGetThirdPartyResourceObjects).
+			Writes(thirdpartyresource.ThirdPartyResourceObjectList{}))
+
+	apiV1Ws.Route(
 		apiV1Ws.GET("/storageclass").
 			To(apiHandler.handleGetStorageClassList).
 			Writes(storageclass.StorageClassList{}))
@@ -547,11 +561,6 @@ func CreateHTTPAPIHandler(iManager integration.IntegrationManager, cManager clie
 	apiV1Ws.Route(
 		apiV1Ws.GET("/log/{namespace}/{pod}/{container}").
 			To(apiHandler.handleLogs).
-			Writes(logs.LogDetails{}))
-
-	apiV1Ws.Route(
-		apiV1Ws.GET("/log/file/{namespace}/{pod}/{container}").
-			To(apiHandler.handleLogFile).
 			Writes(logs.LogDetails{}))
 
 	apiV1Ws.Route(
@@ -1683,6 +1692,67 @@ func (apiHandler *APIHandler) handleGetPersistentVolumeList(request *restful.Req
 	response.WriteHeaderAndEntity(http.StatusOK, result)
 }
 
+func (apiHandler *APIHandler) handleGetThirdPartyResource(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.cManager.Client(request)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+
+	dataSelect := parseDataSelectPathParameter(request)
+	result, err := thirdpartyresource.GetThirdPartyResourceList(k8sClient, dataSelect)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+func (apiHandler *APIHandler) handleGetThirdPartyResourceDetail(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.cManager.Client(request)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+
+	cfg, err := apiHandler.cManager.Config(request)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+
+	name := request.PathParameter("thirdpartyresource")
+	result, err := thirdpartyresource.GetThirdPartyResourceDetail(k8sClient, cfg, name)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
+func (apiHandler *APIHandler) handleGetThirdPartyResourceObjects(request *restful.Request, response *restful.Response) {
+	k8sClient, err := apiHandler.cManager.Client(request)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+
+	cfg, err := apiHandler.cManager.Config(request)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+
+	name := request.PathParameter("thirdpartyresource")
+	dataSelect := parseDataSelectPathParameter(request)
+	result, err := thirdpartyresource.GetThirdPartyResourceObjects(k8sClient, cfg, dataSelect, name)
+	if err != nil {
+		handleInternalError(response, err)
+		return
+	}
+	response.WriteHeaderAndEntity(http.StatusOK, result)
+}
+
 func (apiHandler *APIHandler) handleGetPersistentVolumeDetail(request *restful.Request, response *restful.Response) {
 	k8sClient, err := apiHandler.cManager.Client(request)
 	if err != nil {
@@ -2068,7 +2138,7 @@ func (apiHandler *APIHandler) handleLogs(request *restful.Request, response *res
 	if err != nil {
 		refLineNum = 0
 	}
-	usePreviousLogs := request.QueryParameter("previous") == "true"
+
 	offsetFrom, err1 := strconv.Atoi(request.QueryParameter("offsetFrom"))
 	offsetTo, err2 := strconv.Atoi(request.QueryParameter("offsetTo"))
 	logFilePosition := request.QueryParameter("logFilePosition")
@@ -2086,31 +2156,12 @@ func (apiHandler *APIHandler) handleLogs(request *restful.Request, response *res
 		}
 	}
 
-	result, err := container.GetLogDetails(k8sClient, namespace, podID, containerID, logSelector, usePreviousLogs)
+	result, err := container.GetPodLogs(k8sClient, namespace, podID, containerID, logSelector)
 	if err != nil {
 		handleInternalError(response, err)
 		return
 	}
 	response.WriteHeaderAndEntity(http.StatusOK, result)
-}
-
-func (apiHandler *APIHandler) handleLogFile(request *restful.Request, response *restful.Response) {
-	k8sClient, err := apiHandler.cManager.Client(request)
-	if err != nil {
-		handleInternalError(response, err)
-		return
-	}
-	namespace := request.PathParameter("namespace")
-	podID := request.PathParameter("pod")
-	containerID := request.PathParameter("container")
-	usePreviousLogs := request.QueryParameter("previous") == "true"
-
-	filename, logStream, err := container.GetLogFile(k8sClient, namespace, podID, containerID, usePreviousLogs)
-	if err != nil {
-		handleInternalError(response, err)
-		return
-	}
-	handleDownload(response, logStream, filename)
 }
 
 // parseNamespacePathParameter parses namespace selector for list pages in path parameter.

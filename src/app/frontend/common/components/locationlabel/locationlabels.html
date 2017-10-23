@@ -1,0 +1,11 @@
+<!--- phstsai -->
+
+<div ng-if="::locationLabelsCtrl.locationlabels">
+  <div ng-repeat="(key, value) in ::locationLabelsCtrl.locationlabels"
+       ng-if="key.includes('location')"
+       class="kd-chips">
+        <kd-middle-ellipsis display-string="{{::value.replace('-', ', ');}}"
+                          class="kd-chip">
+        </kd-middle-ellipsis>
+  </div>
+</div>

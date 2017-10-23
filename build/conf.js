@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ const version = {
   /**
    * Current release version of the project.
    */
-  release: 'v1.7.1',
+  release: 'v1.6.3',
   /**
    * Version name of the head release of the project.
    */
@@ -240,6 +240,7 @@ export default {
     backendTmpSrcVendor: path.join(
         basePath, '.tmp/backend/src/github.com/kubernetes/dashboard/vendor'),
     backendVendor: path.join(basePath, 'vendor'),
+    bowerComponents: path.join(basePath, 'bower_components'),
     build: path.join(basePath, 'build'),
     coverage: path.join(basePath, 'coverage'),
     coverageBackend: path.join(basePath, 'coverage/go.txt'),
@@ -256,21 +257,22 @@ export default {
     frontendTest: path.join(basePath, 'src/test/frontend'),
     goTools: path.join(basePath, '.tools/go'),
     goWorkspace: path.join(basePath, '.go_workspace'),
+    hyperkube: path.join(basePath, 'build/hyperkube.sh'),
     goTestScript: path.join(basePath, 'build/go-test.sh'),
     i18nProd: path.join(basePath, '.tmp/i18n'),
     integrationTest: path.join(basePath, 'src/test/integration'),
-    jsoneditorImages: path.join(basePath, 'node_modules/jsoneditor/src/css/img'),
+    jsoneditorImages: path.join(basePath, 'bower_components/jsoneditor/src/css/img'),
     karmaConf: path.join(basePath, 'build/karma.conf.js'),
-    materialIcons: path.join(basePath, 'node_modules/material-design-icons/iconfont'),
+    materialIcons: path.join(basePath, 'bower_components/material-design-icons/iconfont'),
     nodeModules: path.join(basePath, 'node_modules'),
     partials: path.join(basePath, '.tmp/partials'),
     messagesForExtraction: path.join(basePath, '.tmp/messages_for_extraction'),
     prodTmp: path.join(basePath, '.tmp/prod'),
     protractorConf: path.join(basePath, 'build/protractor.conf.js'),
-    robotoFonts: path.join(basePath, 'node_modules/roboto-fontface/fonts'),
-    robotoFontsBase: path.join(basePath, 'node_modules/roboto-fontface'),
-    robotoMonoFonts: path.join(basePath, 'node_modules/easyfont-roboto-mono/fonts'),
-    robotoMonoFontsBase: path.join(basePath, 'node_modules/easyfont-roboto-mono'),
+    robotoFonts: path.join(basePath, 'bower_components/roboto-fontface/fonts'),
+    robotoFontsBase: path.join(basePath, 'bower_components/roboto-fontface'),
+    robotoMonoFonts: path.join(basePath, 'bower_components/easyfont-roboto-mono/fonts'),
+    robotoMonoFontsBase: path.join(basePath, 'bower_components/easyfont-roboto-mono'),
     serve: path.join(basePath, '.tmp/serve'),
     src: path.join(basePath, 'src'),
     tmp: path.join(basePath, '.tmp'),

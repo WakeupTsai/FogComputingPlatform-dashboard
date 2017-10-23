@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"sort"
 
-	auth "k8s.io/api/authorization/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	rbac "k8s.io/client-go/pkg/apis/rbac/v1beta1"
 )
 
 // RBACStatus describes status of RBAC in the cluster.
@@ -39,7 +39,7 @@ func ValidateRbacStatus(client kubernetes.Interface) (*RbacStatus, error) {
 
 	apiVersions := metav1.ExtractGroupVersions(groupList)
 	return &RbacStatus{
-		Enabled: contains(apiVersions, auth.SchemeGroupVersion.String()),
+		Enabled: contains(apiVersions, rbac.SchemeGroupVersion.String()),
 	}, nil
 }
 

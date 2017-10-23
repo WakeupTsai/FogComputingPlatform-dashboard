@@ -1,5 +1,5 @@
 <!--
-Copyright 2017 The Kubernetes Authors.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,15 +30,15 @@ limitations under the License.
 
   <!-- build:css static/vendor.css -->
   <!-- bower:css -->
-  <!-- Application CSS dependencies are populated here (dev build) and compiled
+  <!-- Bower CSS dependencies are populated here (dev build) and compiled
          into vendor.css (prod build). -->
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:css static/app.css -->
   <!-- inject:css -->
-  <!-- Application CSS files are populated here (dev build) and compiled
-       into app.css (prod build). -->
+  <!-- Application css files are populated here (dev build) and compiled
+         into app.css (prod build). -->
   <!-- endinject -->
   <!-- endbuild -->
 </head>
@@ -59,23 +59,69 @@ limitations under the License.
              ng-if="!$ctrl.isLoginState()">
     <!-- Application content is inserted here. -->
   </kd-chrome>
-
   <!-- build:js static/vendor.js -->
   <!-- bower:js -->
-  <!-- Application JS dependencies are populated here (dev build) and compiled
+  <script src="http://maps.google.com/maps/api/js"></script>
+  <!-- Bower JS dependencies are populated here (dev build) and compiled
          into vendor.js (prod build). -->
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- Script with configuration generated at backend. -->
-  <script src="api/appConfig.json"></script>
+  <script src="api/appConfig.json" class=''></script>
+
+  <div id="map" style="width:100%;height:400px;background:yellow"></div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(24.795211, 120.992309),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(24.795211, 120.992309),
+      map: map,
+      url: '/#!/node/140.114.79.70?namespace=default'
+    });
+
+    var contentString = '140.114.79.70';
+
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+    marker.addListener('mouseover', function() {
+      infowindow.open(map, this);
+    });
+
+    // assuming you also want to hide the infowindow when user mouses-out
+    marker.addListener('mouseout', function() {
+        infowindow.close();
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      window.location.href = marker.url;
+      $("html, body").animate({ scrollTop: 0 }, 600);
+      // document.body.scrollTop = 0;
+    });
+
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8FLccDBYbLiPfGNvvplRAV3rgyCWmnaI&callback=myMap"></script>
+
 
   <!-- build:js static/app.js -->
   <!-- inject:js -->
-  <!-- Application JS files are populated here (dev build) and compiled
-       into app.js (prod build). -->
+  <!-- Application JS files are populated here. -->
   <!-- endinject -->
   <!-- endbuild -->
+
+
 
 </body>
 

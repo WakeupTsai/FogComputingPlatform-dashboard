@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ func TestValidateRbacStatus(t *testing.T) {
 				return &metav1.APIGroupList{Groups: []metav1.APIGroup{
 					{Name: "rbac", Versions: []metav1.GroupVersionForDiscovery{
 						{
-							GroupVersion: "authorization.k8s.io/v1alpha1",
+							GroupVersion: "rbac.authorization.k8s.io/v1alpha1",
 							Version:      "v1alpha1",
 						},
 					}},
@@ -90,7 +90,7 @@ func TestValidateRbacStatus(t *testing.T) {
 				return &metav1.APIGroupList{Groups: []metav1.APIGroup{
 					{Name: "rbac", Versions: []metav1.GroupVersionForDiscovery{
 						{
-							GroupVersion: "authorization.k8s.io/v1beta1",
+							GroupVersion: "rbac.authorization.k8s.io/v1beta1",
 							Version:      "v1beta1",
 						},
 					}},

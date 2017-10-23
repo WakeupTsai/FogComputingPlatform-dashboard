@@ -1,5 +1,5 @@
 <!--
-Copyright 2017 The Kubernetes Authors.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -37,6 +37,16 @@ limitations under the License.
 </kd-info-card-entry>
 <!--- phstsai -->
 
+<<<<<<< HEAD
+=======
+<!--- phstsai -->
+<kd-info-card-entry ng-if="::$ctrl.objectMeta.labels"
+                    title="[[Location|Label 'Location' for a resource.]]">
+  <kd-location-labels locationlabels="::$ctrl.objectMeta.labels"></kd-location-labels>
+</kd-info-card-entry>
+<!--- phstsai -->
+
+>>>>>>> master
 
 <kd-info-card-entry ng-if="::$ctrl.objectMeta.annotations"
                     title="[[Annotations|Label 'Annotations' for a resource.]]">

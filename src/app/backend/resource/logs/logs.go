@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,9 +87,6 @@ type LogInfo struct {
 
 	// The name of the container the logs are for.
 	ContainerName string `json:"containerName"`
-
-	// The name of the init container the logs are for.
-	InitContainerName string `json:"initContainerName"`
 
 	// Date of the first log line
 	FromDate LogTimestamp `json:"fromDate"`
@@ -244,20 +241,19 @@ func (self LogLines) createLogLineId(lineIndex int) *LogLineId {
 	}
 }
 
-// ToLogLines converts rawLogs (string) to LogLines. Proper log lines start with a timestamp which is chopped off.
-// In error cases the server returns a message without a timestamp
+// ToLogLines converts rawLogs (string) to LogLines. This might be slow as we have to split ALL logs by \n.
+// The solution could be to split only required part of logs. To find reference line - do smart binary search on raw string -
+// select the middle, search slightly left and slightly right to find timestamp, eliminate half of the raw string,
+// repeat until found required timestamp. Later easily find and split N subsequent/preceding lines.
 func ToLogLines(rawLogs string) LogLines {
 	logLines := LogLines{}
 	for _, line := range strings.Split(rawLogs, "\n") {
 		if line != "" {
-			startsWithDate := ('0' <= line[0] && line[0] <= '9') //2017-...
 			idx := strings.Index(line, " ")
-			if idx > 0 && startsWithDate {
+			if idx > 0 {
 				timestamp := LogTimestamp(line[0:idx])
 				content := line[idx+1:]
 				logLines = append(logLines, LogLine{Timestamp: timestamp, Content: content})
-			} else {
-				logLines = append(logLines, LogLine{Timestamp: LogTimestamp("0"), Content: line})
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,11 +64,7 @@ export class AuthService {
    * @private
    */
   setTokenCookie_(token) {
-    // This will only work for HTTPS connection
     this.cookies_.put(this.tokenCookieName_, token, {secure: true});
-    // This will only work when accessing Dashboard at 'localhost' or '127.0.0.1'
-    this.cookies_.put(this.tokenCookieName_, token, {domain: 'localhost'});
-    this.cookies_.put(this.tokenCookieName_, token, {domain: '127.0.0.1'});
   }
 
   /**

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,11 @@ import {stateName} from '../../statefulset/detail/state';
 export default class StatefulSetCardController {
   /**
    * @param {!ui.router.$state} $state
+   * @param {!angular.$interpolate} $interpolate
    * @param {!./../../common/namespace/service.NamespaceService} kdNamespaceService
    * @ngInject
    */
-  constructor($state, kdNamespaceService) {
+  constructor($state, $interpolate, kdNamespaceService) {
     /**
      * Initialized from the scope.
      * @export {!backendApi.StatefulSet}
@@ -35,6 +36,9 @@ export default class StatefulSetCardController {
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+
+    /** @private */
+    this.interpolate_ = $interpolate;
 
     /** @private {!./../../common/namespace/service.NamespaceService} */
     this.kdNamespaceService_ = kdNamespaceService;
@@ -83,6 +87,22 @@ export default class StatefulSetCardController {
    */
   isSuccess() {
     return !this.isPending() && !this.hasWarnings();
+  }
+
+  /**
+   * @export
+   * @param  {string} creationDate - creation date of the stateful set
+   * @return {string} localized tooltip with the formated creation date
+   */
+  getCreatedAtTooltip(creationDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Created at [some date]' showing the exact creation time of
+     * stateful set.
+     */
+    let MSG_STATEFUL_SET_LIST_CREATED_AT_TOOLTIP =
+        goog.getMsg('Created at {$creationDate}', {'creationDate': filter({'date': creationDate})});
+    return MSG_STATEFUL_SET_LIST_CREATED_AT_TOOLTIP;
   }
 }
 

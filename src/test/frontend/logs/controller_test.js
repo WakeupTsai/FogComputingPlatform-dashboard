@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,13 @@ import LogsModule from 'logs/module';
 import {StateParams} from 'logs/state';
 
 describe('Logs controller', () => {
+
+  /** @type {string} */
+  const logsTextColorClassName = 'kd-logs-text-color-invert';
+
+  /** @type {string} */
+  const logsTextSizeClassName = 'kd-logs-element';
+
   /** @type {!LogsController} */
   let ctrl;
 
@@ -89,6 +96,12 @@ describe('Logs controller', () => {
     expect(ctrl).not.toBeUndefined();
   });
 
+  it('should return style classes for logs content', () => {
+    // expect
+    expect(ctrl.getStyleClass()).toEqual(`${logsTextColorClassName}`);
+    expect(ctrl.getLogsClass()).toEqual(`${logsTextSizeClassName}`);
+  });
+
   it('should display zero state log line if server returned no logs', () => {
     ctrl.podLogs.logs = [];
     ctrl.$onInit();
@@ -119,7 +132,7 @@ describe('Logs controller', () => {
     expect(ctrl.logsSet.length).toEqual(3);
     httpBackend
         .expectGET(
-            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=25&offsetTo=125&previous=false&referenceLineNum=11&referenceTimestamp=X')
+            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=25&offsetTo=125&referenceLineNum=11&referenceTimestamp=X')
         .respond(200, otherLogs);
     httpBackend.flush();
     expect(ctrl.logsSet.length).toEqual(2);
@@ -132,7 +145,7 @@ describe('Logs controller', () => {
     expect(ctrl.logsSet.length).toEqual(3);
     httpBackend
         .expectGET(
-            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=-78&offsetTo=22&previous=false&referenceLineNum=11&referenceTimestamp=X')
+            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=-78&offsetTo=22&referenceLineNum=11&referenceTimestamp=X')
         .respond(200, otherLogs);
     httpBackend.flush();
     expect(ctrl.logsSet.length).toEqual(2);
@@ -145,7 +158,7 @@ describe('Logs controller', () => {
     expect(ctrl.logsSet.length).toEqual(3);
     httpBackend
         .expectGET(
-            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=end&offsetFrom=2000000000&offsetTo=2000000100&previous=false&referenceLineNum=0&referenceTimestamp=newest')
+            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=end&offsetFrom=2000000000&offsetTo=2000000100&referenceLineNum=0&referenceTimestamp=newest')
         .respond(200, otherLogs);
     httpBackend.flush();
     expect(ctrl.logsSet.length).toEqual(2);
@@ -159,7 +172,7 @@ describe('Logs controller', () => {
     expect(ctrl.logsSet.length).toEqual(3);
     httpBackend
         .expectGET(
-            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=-2000000100&offsetTo=-2000000000&previous=false&referenceLineNum=0&referenceTimestamp=oldest')
+            'api/v1/log/namespace11/test-pod/container-name?logFilePosition=beginning&offsetFrom=-2000000100&offsetTo=-2000000000&referenceLineNum=0&referenceTimestamp=oldest')
         .respond(200, otherLogs);
     httpBackend.flush();
     expect(ctrl.logsSet.length).toEqual(2);

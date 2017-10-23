@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package common
 import (
 	"bytes"
 
-	api "k8s.io/api/core/v1"
+	api "k8s.io/client-go/pkg/api/v1"
 )
 
 // Endpoint describes an endpoint that is host and a list of available ports for that host.

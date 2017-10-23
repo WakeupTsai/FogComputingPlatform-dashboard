@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,71 +29,50 @@ export class LogsService {
 
     /** @private {boolean} */
     this.showTimestamp_ = false;
-
-    /** @private {boolean} */
-    this.previous_ = false;
-
-    /** @private {boolean} */
-    this.following_ = false;
-  }
-
-  setFollowing() {
-    this.following_ = !this.following_;
   }
 
   /**
+   * Getter for inverted flag.
    * @return {boolean}
-   * @export
-   */
-  getFollowing() {
-    return this.following_;
-  }
-
-  setInverted() {
-    this.inverted_ = !this.inverted_;
-  }
-
-  /**
-   * @return {boolean}
-   * @export
    */
   getInverted() {
     return this.inverted_;
   }
 
+  /**
+   * Switches the inverted flag.
+   */
+  setInverted() {
+    this.inverted_ = !this.inverted_;
+  }
+
+  /**
+   * Switches the compact flag.
+   */
   setCompact() {
     this.compact_ = !this.compact_;
   }
 
   /**
+   * Getter for compact flag.
    * @return {boolean}
-   * @export
    */
   getCompact() {
     return this.compact_;
   }
 
+  /**
+   * Switches the show timestamp flag
+   */
   setShowTimestamp() {
     this.showTimestamp_ = !this.showTimestamp_;
   }
 
   /**
-   * @return {boolean}
-   * @export
+   * Getter for the show timestamp flag
+   * @returns {boolean}
    */
   getShowTimestamp() {
     return this.showTimestamp_;
-  }
-
-  setPrevious() {
-    this.previous_ = !this.previous_;
-  }
-
-  /**
-   * @return {boolean}
-   * @export
-   */
-  getPrevious() {
-    return this.previous_;
   }
 }

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,9 +40,6 @@ type DaemonSetDetail struct {
 
 	// Container image list of the pod template specified by this Daemon Set.
 	ContainerImages []string `json:"containerImages"`
-
-	// Init Container image list of the pod template specified by this Daemon Set.
-	InitContainerImages []string `json:"initContainerImages"`
 
 	// Aggregate information about pods of this daemon set.
 	PodInfo common.PodInfo `json:"podInfo"`
@@ -110,10 +107,6 @@ func GetDaemonSetDetail(client k8sClient.Interface, metricClient metricapi.Metri
 
 	for _, container := range daemonSet.Spec.Template.Spec.Containers {
 		daemonSetDetail.ContainerImages = append(daemonSetDetail.ContainerImages, container.Image)
-	}
-
-	for _, initContainer := range daemonSet.Spec.Template.Spec.InitContainers {
-		daemonSetDetail.InitContainerImages = append(daemonSetDetail.InitContainerImages, initContainer.Image)
 	}
 
 	return daemonSetDetail, nil

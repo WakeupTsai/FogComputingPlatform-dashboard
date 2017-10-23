@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,9 @@
 import {actionbarViewName, stateName as chromeStateName} from '../../chrome/state';
 import {breadcrumbsConfig} from '../../common/components/breadcrumbs/service';
 import {appendDetailParamsToUrl} from '../../common/resource/globalresourcedetail';
+
 import {stateName as namespaceList} from '../list/state';
 import {stateName as parentState, stateUrl} from '../state';
-
-import {ActionBarController} from './actionbar_controller';
 import {NamespaceDetailController} from './controller';
 
 /**
@@ -45,11 +44,7 @@ export const config = {
       controllerAs: 'ctrl',
       templateUrl: 'namespace/detail/detail.html',
     },
-    [`${actionbarViewName}@${chromeStateName}`]: {
-      controller: ActionBarController,
-      controllerAs: '$ctrl',
-      templateUrl: 'namespace/detail/actionbar.html',
-    },
+    [`${actionbarViewName}@${chromeStateName}`]: {},
   },
 };
 

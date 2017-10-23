@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import (
 
 	"github.com/kubernetes/dashboard/src/app/backend/api"
 	integrationapi "github.com/kubernetes/dashboard/src/app/backend/integration/api"
-	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/pkg/api/v1"
 )
 
 // MetricClient is an interface that exposes API used by dashboard to show graphs and sparklines.

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import (
 	"sync"
 
 	syncApi "github.com/kubernetes/dashboard/src/app/backend/sync/api"
-	"k8s.io/api/core/v1"
 	k8sErrors "k8s.io/apimachinery/pkg/api/errors"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/pkg/api/v1"
 )
 
 // Implements Synchronizer interface. See Synchronizer for more information.
@@ -65,11 +65,7 @@ func (self *secretSynchronizer) Start() {
 		defer close(self.errChan)
 		for {
 			select {
-			case ev, ok := <-watcher.ResultChan():
-				if !ok {
-					self.errChan <- fmt.Errorf("%s watch ended with timeout", self.Name())
-					return
-				}
+			case ev := <-watcher.ResultChan():
 				if err := self.handleEvent(ev); err != nil {
 					self.errChan <- err
 					return

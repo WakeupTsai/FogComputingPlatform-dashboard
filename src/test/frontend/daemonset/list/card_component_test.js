@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,5 +39,15 @@ describe('Daemon Set card', () => {
 
     // then
     expect(ctrl.getDaemonSetDetailHref()).toEqual('#!/daemonset/foo-namespace/foo-name');
+  });
+
+  it('should format the "created at" tooltip correctly', () => {
+    ctrl.daemonSet = {
+      objectMeta: {
+        creationTimestamp: '2016-06-06T09:13:12Z',
+      },
+    };
+
+    expect(ctrl.getCreatedAtTooltip()).toMatch('Created at 2016-06-06T09:13.*');
   });
 });

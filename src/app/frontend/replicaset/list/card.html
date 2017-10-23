@@ -1,5 +1,5 @@
 <!--
-Copyright 2017 The Kubernetes Authors.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -74,14 +74,11 @@ limitations under the License.
       {{::$ctrl.replicaSet.objectMeta.creationTimestamp | relativeTime}}
       <md-tooltip md-delay="500"
                   md-autohide>
-        [[Created at | Tooltip for the age column ]] {{::$ctrl.replicaSet.objectMeta.creationTimestamp | date}}
+        {{::$ctrl.getCreatedAtTooltip($ctrl.replicaSet.objectMeta.creationTimestamp)}}
       </md-tooltip>
     </kd-resource-card-column>
     <kd-resource-card-column>
       <div ng-repeat="image in ::$ctrl.replicaSet.containerImages track by $index">
-        <kd-middle-ellipsis display-string="{{::image}}"></kd-middle-ellipsis>
-      </div>
-      <div ng-repeat="image in ::$ctrl.replicaSet.initContainerImages track by $index">
         <kd-middle-ellipsis display-string="{{::image}}"></kd-middle-ellipsis>
       </div>
     </kd-resource-card-column>
@@ -105,6 +102,8 @@ limitations under the License.
     </kd-resource-card-column>
   </kd-resource-card-columns>
   <kd-resource-card-footer ng-if="::$ctrl.hasWarnings()">
-    <kd-pod-warnings warnings="::$ctrl.replicaSet.pods.warnings"></kd-pod-warnings>
+    <div ng-repeat="warning in ::$ctrl.replicaSet.pods.warnings">
+      <span class="kd-error">{{::warning.message}}</span>
+    </div>
   </kd-resource-card-footer>
 </kd-resource-card>

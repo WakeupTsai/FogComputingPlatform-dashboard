@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ import (
 	metricapi "github.com/kubernetes/dashboard/src/app/backend/integration/metric/api"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-	"k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/labels"
 	client "k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/pkg/api/v1"
 )
 
 // ReplicationController (aka. Replication Controller) plus zero or more Kubernetes services that
@@ -37,9 +37,6 @@ type ReplicationController struct {
 
 	// Container images of the Replication Controller.
 	ContainerImages []string `json:"containerImages"`
-
-	// Init Container images of the Replication Controller.
-	InitContainerImages []string `json:"initContainerImages"`
 }
 
 // Transforms simple selector map to labels.Selector object that can be used when querying for
@@ -92,11 +89,10 @@ func ToReplicationController(replicationController *v1.ReplicationController,
 	podInfo *common.PodInfo) ReplicationController {
 
 	return ReplicationController{
-		ObjectMeta:          api.NewObjectMeta(replicationController.ObjectMeta),
-		TypeMeta:            api.NewTypeMeta(api.ResourceKindReplicationController),
-		Pods:                *podInfo,
-		ContainerImages:     common.GetContainerImages(&replicationController.Spec.Template.Spec),
-		InitContainerImages: common.GetInitContainerImages(&replicationController.Spec.Template.Spec),
+		ObjectMeta:      api.NewObjectMeta(replicationController.ObjectMeta),
+		TypeMeta:        api.NewTypeMeta(api.ResourceKindReplicationController),
+		Pods:            *podInfo,
+		ContainerImages: common.GetContainerImages(&replicationController.Spec.Template.Spec),
 	}
 }
 

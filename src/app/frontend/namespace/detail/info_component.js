@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +13,28 @@
 // limitations under the License.
 
 /**
+ * @final
+ */
+export default class NamespaceInfoController {
+  /**
+   * @ngInject
+   */
+  constructor() {
+    /**
+     * Namespace details. Initialized from the scope.
+     * @export {!backendApi.NamespaceDetail}
+     */
+    this.namespace;
+  }
+}
+
+/**
  * Definition object for the component that displays namespace info.
  *
  * @return {!angular.Component}
  */
 export const namespaceInfoComponent = {
+  controller: NamespaceInfoController,
   templateUrl: 'namespace/detail/info.html',
   bindings: {
     /** {!backendApi.NamespaceDetail} */

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 
 const logsPerView = 100;
 const maxLogSize = 2e9;
@@ -34,12 +35,10 @@ export class LogsController {
    * @param {!angular.$sce} $sce
    * @param {!angular.$document} $document
    * @param {!angular.$resource} $resource
-   * @param {!angular.$interval} $interval
-   * @param {!angular.$log} $log
    * @param {!../common/errorhandling/dialog.ErrorDialog} errorDialog
    * @ngInject
    */
-  constructor(logsService, $sce, $document, $resource, $interval, $log, errorDialog) {
+  constructor(logsService, $sce, $document, $resource, errorDialog) {
     /** @private {!angular.$sce} */
     this.sce_ = $sce;
 
@@ -48,12 +47,6 @@ export class LogsController {
 
     /** @private {!angular.$resource} */
     this.resource_ = $resource;
-
-    /** @private {!angular.$interval} */
-    this.interval_ = $interval;
-
-    /** @private {!angular.$log} */
-    this.log_ = $log;
 
     /** @export {!./service.LogsService} */
     this.logsService = logsService;
@@ -100,11 +93,8 @@ export class LogsController {
     /** @private {!ui.router.$stateParams} */
     this.stateParams_;
 
-    /** @export {!kdUiRouter.$transition$} */
+    /** @export {!kdUiRouter.$transition$} - initialized from resolve */
     this.$transition$;
-
-    /** @export {number} Refresh interval in miliseconds. */
-    this.refreshInterval = 5000;
   }
 
 
@@ -114,21 +104,6 @@ export class LogsController {
     this.stateParams_ = this.$transition$.params();
     this.updateUiModel(this.podLogs);
     this.topIndex = this.podLogs.logs.length;
-    this.registerIntervalFunction_();
-  }
-
-  /**
-   * Registers interval function used to automatically refresh logs.
-   *
-   * @private
-   */
-  registerIntervalFunction_() {
-    this.interval_(() => {
-      if (this.logsService.getFollowing()) {
-        this.loadNewest();
-        this.log_.info('Automatically refreshed logs');
-      }
-    }, this.refreshInterval);
   }
 
 
@@ -171,18 +146,6 @@ export class LogsController {
   }
 
   /**
-   * Toggles log follow mechanism.
-   *
-   * @export
-   */
-  toggleLogFollow() {
-    this.logsService.setFollowing();
-    if (this.logsService.getFollowing()) {
-      this.loadNewest();
-    }
-  }
-
-  /**
    * Downloads and loads slice of logs as specified by offsetFrom and offsetTo.
    * It works just like normal slicing, but indices are referenced relatively to certain reference
    * line.
@@ -198,6 +161,7 @@ export class LogsController {
    */
   loadView(logFilePosition, referenceTimestamp, referenceLinenum, offsetFrom, offsetTo) {
     let namespace = this.stateParams_.objectNamespace;
+
     this.resource_(`api/v1/log/${namespace}/${this.pod}/${this.container}`)
         .get(
             {
@@ -206,7 +170,6 @@ export class LogsController {
               'referenceLineNum': referenceLinenum,
               'offsetFrom': offsetFrom,
               'offsetTo': offsetTo,
-              'previous': this.logsService.getPrevious(),
             },
             (podLogs) => {
               this.updateUiModel(podLogs);
@@ -255,7 +218,7 @@ export class LogsController {
     // not contain any HTML markup, and formattedLine is the result of passing
     // ecapedLine to ansi_to_html, which is known to only add span tags.
     let escapedContent =
-        this.sce_.trustAsHtml(new AnsiUp().ansi_to_html(this.escapeHtml_(line.content)));
+        this.sce_.trustAsHtml(ansi_up.ansi_to_html(this.escapeHtml_(line.content)));
 
     // add timestamp if needed
     let showTimestamp = this.logsService.getShowTimestamp();
@@ -277,15 +240,88 @@ export class LogsController {
     return div.innerHTML;
   }
 
+
   /**
-   * Return the link to download the log file
+   * Indicates log area font size.
    * @export
    * @return {string}
    */
-  getDownloadLink() {
-    let namespace = this.stateParams_.objectNamespace;
-    return `api/v1/log/file/${namespace}/${this.pod}/${this.container}?previous=${
-        this.logsService.getPrevious()}`;
+  getLogsClass() {
+    const logsTextSize = 'kd-logs-element';
+    if (this.logsService.getCompact()) {
+      return `${logsTextSize}-compact`;
+    }
+    return logsTextSize;
+  }
+
+  /**
+   * Return proper style class for logs content.
+   * @export
+   * @returns {string}
+   */
+  getStyleClass() {
+    const logsTextColor = 'kd-logs-text-color';
+    if (this.logsService.getInverted()) {
+      return `${logsTextColor}-invert`;
+    }
+    return logsTextColor;
+  }
+
+  /**
+   * Return proper style class for text color icon.
+   * @export
+   * @returns {string}
+   */
+  getColorIconClass() {
+    const logsTextColor = 'kd-logs-color-icon';
+    if (this.logsService.getInverted()) {
+      return `${logsTextColor}-invert`;
+    }
+    return logsTextColor;
+  }
+
+  /**
+   * Return proper style class for font size icon.
+   * @export
+   * @returns {string}
+   */
+  getSizeIconClass() {
+    const logsTextColor = 'kd-logs-size-icon';
+    if (this.logsService.getCompact()) {
+      return `${logsTextColor}-compact`;
+    }
+    return logsTextColor;
+  }
+
+  /**
+   * Return the proper icon depending on the selection state
+   * @export
+   * @returns {string}
+   */
+  getTimestampIcon() {
+    if (this.logsService.getShowTimestamp()) {
+      return 'timer';
+    }
+    return 'timer_off';
+  }
+
+
+  /**
+   * Execute when a user changes the container from which logs should be loaded.
+
+   * @export
+   */
+  onContainerChange() {
+    this.loadNewest();
+  }
+
+  /**
+   * Execute when a user changes the pod from which logs should be loaded.
+   *
+   * @export
+   */
+  onPodChange() {
+    this.loadNewest();
   }
 
   /**
@@ -311,15 +347,6 @@ export class LogsController {
   onShowTimestamp() {
     this.logsService.setShowTimestamp();
     this.logsSet = this.formatAllLogs_(this.podLogs.logs);
-  }
-
-  /**
-   * Execute when a user changes the selected option for show previous container logs.
-   * @export
-   */
-  onPreviousChange() {
-    this.logsService.setPrevious();
-    this.loadNewest();
   }
 }
 
