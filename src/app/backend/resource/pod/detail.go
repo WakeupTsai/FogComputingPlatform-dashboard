@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,28 +27,50 @@ import (
 	"github.com/kubernetes/dashboard/src/app/backend/resource/common"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/controller"
 	"github.com/kubernetes/dashboard/src/app/backend/resource/dataselect"
-	"k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	res "k8s.io/apimachinery/pkg/api/resource"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
+	kubeapi "k8s.io/client-go/pkg/api"
+	"k8s.io/client-go/pkg/api/v1"
 )
 
-// PodDetail is a presentation layer view of Kubernetes Pod resource.
+// PodDetail is a presentation layer view of Kubernetes PodDetail resource. This means it is
+// PodDetail plus additional augmented data we can get from other sources (like services that
+// target it).
 type PodDetail struct {
-	ObjectMeta     api.ObjectMeta           `json:"objectMeta"`
-	TypeMeta       api.TypeMeta             `json:"typeMeta"`
-	PodPhase       v1.PodPhase              `json:"podPhase"`
-	PodIP          string                   `json:"podIP"`
-	NodeName       string                   `json:"nodeName"`
-	RestartCount   int32                    `json:"restartCount"`
-	QOSClass       string                   `json:"qosClass"`
-	Controller     controller.ResourceOwner `json:"controller"`
-	Containers     []Container              `json:"containers"`
-	InitContainers []Container              `json:"initContainers"`
-	Metrics        []metricapi.Metric       `json:"metrics"`
-	Conditions     []common.Condition       `json:"conditions"`
-	EventList      common.EventList         `json:"eventList"`
+	ObjectMeta api.ObjectMeta `json:"objectMeta"`
+	TypeMeta   api.TypeMeta   `json:"typeMeta"`
+
+	// Status of the Pod. See Kubernetes API for reference.
+	PodPhase v1.PodPhase `json:"podPhase"`
+
+	// IP address of the Pod.
+	PodIP string `json:"podIP"`
+
+	// Name of the Node this Pod runs on.
+	NodeName string `json:"nodeName"`
+
+	// Count of containers restarts.
+	RestartCount int32 `json:"restartCount"`
+
+	// Reference to the Controller
+	Controller controller.ResourceOwner `json:"controller"`
+
+	// List of container of this pod.
+	Containers []Container `json:"containers"`
+
+	// List of initContainer of this pod.
+	InitContainers []Container `json:"initContainers"`
+
+	// Metrics collected for this resource
+	Metrics []metricapi.Metric `json:"metrics"`
+
+	// Conditions of this pod.
+	Conditions []common.Condition `json:"conditions"`
+
+	// Events is list of events associated with a pod.
+	EventList common.EventList `json:"eventList"`
 
 	// List of non-critical errors, that occurred during resource retrieval.
 	Errors []error `json:"errors"`
@@ -86,9 +108,9 @@ type EnvVar struct {
 	ValueFrom *v1.EnvVarSource `json:"valueFrom"`
 }
 
-// GetPodDetail returns the details of a named Pod from a particular namespace.
-func GetPodDetail(client kubernetes.Interface, metricClient metricapi.MetricClient, namespace, name string) (
-	*PodDetail, error) {
+// GetPodDetail returns the details (PodDetail) of a named Pod from a particular namespace.
+// TODO(maciaszczykm): Owner reference should be used instead of created by annotation.
+func GetPodDetail(client kubernetes.Interface, metricClient metricapi.MetricClient, namespace, name string) (*PodDetail, error) {
 	log.Printf("Getting details of %s pod in %s namespace", name, namespace)
 
 	channels := &common.ResourceChannels{
@@ -102,9 +124,8 @@ func GetPodDetail(client kubernetes.Interface, metricClient metricapi.MetricClie
 	}
 
 	controller, err := getPodController(client, common.NewSameNamespaceQuery(namespace), pod)
-	nonCriticalErrors, criticalError := errorHandler.HandleError(err)
-	if criticalError != nil {
-		return nil, criticalError
+	if err != nil {
+		return nil, err
 	}
 
 	_, metricPromises := dataselect.GenericDataSelectWithMetrics(toCells([]v1.Pod{*pod}),
@@ -113,7 +134,7 @@ func GetPodDetail(client kubernetes.Interface, metricClient metricapi.MetricClie
 
 	configMapList := <-channels.ConfigMapList.List
 	err = <-channels.ConfigMapList.Error
-	nonCriticalErrors, criticalError = errorHandler.AppendError(err, nonCriticalErrors)
+	nonCriticalErrors, criticalError := errorHandler.HandleError(err)
 	if criticalError != nil {
 		return nil, criticalError
 	}
@@ -166,6 +187,15 @@ func getPodController(client kubernetes.Interface, nsQuery *common.NamespaceQuer
 	return
 }
 
+// isNotFoundError returns true when the given error is 404-NotFound error.
+func isNotFoundError(err error) bool {
+	statusErr, ok := err.(*errors.StatusError)
+	if !ok {
+		return false
+	}
+	return statusErr.ErrStatus.Code == 404
+}
+
 func extractContainerInfo(containerList []v1.Container, pod *v1.Pod, configMaps *v1.ConfigMapList, secrets *v1.SecretList) []Container {
 	containers := make([]Container, 0)
 	for _, container := range containerList {
@@ -182,8 +212,6 @@ func extractContainerInfo(containerList []v1.Container, pod *v1.Pod, configMaps 
 			}
 			vars = append(vars, variable)
 		}
-		vars = append(vars, evalEnvFrom(container, configMaps, secrets)...)
-
 		containers = append(containers, Container{
 			Name:     container.Name,
 			Image:    container.Image,
@@ -203,7 +231,6 @@ func toPodDetail(pod *v1.Pod, metrics []metricapi.Metric, configMaps *v1.ConfigM
 		PodPhase:       pod.Status.Phase,
 		PodIP:          pod.Status.PodIP,
 		RestartCount:   getRestartCount(*pod),
-		QOSClass:       string(pod.Status.QOSClass),
 		NodeName:       pod.Spec.NodeName,
 		Controller:     controller,
 		Containers:     extractContainerInfo(pod.Spec.Containers, pod, configMaps, secrets),
@@ -213,61 +240,6 @@ func toPodDetail(pod *v1.Pod, metrics []metricapi.Metric, configMaps *v1.ConfigM
 		EventList:      *events,
 		Errors:         nonCriticalErrors,
 	}
-}
-
-func evalEnvFrom(container v1.Container, configMaps *v1.ConfigMapList, secrets *v1.SecretList) []EnvVar {
-	vars := make([]EnvVar, 0)
-	for _, envFromVar := range container.EnvFrom {
-		switch {
-		case envFromVar.ConfigMapRef != nil:
-			name := envFromVar.ConfigMapRef.LocalObjectReference.Name
-			for _, configMap := range configMaps.Items {
-				if configMap.ObjectMeta.Name == name {
-					for key, value := range configMap.Data {
-						valueFrom := &v1.EnvVarSource{
-							ConfigMapKeyRef: &v1.ConfigMapKeySelector{
-								LocalObjectReference: v1.LocalObjectReference{
-									Name: name,
-								},
-								Key: key,
-							},
-						}
-						variable := EnvVar{
-							Name:      envFromVar.Prefix + key,
-							Value:     value,
-							ValueFrom: valueFrom,
-						}
-						vars = append(vars, variable)
-					}
-					break
-				}
-			}
-		case envFromVar.SecretRef != nil:
-			name := envFromVar.SecretRef.LocalObjectReference.Name
-			for _, secret := range secrets.Items {
-				if secret.ObjectMeta.Name == name {
-					for key, value := range secret.Data {
-						valueFrom := &v1.EnvVarSource{
-							SecretKeyRef: &v1.SecretKeySelector{
-								LocalObjectReference: v1.LocalObjectReference{
-									Name: name,
-								},
-								Key: key,
-							},
-						}
-						variable := EnvVar{
-							Name:      envFromVar.Prefix + key,
-							Value:     base64.StdEncoding.EncodeToString(value),
-							ValueFrom: valueFrom,
-						}
-						vars = append(vars, variable)
-					}
-					break
-				}
-			}
-		}
-	}
-	return vars
 }
 
 // evalValueFrom evaluates environment value from given source. For more details check:
@@ -301,7 +273,7 @@ func evalValueFrom(src *v1.EnvVarSource, container *v1.Container, pod *v1.Pod,
 		}
 		return valueFrom
 	case src.FieldRef != nil:
-		internalFieldPath, _, err := runtime.NewScheme().ConvertFieldLabel(src.FieldRef.APIVersion,
+		internalFieldPath, _, err := kubeapi.Scheme.ConvertFieldLabel(src.FieldRef.APIVersion,
 			"Pod", src.FieldRef.FieldPath, "")
 		if err != nil {
 			log.Println(err)

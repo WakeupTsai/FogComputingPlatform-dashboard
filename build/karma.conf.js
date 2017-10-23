@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
  * Specification of Karma config file can be found at:
  * http://karma-runner.github.io/latest/config/configuration-file.html
  */
-import fs from 'fs';
 import path from 'path';
 import wiredep from 'wiredep';
 
@@ -32,13 +31,8 @@ import conf from './conf';
 function getFileList() {
   // All app dependencies are required for tests. Include them.
   let wiredepOptions = {
-    bowerJson: JSON.parse(fs.readFileSync(path.join(conf.paths.base, 'package.json'))),
-    directory: conf.paths.nodeModules,
-    devDependencies: false,
-    customDependencies: ['angular-mocks', 'google-closure-library'],
-    onError: (msg) => {
-      console.log(msg);
-    },
+    dependencies: true,
+    devDependencies: true,
   };
 
   return wiredep(wiredepOptions).js.concat([
@@ -163,7 +157,8 @@ module.exports = function(config) {
   configuration.preprocessors[path.join(conf.paths.frontendSrc, '**/*.js')] =
       ['browserify', 'closure'];
   configuration.preprocessors[path.join(
-      conf.paths.nodeModules, 'google-closure-library/closure/goog/deps.js')] = ['closure-deps'];
+      conf.paths.bowerComponents, 'google-closure-library/closure/goog/deps.js')] =
+      ['closure-deps'];
 
   // Convert HTML templates into JS files that serve code through $templateCache.
   configuration.preprocessors[path.join(conf.paths.frontendSrc, '**/*.html')] = ['ng-html2js'];

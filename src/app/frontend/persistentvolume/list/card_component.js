@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +23,10 @@ import {stateName} from '../../persistentvolume/detail/state';
 class PersistentVolumeCardController {
   /**
    * @param {!ui.router.$state} $state
+   * @param {!angular.$interpolate} $interpolate
    * @ngInject
    */
-  constructor($state) {
+  constructor($state, $interpolate) {
     /**
      * Initialized from the scope.
      * @export {!backendApi.PersistentVolume}
@@ -34,6 +35,9 @@ class PersistentVolumeCardController {
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+
+    /** @private */
+    this.interpolate_ = $interpolate;
   }
 
   /**
@@ -42,6 +46,22 @@ class PersistentVolumeCardController {
    */
   getPersistentVolumeDetailHref() {
     return this.state_.href(stateName, new StateParams('', this.persistentVolume.objectMeta.name));
+  }
+
+  /**
+   * @export
+   * @param  {string} creationDate - creation date of the config map
+   * @return {string} localized tooltip with the formated creation date
+   */
+  getCreatedAtTooltip(creationDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Created at [some date]' showing the exact creation time of
+     * persistent volume.
+     */
+    let MSG_PERSISTENT_VOLUME_LIST_CREATED_AT_TOOLTIP =
+        goog.getMsg('Created at {$creationDate}', {'creationDate': filter({'date': creationDate})});
+    return MSG_PERSISTENT_VOLUME_LIST_CREATED_AT_TOOLTIP;
   }
 }
 

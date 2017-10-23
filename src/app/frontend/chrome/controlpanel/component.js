@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ export class ControlPanelController {
    * @export
    */
   isAuthSkipped() {
-    return !this.kdAuthService_.isLoginPageEnabled() && !this.loginStatus_.headerPresent;
+    return !this.kdAuthService_.isLoginPageEnabled();
   }
 
   /**

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -122,6 +122,7 @@ const (
 	ResourceKindSecret                  = "secret"
 	ResourceKindService                 = "service"
 	ResourceKindStatefulSet             = "statefulset"
+	ResourceKindThirdPartyResource      = "thirdpartyresource"
 	ResourceKindStorageClass            = "storageclass"
 	ResourceKindRbacRole                = "role"
 	ResourceKindRbacClusterRole         = "clusterrole"
@@ -175,6 +176,7 @@ var KindToAPIMapping = map[string]struct {
 	ResourceKindSecret:                  {"secrets", ClientTypeDefault, true},
 	ResourceKindService:                 {"services", ClientTypeDefault, true},
 	ResourceKindStatefulSet:             {"statefulsets", ClientTypeAppsClient, true},
+	ResourceKindThirdPartyResource:      {"thirdpartyresources", ClientTypeExtensionClient, true},
 	ResourceKindStorageClass:            {"storageclasses", ClientTypeStorageClient, false},
 	ResourceKindEndpoint:                {"endpoints", ClientTypeDefault, true},
 }

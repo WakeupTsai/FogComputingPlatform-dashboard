@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
 import {stateName as chromeStateName} from '../chrome/state';
 import {breadcrumbsConfig} from '../common/components/breadcrumbs/service';
 
-import {baseStateName, deployAppStateName, deployFileStateName} from './state';
+/** phstsai **/
+import {baseStateName, deployAppStateName, deployFileStateName, deployMyServiceStateName, showMapStateName} from './state';
 
 /**
  * Configures states for the deploy view.
@@ -55,6 +56,41 @@ export default function stateConfig($stateProvider) {
       },
     },
   });
+
+  /** phstsai **/
+  $stateProvider.state(deployMyServiceStateName, {
+    parent: chromeStateName,
+    component: 'kdDeployMyService',
+    url: '/myservice',
+    resolve: {
+      'namespaces': resolveNamespaces,
+      'protocolsResource': getProtocolsResource,
+      'protocols': getDefaultProtocols,
+    },
+    data: {
+      [breadcrumbsConfig]: {
+        'label': i18n.MSG_BREADCRUMBS_DEPLOY_APP_LABEL,
+      },
+    },
+  });
+
+  /** phstsai **/
+  $stateProvider.state(showMapStateName, {
+    parent: chromeStateName,
+    component: 'kdShowMap',
+    url: '/showmap',
+    resolve: {
+      'namespaces': resolveNamespaces,
+      'protocolsResource': getProtocolsResource,
+      'protocols': getDefaultProtocols,
+    },
+    data: {
+      [breadcrumbsConfig]: {
+        'label': i18n.MSG_BREADCRUMBS_DEPLOY_APP_LABEL,
+      },
+    },
+  });
+
 }
 
 /**

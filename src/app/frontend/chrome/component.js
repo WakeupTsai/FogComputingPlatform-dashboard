@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {deployAppStateName} from '../deploy/state';
+/* phstsai */
+import {deployAppStateName, deployMyServiceStateName, showMapStateName} from '../deploy/state';
 
 import {actionbarViewName, fillContentConfig} from './state';
 
@@ -102,6 +103,19 @@ export class ChromeController {
   create() {
     this.state_.go(deployAppStateName);
   }
+
+  /** phstsai **/
+  createMyService() {
+    this.state_.go(deployMyServiceStateName);
+  }
+
+  /** phstsai **/
+  showMap() {
+    //document.body.scrollTop = document.body.scrollHeight;
+    $("html, body").animate({ scrollTop: document.body.scrollHeight }, 1000);
+    // this.state_.go(showMapStateName);
+  }
+
 }
 
 /**

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import (
 
 	restful "github.com/emicklei/go-restful"
 	"gopkg.in/igm/sockjs-go.v2/sockjs"
-	"k8s.io/api/core/v1"
+	remotecommandconsts "k8s.io/apimachinery/pkg/util/remotecommand"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/pkg/api"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/remotecommand"
 )
@@ -192,26 +192,27 @@ func startProcess(k8sClient kubernetes.Interface, cfg *rest.Config, request *res
 		Namespace(namespace).
 		SubResource("exec")
 
-	req.VersionedParams(&v1.PodExecOptions{
+	req.VersionedParams(&api.PodExecOptions{
 		Container: containerName,
 		Command:   cmd,
 		Stdin:     true,
 		Stdout:    true,
 		Stderr:    true,
 		TTY:       true,
-	}, scheme.ParameterCodec)
+	}, api.ParameterCodec)
 
-	exec, err := remotecommand.NewSPDYExecutor(cfg, "POST", req.URL())
+	exec, err := remotecommand.NewExecutor(cfg, "POST", req.URL())
 	if err != nil {
 		return err
 	}
 
 	err = exec.Stream(remotecommand.StreamOptions{
-		Stdin:             ptyHandler,
-		Stdout:            ptyHandler,
-		Stderr:            ptyHandler,
-		TerminalSizeQueue: ptyHandler,
-		Tty:               true,
+		SupportedProtocols: remotecommandconsts.SupportedStreamingProtocols,
+		Stdin:              ptyHandler,
+		Stdout:             ptyHandler,
+		Stderr:             ptyHandler,
+		TerminalSizeQueue:  ptyHandler,
+		Tty:                true,
 	})
 	if err != nil {
 		return err

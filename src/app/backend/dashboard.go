@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -105,15 +105,14 @@ func main() {
 	http.Handle("/api/sockjs/", handler.CreateAttachHandler("/api/sockjs"))
 	http.Handle("/metrics", prometheus.Handler())
 
-	// Listen for http or https
+	// Listen for http and https
+	addr := fmt.Sprintf("%s:%d", *argInsecureBindAddress, *argInsecurePort)
+	log.Printf("Serving insecurely on HTTP port: %d", *argInsecurePort)
+	go func() { log.Fatal(http.ListenAndServe(addr, nil)) }()
+	secureAddr := fmt.Sprintf("%s:%d", *argBindAddress, *argPort)
 	if *argCertFile != "" && *argKeyFile != "" {
 		log.Printf("Serving securely on HTTPS port: %d", *argPort)
-		secureAddr := fmt.Sprintf("%s:%d", *argBindAddress, *argPort)
 		go func() { log.Fatal(http.ListenAndServeTLS(secureAddr, *argCertFile, *argKeyFile, nil)) }()
-	} else {
-		log.Printf("Serving insecurely on HTTP port: %d", *argInsecurePort)
-		addr := fmt.Sprintf("%s:%d", *argInsecureBindAddress, *argInsecurePort)
-		go func() { log.Fatal(http.ListenAndServe(addr, nil)) }()
 	}
 	select {}
 }

@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,5 +35,9 @@ describe('Horizontal Pod Autoscaler card', () => {
 
   it('should get details href', () => {
     expect(ctrl.getHorizontalPodAutoscalerDetailHref()).toBe('#!/horizontalpodautoscaler/test/bar');
+  });
+
+  it('should format the "created at" tooltip correctly', () => {
+    expect(ctrl.getCreatedAtTooltip()).toMatch('Created at 2016-06-06T09:13.*');
   });
 });

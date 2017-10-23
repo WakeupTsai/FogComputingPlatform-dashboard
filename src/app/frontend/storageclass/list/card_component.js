@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +23,10 @@ import {stateName} from '../../storageclass/detail/state';
 class StorageClassCardController {
   /**
    * @param {!ui.router.$state} $state
+   * @param {!angular.$interpolate} $interpolate
    * @ngInject
    */
-  constructor($state) {
+  constructor($state, $interpolate) {
     /**
      * Initialized from the scope.
      * @export {!backendApi.StorageClass}
@@ -34,6 +35,9 @@ class StorageClassCardController {
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+
+    /** @private */
+    this.interpolate_ = $interpolate;
   }
 
   /**
@@ -42,6 +46,22 @@ class StorageClassCardController {
    */
   getStorageClassDetailHref() {
     return this.state_.href(stateName, new StateParams('', this.storageClass.objectMeta.name));
+  }
+
+  /**
+   * @export
+   * @param  {string} creationDate - creation date of the storage class
+   * @return {string} localized tooltip with the formatted creation date
+   */
+  getCreatedAtTooltip(creationDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Created at [some date]' showing the exact creation time of
+     * storage class.
+     */
+    let MSG_STORAGE_CLASS_LIST_CREATED_AT_TOOLTIP =
+        goog.getMsg('Created at {$creationDate}', {'creationDate': filter({'date': creationDate})});
+    return MSG_STORAGE_CLASS_LIST_CREATED_AT_TOOLTIP;
   }
 }
 

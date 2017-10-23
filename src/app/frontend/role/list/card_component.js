@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,14 +19,34 @@
  */
 class RoleCardController {
   /**
+   * @param {!angular.$interpolate} $interpolate
    * @ngInject
    */
-  constructor() {
+  constructor($interpolate) {
     /**
      * Initialized from the scope.
      * @export {!backendApi.Role}
      */
     this.role;
+
+    /** @private */
+    this.interpolate_ = $interpolate;
+  }
+
+  /**
+   * @export
+   * @param  {string} startDate - start date of the role
+   * @return {string} localized tooltip with the formatted start date
+   */
+  getStartedAtTooltip(startDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Started at [some date]' showing the exact start time of
+     * the role.
+     */
+    let MSG_ROLE_LIST_STARTED_AT_TOOLTIP =
+        goog.getMsg('Created at {$startDate} UTC', {'startDate': filter({'date': startDate})});
+    return MSG_ROLE_LIST_STARTED_AT_TOOLTIP;
   }
 }
 

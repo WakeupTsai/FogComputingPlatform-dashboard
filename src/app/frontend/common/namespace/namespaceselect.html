@@ -1,5 +1,5 @@
 <!--
-Copyright 2017 The Kubernetes Authors.
+Copyright 2017 The Kubernetes Dashboard Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@ limitations under the License.
 -->
 
 <div class="kd-namespace-select-title">[[Namespace|Title for namespace select.]]</div>
-<md-input-container md-no-float
-                    class="kd-namespace-select-input-container">
+<md-input-container class="kd-namespace-select-input-container">
   <md-select ng-model="$ctrl.selectedNamespace"
              md-on-open="$ctrl.loadNamespacesIfNeeded()"
              md-on-close="$ctrl.changeNamespace()"
@@ -24,23 +23,14 @@ limitations under the License.
              aria-label="[[Selector for namespaces|Text describing what namespace selector is]]"
              md-container-class="kd-namespace-select-container"
              md-selected-text="$ctrl.formatNamespace()">
-    <md-select-header class="kd-namespace-select-input-header"
-                      ng-class="{'kd-namespace-select-input-header-border': $ctrl.namespaces.length}">
-      <md-input-container md-no-float>
-        <input placeholder="[[Select namespace...|]]"
-               ng-model="$ctrl.namespaceInput"
-               class="kd-namespace-select-input"
-               ng-keyup="$event.keyCode == 13 ? $ctrl.selectNamespace() : null">
-      </md-input-container>
-    </md-select-header>
     <md-option ng-value="::$ctrl.ALL_NAMESPACES"
-               ng-if="$ctrl.namespaces.length">
+               class="kd-namespace-select-all">
       [[All namespaces|Text for dropdown item that indicates that no namespace was selected.]]
     </md-option>
-    <md-optgroup ng-if="$ctrl.namespaces.length">
-      <label>[[Namespaces|Label atop a list of namespaces]]</label>
+    <md-optgroup label="[[Namespaces|Label atop a list of namespaces]]"
+                 class="kd-namespace-select-namespace-list">
       <md-option ng-value="namespace"
-                 ng-repeat="namespace in $ctrl.namespaces | filter:$ctrl.namespaceInput">
+                 ng-repeat="namespace in $ctrl.namespaces">
         {{::namespace}}
       </md-option>
     </md-optgroup>

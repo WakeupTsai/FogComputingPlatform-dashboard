@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {StateParams} from '../../common/resource/resourcedetail';
+import {stateName as logsStateName, StateParams as LogsStateParams} from '../../logs/state';
 import {stateName} from '../../pod/detail/state';
 
 /**
@@ -22,14 +23,18 @@ export class PodCardController {
   /**
    * @ngInject,
    * @param {!ui.router.$state} $state
+   * @param {!angular.$interpolate} $interpolate
    * @param {!../../common/namespace/service.NamespaceService} kdNamespaceService
    */
-  constructor($state, kdNamespaceService) {
+  constructor($state, $interpolate, kdNamespaceService) {
     /** @private {!../../common/namespace/service.NamespaceService} */
     this.kdNamespaceService_ = kdNamespaceService;
 
     /** @private {!ui.router.$state} */
     this.state_ = $state;
+
+    /** @private {!angular.$interpolate} */
+    this.interpolate_ = $interpolate;
 
     /**
      * Initialized from the scope.
@@ -79,6 +84,16 @@ export class PodCardController {
    */
   isFailed() {
     return this.pod.podStatus.status === 'failed';
+  }
+
+  /**
+   * @return {string}
+   * @export
+   */
+  getPodLogsHref() {
+    return this.state_.href(
+        logsStateName,
+        new LogsStateParams(this.pod.objectMeta.namespace, this.pod.objectMeta.name, 'pod'));
   }
 
   /**
@@ -143,6 +158,22 @@ export class PodCardController {
       return MSG_POD_LIST_POD_TERMINATED_STATUS;
     }
     return this.pod.podStatus.podPhase;
+  }
+
+  /**
+   * @export
+   * @param  {string} startDate - start date of the pod
+   * @return {string} localized tooltip with the formated start date
+   */
+  getStartedAtTooltip(startDate) {
+    let filter = this.interpolate_(`{{date | date}}`);
+    /**
+     * @type {string} @desc Tooltip 'Started at [some date]' showing the exact start time of
+     * the pod.
+     */
+    let MSG_POD_LIST_STARTED_AT_TOOLTIP =
+        goog.getMsg('Started at {$startDate} UTC', {'startDate': filter({'date': startDate})});
+    return MSG_POD_LIST_STARTED_AT_TOOLTIP;
   }
 
   /**

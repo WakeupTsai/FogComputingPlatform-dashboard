@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,6 +54,7 @@ import serviceModule from './service/module';
 import shellModule from './shell/module';
 import statefulSetModule from './statefulset/module';
 import storageClassModule from './storageclass/module';
+import thirdPartyResourceModule from './thirdpartyresource/module';
 import {TitleController} from './title_controller';
 import workloadsModule from './workloads/module';
 
@@ -102,6 +103,7 @@ export default angular
           configModule.name,
           csrfTokenModule.name,
           storageClassModule.name,
+          thirdPartyResourceModule.name,
           roleModule.name,
           scalingModule.name,
         ])

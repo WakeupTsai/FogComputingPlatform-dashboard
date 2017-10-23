@@ -1,4 +1,4 @@
-// Copyright 2017 The Kubernetes Authors.
+// Copyright 2017 The Kubernetes Dashboard Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,13 @@
 package container
 
 import (
-	"fmt"
-	"io"
 	"io/ioutil"
 
 	"github.com/kubernetes/dashboard/src/app/backend/resource/logs"
-	"k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/pkg/api/v1"
 )
 
 // maximum number of lines loaded from the apiserver
@@ -53,10 +51,10 @@ func GetPodContainers(client kubernetes.Interface, namespace, podID string) (*Po
 	return containers, nil
 }
 
-// GetLogDetails returns logs for particular pod and container. When container is null, logs for the first one
-// are returned. Previous indicates to read archived logs created by log rotation or container crash
-func GetLogDetails(client kubernetes.Interface, namespace, podID string, container string,
-	logSelector *logs.Selection, usePreviousLogs bool) (*logs.LogDetails, error) {
+// GetPodLogs returns logs for particular pod and container. When container
+// is null, logs for the first one are returned.
+func GetPodLogs(client kubernetes.Interface, namespace, podID string, container string,
+	logSelector *logs.Selection) (*logs.LogDetails, error) {
 	pod, err := client.CoreV1().Pods(namespace).Get(podID, metaV1.GetOptions{})
 	if err != nil {
 		return nil, err
@@ -66,22 +64,22 @@ func GetLogDetails(client kubernetes.Interface, namespace, podID string, contain
 		container = pod.Spec.Containers[0].Name
 	}
 
-	logOptions := mapToLogOptions(container, logSelector, usePreviousLogs)
-	rawLogs, err := readRawLogs(client, namespace, podID, logOptions)
+	logOptions := mapToLogOptions(container, logSelector)
+	rawLogs, err := getRawPodLogs(client, namespace, podID, logOptions)
 	if err != nil {
 		return nil, err
 	}
-	details := ConstructLogDetails(podID, rawLogs, container, logSelector)
+	details := ConstructLogs(podID, rawLogs, container, logSelector)
 	return details, nil
 }
 
 // Maps the log selection to the corresponding api object
 // Read limits are set to avoid out of memory issues
-func mapToLogOptions(container string, logSelector *logs.Selection, previous bool) *v1.PodLogOptions {
+func mapToLogOptions(container string, logSelector *logs.Selection) *v1.PodLogOptions {
 	logOptions := &v1.PodLogOptions{
 		Container:  container,
 		Follow:     false,
-		Previous:   previous,
+		Previous:   false,
 		Timestamps: true,
 	}
 
@@ -95,9 +93,16 @@ func mapToLogOptions(container string, logSelector *logs.Selection, previous boo
 }
 
 // Construct a request for getting the logs for a pod and retrieves the logs.
-func readRawLogs(client kubernetes.Interface, namespace, podID string, logOptions *v1.PodLogOptions) (
+func getRawPodLogs(client kubernetes.Interface, namespace, podID string, logOptions *v1.PodLogOptions) (
 	string, error) {
-	readCloser, err := openStream(client, namespace, podID, logOptions)
+	req := client.Core().RESTClient().Get().
+		Namespace(namespace).
+		Name(podID).
+		Resource("pods").
+		SubResource("log").
+		VersionedParams(logOptions, scheme.ParameterCodec)
+
+	readCloser, err := req.Stream()
 	if err != nil {
 		return err.Error(), nil
 	}
@@ -112,31 +117,8 @@ func readRawLogs(client kubernetes.Interface, namespace, podID string, logOption
 	return string(result), nil
 }
 
-// GetLogFile returns a stream to the log file which can be piped directly to the response. This avoids out of memory
-// issues. Previous indicates to read archived logs created by log rotation or container crash
-func GetLogFile(client kubernetes.Interface, namespace, podID string, container string, usePreviousLogs bool) (string, io.ReadCloser, error) {
-	logOptions := &v1.PodLogOptions{
-		Container:  container,
-		Follow:     false,
-		Previous:   usePreviousLogs,
-		Timestamps: false,
-	}
-	filename := fmt.Sprintf("logs-from-%v-in-%v.txt", container, podID)
-	logStream, err := openStream(client, namespace, podID, logOptions)
-	return filename, logStream, err
-}
-
-func openStream(client kubernetes.Interface, namespace, podID string, logOptions *v1.PodLogOptions) (io.ReadCloser, error) {
-	return client.CoreV1().RESTClient().Get().
-		Namespace(namespace).
-		Name(podID).
-		Resource("pods").
-		SubResource("log").
-		VersionedParams(logOptions, scheme.ParameterCodec).Stream()
-}
-
-// ConstructLogDetails creates a new log details structure for given parameters.
-func ConstructLogDetails(podID string, rawLogs string, container string, logSelector *logs.Selection) *logs.LogDetails {
+// Build logs structure for given parameters.
+func ConstructLogs(podID string, rawLogs string, container string, logSelector *logs.Selection) *logs.LogDetails {
 	parsedLines := logs.ToLogLines(rawLogs)
 	logLines, fromDate, toDate, logSelection, lastPage := parsedLines.SelectLogs(logSelector)
 
