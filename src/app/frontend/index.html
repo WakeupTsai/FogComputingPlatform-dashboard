@@ -276,15 +276,14 @@ limitations under the License.
         var infowindow = new google.maps.InfoWindow();
         infowindow.setContent(contentString[0]);
 
+        prev_infowindow =false;
         marker.addListener('click', function() {
+          if( prev_infowindow ) {
+             prev_infowindow.close();
+          }
+          prev_infowindow = infowindow;
           infowindow.open(map, this);
         });
-        // google.maps.event.addDomListener(window, 'load', function() {
-        //    //create your markers here
-        //    google.maps.event.addListener(marker, 'click', function() {
-        //                infowindow.open(map, marker); //take care with case-sensitiveness
-        //           });
-        // });
 
 
         // Event that closes the Info Window with a click on the map
@@ -296,6 +295,8 @@ limitations under the License.
          google.maps.event.addDomListener(markerLinkBtn, "click", function(event) {
              $("html, body").animate({ scrollTop: 0 }, 600);
          });
+
+
 
 
         // // assuming you also want to hide the infowindow when user mouses-out
