@@ -86,45 +86,53 @@
     console.log(name);
     console.log(sensors);
     testString =  '<div id="iw-container">'+
-                    '<div class="iw-title">'+name+'</div>' +
-                    '<div class="iw-content">';
+                    '<div style="position: relative;" class="iw-title">'+
+                      name +
+                      '<span style="position:absolute; bottom: 5px; right: 10px; font-size:15px;">' +
+                        '<a style="color:white;" href="/#!/node/'+name+'?namespace=default" class="marker-link" >  --> Goto </a>' +
+                      '</span>' +
+                    '</div>' +
+                    '<div class="iw-content">'+
+                    '<table class="table table-hover">'+
+                      '<thead><tr>'+
+                        '<th scope="col" align="center"># Sensors</td>'+
+                      '</tr></thead>'+
+                    '</table>';
 
     if (sensors.length > 0){
       for(n = 0; n < sensors.length; n++) {
         if (sensors[n]!=null){
           testString = testString+      　
-                          '<span>'+
-                            '<button type="button" class="btn btn-success">'+sensors[n]+'</button>' +
-                          '&nbsp;&nbsp;&nbsp;</span>';
+                      '<span>'+
+                        '<span style="font-size: 13px;" class="label label-success">'+sensors[n]+'</span>' +
+                      '&nbsp;&nbsp;&nbsp;</span>';
         }
       };
     }
     else{
       testString = testString+      　
                       '<div>'+
-                        '<button type="button" class="btn btn-danger">NONE</button>' +
+                        '<span style="font-size: 13px;" class="label label-success">NONE</span>' +
                       '</div>';
     }
 
     testString = testString+
-                      '<table border="1">'+
-                        '<tr>'+
-                          '<td colspan="2" align="center">Pods Status</td>'+
-                        '</tr>';
+                      '<hr><table class="table table-hover">'+
+                        '<thead><tr>'+
+                          '<th scope="col" align="center"># Pods Status</th><th/>'+
+                        '</tr></thead>';
 
     for(l = 0; l < pod_name.length; l++) {
       if (pod_name[l]!=null){
         testString = testString+      　
-                        '<tr>'+
-                          '<td><b>'+pod_name[l]+'</b></td>'+
+                        '<tbody><tr>'+
+                          '<td>'+pod_name[l]+'</td>'+
                           '<td>'+pod_status[l]+'</td>'+
-                        '</tr>'
+                        '</tr></tbody>'
       }
     };
     testString = testString +
                       '</table>'+
-                      '<br /><a href="/#!/node/'+name+'?namespace=default" class="marker-link" >  --> Goto</a>' +
-                      '<br />'+
                       '<div class="iw-bottom-gradient"></div>'+
                     '</div>'
                   +'</div>';
