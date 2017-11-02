@@ -1,0 +1,218 @@
+<div id="map" style="width:100%;height:600px;background:yellow"></div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="../frontend/map_infowindow.css" title="external style sheet">
+
+<script>
+  var map;
+  var nodes = [];
+  console.log('28');
+  function callAPI() {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "http://140.114.79.70:8080/api/v1/nodes";
+
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        //console.log("GET SUCCESS");
+        var myArr = JSON.parse(this.responseText);
+        var items = myArr.items
+
+        //console.log(items.length);
+        for(i = 0; i < items.length; i++) {
+          var name = items[i].metadata.name
+          //console.log(name);
+
+          var locationArr = items[i].metadata.labels.mylocation.split("_");
+          var lat = parseFloat(locationArr[0])
+          var lon = parseFloat(locationArr[1])
+
+          var podinfo = queryPods(name);
+          var pod_name = [0], pod_status = [0];
+
+          //console.log("podinfo: "+ podinfo);
+          if (podinfo != null) {
+                pod_name = podinfo[0], pod_status = podinfo[1];
+          }
+          //console.log("sensor: "+ JSON.stringify(items[i].metadata.labels));
+          var labels=items[i].metadata.labels;
+          var sensors=[]
+          for(var m=0; m<Object.keys(labels).length; m++){
+            if(Object.keys(labels)[m].split('/')[0]=='sensor' && Object.values(labels)[m]=='true'){
+              sensors.push(Object.keys(labels)[m].split('/')[1]);
+            }
+          }
+          var node = {name:name, latL:lat, lon:lon, pod_name:pod_name, pod_status:pod_status, sensors:sensors};
+          // console.log(node);
+          nodes.push(node);
+        }
+        for(j = 0; j < nodes.length; j++){
+          //console.log('draw '+nodes[j].name);
+          drawMarkers(nodes[j].name, nodes[j].latL, nodes[j].lon, nodes[j].pod_name, nodes[j].pod_status, nodes[j].sensors);
+        }
+      }
+    };
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
+  }
+
+  function queryPods(name) {
+    var pod_name = [], pod_status = [];
+    var xhr = new XMLHttpRequest(), method = "GET", url = "http://140.114.79.70:8080/api/v1/pods";
+    xhr.open(method, url, false);
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        var myArr = JSON.parse(this.responseText);
+        var items = myArr.items
+        // have some bug here, array will store empty object, ex. all_pod_name: ,,pir-sensors-rpi3
+        for(k = 0; k < items.length; k++) {
+          if(items[k].spec.nodeName == name){
+            pod_name[k] = items[k].metadata.name;
+            pod_status[k] = items[k].status.phase;
+          }
+        }
+      }
+    };
+    xhr.send();
+    return [pod_name, pod_status];
+  }
+
+  function drawMarkers(name, lat, lon, pod_name, pod_status, sensors) {
+    //https://www.sanwebe.com/2013/10/google-map-v3-markers-and-infowindow-with-jquery
+    var marker = new google.maps.Marker({
+      position: new google.maps.LatLng(lat, lon),
+      map: map,
+      url: '/#!/node/'+name+'?namespace=default'
+    });
+
+    console.log(name);
+    console.log(sensors);
+    testString =  '<div id="iw-container">'+
+                    '<div class="iw-title">'+name+'</div>' +
+                    '<div class="iw-content">';
+
+    if (sensors.length > 0){
+      for(n = 0; n < sensors.length; n++) {
+        if (sensors[n]!=null){
+          testString = testString+      　
+                          '<span>'+
+                            '<button type="button" class="btn btn-success">'+sensors[n]+'</button>' +
+                          '&nbsp;&nbsp;&nbsp;</span>';
+        }
+      };
+    }
+    else{
+      testString = testString+      　
+                      '<div>'+
+                        '<button type="button" class="btn btn-danger">NONE</button>' +
+                      '</div>';
+    }
+
+    testString = testString+
+                      '<table border="1">'+
+                        '<tr>'+
+                          '<td colspan="2" align="center">Pods Status</td>'+
+                        '</tr>';
+
+    for(l = 0; l < pod_name.length; l++) {
+      if (pod_name[l]!=null){
+        testString = testString+      　
+                        '<tr>'+
+                          '<td><b>'+pod_name[l]+'</b></td>'+
+                          '<td>'+pod_status[l]+'</td>'+
+                        '</tr>'
+      }
+    };
+    testString = testString +
+                      '</table>'+
+                      '<br /><a href="/#!/node/'+name+'?namespace=default" class="marker-link" >  --> Goto</a>' +
+                      '<br />'+
+                      '<div class="iw-bottom-gradient"></div>'+
+                    '</div>'
+                  +'</div>';
+
+      var contentString = $(testString);
+
+      var infowindow = new google.maps.InfoWindow();
+      infowindow.setContent(contentString[0]);
+
+      prev_infowindow =false;
+      marker.addListener('click', function() {
+        if( prev_infowindow ) {
+           prev_infowindow.close();
+        }
+        prev_infowindow = infowindow;
+        infowindow.open(map, this);
+      });
+
+
+      // Event that closes the Info Window with a click on the map
+      google.maps.event.addListener(map, 'click', function() {
+        infowindow.close();
+      });
+
+       var markerLinkBtn   = contentString.find('a.marker-link')[0];
+       google.maps.event.addDomListener(markerLinkBtn, "click", function(event) {
+           $("html, body").animate({ scrollTop: 0 }, 600);
+       });
+
+      google.maps.event.addListener(infowindow, 'domready', function() {
+
+        // Reference to the DIV that wraps the bottom of infowindow
+        var iwOuter = $('.gm-style-iw');
+
+        /* Since this div is in a position prior to .gm-div style-iw.
+         * We use jQuery and create a iwBackground variable,
+         * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+        */
+        var iwBackground = iwOuter.prev();
+
+        // Removes background shadow DIV
+        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+
+        // Removes white background DIV
+        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+
+        // Moves the infowindow 115px to the right.
+        iwOuter.parent().parent().css({left: '115px'});
+
+        // Moves the shadow of the arrow 76px to the left margin.
+        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+        // Moves the arrow 76px to the left margin.
+        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+        // Changes the desired tail shadow color.
+        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+
+        // Reference to the div that groups the close button elements.
+        var iwCloseBtn = iwOuter.next();
+
+        // Apply the desired effect to the close button
+        iwCloseBtn.css({opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
+
+        // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
+        if($('.iw-content').height() < 140){
+          $('.iw-bottom-gradient').css({display: 'none'});
+        }
+
+        // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
+        iwCloseBtn.mouseout(function(){
+          $(this).css({opacity: '1'});
+        });
+      });
+
+  }
+
+  function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(24.795211, 120.992309),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
+    }
+
+    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    callAPI();
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8FLccDBYbLiPfGNvvplRAV3rgyCWmnaI&callback=myMap"></script>
