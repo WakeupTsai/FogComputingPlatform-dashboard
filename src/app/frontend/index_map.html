@@ -26,11 +26,11 @@
           var lon = parseFloat(locationArr[1])
 
           var podinfo = queryPods(name);
-          var pod_name = [0], pod_status = [0];
+          var pod_name = [0], pod_status = [0], pod_namespace=[0];
 
           //console.log("podinfo: "+ podinfo);
           if (podinfo != null) {
-                pod_name = podinfo[0], pod_status = podinfo[1];
+                pod_name = podinfo[0], pod_status = podinfo[1], pod_namespace=podinfo[2];
           }
           //console.log("sensor: "+ JSON.stringify(items[i].metadata.labels));
           var labels=items[i].metadata.labels;
@@ -40,13 +40,13 @@
               sensors.push(Object.keys(labels)[m].split('/')[1]);
             }
           }
-          var node = {name:name, latL:lat, lon:lon, pod_name:pod_name, pod_status:pod_status, sensors:sensors};
+          var node = {name:name, latL:lat, lon:lon, pod_name:pod_name, pod_status:pod_status, pod_namespace:pod_namespace, sensors:sensors};
           // console.log(node);
           nodes.push(node);
         }
         for(j = 0; j < nodes.length; j++){
           //console.log('draw '+nodes[j].name);
-          drawMarkers(nodes[j].name, nodes[j].latL, nodes[j].lon, nodes[j].pod_name, nodes[j].pod_status, nodes[j].sensors);
+          drawMarkers(nodes[j].name, nodes[j].latL, nodes[j].lon, nodes[j].pod_name, nodes[j].pod_status, nodes[j].pod_namespace, nodes[j].sensors);
         }
       }
     };
@@ -55,7 +55,7 @@
   }
 
   function queryPods(name) {
-    var pod_name = [], pod_status = [];
+    var pod_name = [], pod_status = [], pod_namespace = [];
     var xhr = new XMLHttpRequest(), method = "GET", url = "http://140.114.79.70:8080/api/v1/pods";
     xhr.open(method, url, false);
     xhr.onreadystatechange = function () {
@@ -67,20 +67,21 @@
           if(items[k].spec.nodeName == name){
             pod_name[k] = items[k].metadata.name;
             pod_status[k] = items[k].status.phase;
+            pod_namespace[k] = items[k].metadata.namespace;
           }
         }
       }
     };
     xhr.send();
-    return [pod_name, pod_status];
+    return [pod_name, pod_status, pod_namespace];
   }
 
-  function drawMarkers(name, lat, lon, pod_name, pod_status, sensors) {
+  function drawMarkers(name, lat, lon, pod_name, pod_status, pod_namespace, sensors) {
     //https://www.sanwebe.com/2013/10/google-map-v3-markers-and-infowindow-with-jquery
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, lon),
       map: map,
-      url: '/#!/node/'+name+'?namespace=default'
+      url: '/#!/node/'+name
     });
 
     console.log(name);
@@ -89,7 +90,7 @@
                     '<div style="position: relative;" class="iw-title">'+
                       name +
                       '<span style="position:absolute; bottom: 5px; right: 10px; font-size:15px;">' +
-                        '<a style="color:white;" href="/#!/node/'+name+'?namespace=default" class="marker-link" >  --> Goto </a>' +
+                        '<a style="color:white;" href="/#!/node/'+name+'" class="marker-link" >  --> Goto </a>' +
                       '</span>' +
                     '</div>' +
                     '<div class="iw-content">'+
@@ -112,7 +113,7 @@
     else{
       testString = testString+      　
                       '<div>'+
-                        '<span style="font-size: 13px;" class="label label-success">NONE</span>' +
+                        '<span style="font-size: 13px;" class="label label-danger">NONE</span>' +
                       '</div>';
     }
 
@@ -126,7 +127,9 @@
       if (pod_name[l]!=null){
         testString = testString+      　
                         '<tbody><tr>'+
-                          '<td>'+pod_name[l]+'</td>'+
+                          '<td><a href="/#!/pod/'+ pod_namespace[l] +'/'+ pod_name[l] +'?namespace='+ pod_namespace[l] +'" class="marker-link">' +
+                            pod_name[l] +
+                          '</a></td>'+
                           '<td>'+pod_status[l]+'</td>'+
                         '</tr></tbody>'
       }
@@ -157,10 +160,13 @@
         infowindow.close();
       });
 
-       var markerLinkBtn   = contentString.find('a.marker-link')[0];
-       google.maps.event.addDomListener(markerLinkBtn, "click", function(event) {
-           $("html, body").animate({ scrollTop: 0 }, 600);
-       });
+       var markerLinkBtns   = contentString.find('a.marker-link');
+
+       for (p=0; p<markerLinkBtns.length; p++){
+         google.maps.event.addDomListener(markerLinkBtns[p], "click", function(event) {
+             $("html, body").animate({ scrollTop: 0 }, 600);
+         });
+       }
 
       google.maps.event.addListener(infowindow, 'domready', function() {
 
