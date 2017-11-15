@@ -5,7 +5,6 @@
 <script>
   var map;
   var nodes = [];
-  console.log('28');
   function callAPI() {
     var xmlhttp = new XMLHttpRequest();
     var url = "http://140.114.79.70:8080/api/v1/nodes";
@@ -86,7 +85,7 @@
 
     console.log(name);
     console.log(sensors);
-    testString =  '<div id="iw-container">'+
+    offsetString =  '<div id="iw-container">'+
                     '<div style="position: relative;" class="iw-title">'+
                       name +
                       '<span style="position:absolute; bottom: 5px; right: 10px; font-size:15px;">' +
@@ -103,7 +102,7 @@
     if (sensors.length > 0){
       for(n = 0; n < sensors.length; n++) {
         if (sensors[n]!=null){
-          testString = testString+      　
+          offsetString = offsetString+      　
                       '<span>'+
                         '<span style="font-size: 13px;" class="label label-success">'+sensors[n]+'</span>' +
                       '&nbsp;&nbsp;&nbsp;</span>';
@@ -111,13 +110,13 @@
       };
     }
     else{
-      testString = testString+      　
+      offsetString = offsetString+      　
                       '<div>'+
                         '<span style="font-size: 13px;" class="label label-danger">NONE</span>' +
                       '</div>';
     }
 
-    testString = testString+
+    offsetString = offsetString+
                       '<hr><table class="table table-hover">'+
                         '<thead><tr>'+
                           '<th scope="col" align="center"># Pods Status</th><th/>'+
@@ -125,7 +124,7 @@
 
     for(l = 0; l < pod_name.length; l++) {
       if (pod_name[l]!=null){
-        testString = testString+      　
+        offsetString = offsetString+      　
                         '<tbody><tr>'+
                           '<td><a href="/#!/pod/'+ pod_namespace[l] +'/'+ pod_name[l] +'?namespace='+ pod_namespace[l] +'" class="marker-link">' +
                             pod_name[l] +
@@ -134,13 +133,13 @@
                         '</tr></tbody>'
       }
     };
-    testString = testString +
+    offsetString = offsetString +
                       '</table>'+
                       '<div class="iw-bottom-gradient"></div>'+
                     '</div>'
                   +'</div>';
 
-      var contentString = $(testString);
+      var contentString = $(offsetString);
 
       var infowindow = new google.maps.InfoWindow();
       infowindow.setContent(contentString[0]);
@@ -216,6 +215,39 @@
 
   }
 
+
+  function RefreshControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginTop = '10px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to refresh the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Refresh Map';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+          myMap();
+        });
+
+      }
+
   function myMap() {
     var mapOptions = {
         center: new google.maps.LatLng(24.795211, 120.992309),
@@ -224,9 +256,18 @@
         styles: [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]
     }
 
+    // Create the DIV to hold the control and call the RefreshControl()
+    // constructor passing in this DIV.
+    var refreshControlDiv = document.createElement('div');
+    var refreshControl = new RefreshControl(refreshControlDiv, map);
+
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
     callAPI();
+
+    refreshControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(refreshControlDiv);
   }
+
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8FLccDBYbLiPfGNvvplRAV3rgyCWmnaI&callback=myMap"></script>

@@ -31,4 +31,5 @@ export class Controller {
   isLoginState() {
     return this.state_.current.name === loginState;
   }
+
 }
